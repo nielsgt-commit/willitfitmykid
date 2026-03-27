@@ -1,13 +1,11 @@
-import Age from "./Components/Age/Age.tsx";
-import Height from "./Components/Height/Height.tsx";
+import Calculator from "./Components/Calculator/Calculator.tsx";
 
 
 function App() {
   return (
       <>
         <h1>Will it fit my kid?</h1>
-          <Age />
-          <Height />
+          <Calculator />
       </>
   )
 }

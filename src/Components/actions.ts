@@ -30,13 +30,17 @@ export const PREV_MONTH = 'PREV_MONTH';
 export const NEXT_SEASON = 'NEXT_SEASON';
 export const PREV_SEASON = 'PREV_SEASON';
 
+export const INCREMENT_SIZE = 'INCREMENT_SIZE';
+export const DECREMENT_SIZE = 'DECREMENT_SIZE';
+export const SET_SIZE = 'SET_SIZE';
+
 export const CALCULATE_HEIGHT = 'CALCULATE_HEIGHT';
 export const CALCULATE_AGE = 'CALCULATE_AGE';
 export const CALCULATE_PERCENTILE = 'CALCULATE_PERCENTILE';
 export const CALCULATE_SIZE = 'CALCULATE_SIZE';
 
 
-type ProfileAction =
+export type ProfileAction =
 
     | {type : SET_NAME, payload : string}
     | {type : SET_BIRTHDAY, payload : Date}
@@ -47,7 +51,7 @@ type ProfileAction =
     | {type : DELETE_CHILD}
 
 
-type Action =
+export type Action =
     // Age actions
     | { type : INCREMENT_AGE}
     | { type : DECREMENT_AGE}
@@ -74,8 +78,9 @@ type Action =
     // Size actions
     | { type : SET_SIZE, payload : number}
 
+export type CalculatorAction =
     // Calculations actions
-    | {type : CALCULATE_HEIGHT}
+    | {type : CALCULATE_HEIGHT} // Payload?
     | {type : CALCULATE_AGE}
     | {type : CALCULATE_PERCENTILE}
     | {type : CALCULATE_SIZE}

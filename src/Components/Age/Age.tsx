@@ -13,9 +13,10 @@ export default function Age( { age, dispatch }: AgeProps) {
     return (
         <>
             <h1>Age buttons </h1>
-            <button onClick={() => dispatch( { type: INCREMENT_AGE}) }> + </button>
-            <input type="number" value={age} onChange={(e) => dispatch({ type: SET_AGE, payload: parseInt(e.target.value) })} />
+
             <button onClick={() => dispatch( { type: DECREMENT_AGE}) }> - </button>
+            <input type="number" value={age} onChange={(e) => dispatch({ type: SET_AGE, payload: parseInt(e.target.value) })} />
+            <button onClick={() => dispatch( { type: INCREMENT_AGE}) }> + </button>
         </>
     )
 

@@ -1,5 +1,4 @@
-import { useReducer } from 'react';
-import { INCREMENT_AGE, DECREMENT_AGE, SET_AGE } from './../actions.ts';
+import { INCREMENT_AGE, DECREMENT_AGE, SET_AGE } from './../../actions.ts';
 
 interface AgeProps {
     age: number;

@@ -1,15 +1,18 @@
-import {DECREMENT_AGE, INCREMENT_AGE, SET_AGE} from "../actions.ts";
-import type {CalculatorState} from "../types.ts";
+import {DECREMENT_AGE, INCREMENT_AGE, SET_AGE} from "../../actions.ts";
+import type {Action} from "../../actions.ts";
 
-//
-function ageReducer(state: CalculatorState, action: Action) {
+interface AgeState {
+    age: number;
+}
+
+export function ageReducer(state: AgeState, action:Action): AgeState {
  switch (action.type) {
      case INCREMENT_AGE:
-         return {...state, age: state.age + 1}
+         return {...state, age: state.age + 1};
      case DECREMENT_AGE:
-         return {...state, age: state.age - 1}
+         return {...state, age: state.age - 1};
      case SET_AGE:
-         return {...state, age: action.payload}
+         return {...state, age: action.payload};
      default:
          return state;
  }

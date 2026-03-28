@@ -3,7 +3,7 @@ interface HeightProps {
     dispatch: React.Dispatch<any>;
 }
 
-import {DECREMENT_HEIGHT, INCREMENT_HEIGHT, SET_HEIGHT} from "../actions.ts";
+import {DECREMENT_HEIGHT, INCREMENT_HEIGHT, SET_HEIGHT} from "../../actions.ts";
 
 export default function Height( { height, dispatch }: HeightProps) {
 

@@ -3,7 +3,7 @@ interface PercentileProps {
     dispatch: React.Dispatch<any>;
 }
 
-import {INCREMENT_PERCENTILE, DECREMENT_PERCENTILE, SET_PERCENTILE} from "../actions.ts";
+import {INCREMENT_PERCENTILE, DECREMENT_PERCENTILE, SET_PERCENTILE} from "../../actions.ts";
 
 export default function Percentile({percentile, dispatch}: PercentileProps) {
 

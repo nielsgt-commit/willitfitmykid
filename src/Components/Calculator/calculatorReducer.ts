@@ -1,14 +1,24 @@
 import type {CalculatorState} from "../types.ts";
 import type {CalculatorAction} from "../actions.ts";
+import {ageReducer} from "./Age/ageReducer.ts";
+import {heightReducer} from "./Height/heightReducer.ts";
+import {percentileReducer} from "./Percentile/percentileReducer.ts";
+import {useReducer} from "react";
+
 
 export default function calculatorReducer(state: CalculatorState, action: CalculatorAction    ) {
-        switch (action.type) {
+
+   const [ ageState, ageDispatch] = useReducer(ageReducer, state);
+   const [ heightState, heightDispatch] = useReducer(heightReducer, state);
+   const [ percentileState, percentileDispatch] = useReducer(percentileReducer, state);
+
+    switch (action.type) {
             case 'CALCULATE_AGE':
-                return {...state, age: state.age + 1}
+                return {...ageState, age: ageState.age + 1}
             case 'CALCULATE_HEIGHT':
-                return {...state, height: state.height + 1}
+                return {...heightState, height: heightState.height + 1}
             case 'CALCULATE_PERCENTILE':
-                return {...state, percentile: state.percentile + 1}
+                return {...percentileState, percentile: percentileState.percentile + 1}
             default:
                 return state;
         }

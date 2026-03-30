@@ -1,16 +1,14 @@
-import {useReducer} from "react";
 
-import type {CalculatorState} from "../types.ts";
+export interface State {
+    age: AgeState;
+    height: HeightState;
+    percentile: PercentileState;
+    size: SizeState;
+}
+
 import type {Action} from "./calculator.action.ts";
 
-
-
-
-
-
-
-
-export default function calculatorReducer(state:CalculatorState, action: Action    ) {
+export default function calculatorReducer(state:State, action: Action    ) {
 
 
     switch (action.type) {

@@ -1,8 +1,9 @@
+import { INCREMENT_SIZE, DECREMENT_SIZE, SET_SIZE } from "./size.action.ts";
+
 interface SizeProps {
     size: number | string | undefined;
     dispatch: React.Dispatch<any>;
 }
-import {INCREMENT_SIZE, DECREMENT_SIZE, SET_SIZE} from "../../actions.ts";
 
 export default function Size( { size, dispatch }: SizeProps) {
     return (

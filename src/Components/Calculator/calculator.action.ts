@@ -1,16 +1,7 @@
+import type { Action as AgeAction } from './Age/age.action';
+import type { Action as HeightAction } from './Height/height.action';
+import type { Action as PercentileAction } from './Percentile/percentile.action';
+import type { Action as SizeAction } from './Size/size.action';
 
-export const CALCULATE_HEIGHT_IF_AGE_AND_PERCENTILE = 'CALCULATE_HEIGHT_IF_AGE_AND_PERCENTILE ';
-export const CALCULATE_AGE_IF_PERCENTILE_AND_AGE = 'CALCULATE_AGE_IF_PERCENTILE_AND_AGE';
-export const CALCULATE_PERCENTILE_IF_HEIGHT_AND_AGE = 'CALCULATE_PERCENTILE_IF_HEIGHT_AND_AGE';
-export const CALCULATE_SIZE_IF_AGE_AND_PERCENTILE = 'CALCULATE_SIZE_IF_AGE_AND_PERCENTILE';
-
-
-
-export type Action =
-     | { type:  CALCULATE_HEIGHT_IF_AGE_AND_PERCENTILE }
-     | { type:  CALCULATE_AGE_IF_PERCENTILE_AND_AGE }
-     | { type:  CALCULATE_PERCENTILE_IF_HEIGHT_AND_AGE }
-     | { type:  CALCULATE_SIZE_IF_AGE_AND_PERCENTILE }
-    ;
-
-
+export type Action = AgeAction | HeightAction | PercentileAction | SizeAction;
+//export type { AgeAction, HeightAction, PercentileAction, SizeAction };

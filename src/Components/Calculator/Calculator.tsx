@@ -1,16 +1,17 @@
+// Components
 import Size from "./Size/Size.tsx";
 import Percentile from "./Percentile/Percentile.tsx";
 import Height from "./Height/Height.tsx";
 import Age from "./Age/Age.tsx";
-import {useReducer} from "react";
+// Reducers
+// TODO import calculatorReducer from "./calculator.reducer.ts";
 
-import calculatorReducer from "./calculator.reducer.ts";
+import {useReducer} from "react";
 import  { initialState } from "./initialState.tsx";
 import {ageReducer} from "./Age/age.reducer.ts";
 import {heightReducer} from "./Height/height.reducer.ts";
 import {percentileReducer} from "./Percentile/percentile.reducer.ts";
 import {sizeReducer} from "./Size/size.reducer.ts";
-
 
 export default function Calculator() {
     const [state1, dispatch1] = useReducer(ageReducer, initialState);

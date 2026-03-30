@@ -4,7 +4,7 @@ interface AgeProps {
     age: number;
     dispatch: React.Dispatch<any>;
 }
-
+// Months
 export default function Age({age,dispatch}: AgeProps){
     return (
         <>

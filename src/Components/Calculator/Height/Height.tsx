@@ -1,14 +1,9 @@
-import {initialState} from "../initialState.tsx";
-import {heightReducer} from "./height.reducer.ts";
-import {useReducer} from "react";
 import { INCREMENT_HEIGHT, DECREMENT_HEIGHT, SET_HEIGHT } from "./height.action.ts";
-
 
 interface HeightProps {
     height: number;
     dispatch: React.Dispatch<any>;
-};
-
+}
 
 export default function Height( { height, dispatch }: HeightProps) {
     return (
@@ -19,5 +14,3 @@ export default function Height( { height, dispatch }: HeightProps) {
             <button onClick={() => dispatch( { type: INCREMENT_HEIGHT}) }> + </button>
        </> )
 }
-
-

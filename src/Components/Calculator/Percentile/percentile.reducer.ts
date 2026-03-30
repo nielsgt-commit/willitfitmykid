@@ -1,4 +1,4 @@
-import {DECREMENT_PERCENTILE, INCREMENT_PERCENTILE, SET_PERCENTILE} from "../../actions.ts";
+import {DECREMENT_PERCENTILE, INCREMENT_PERCENTILE, SET_PERCENTILE} from "./percentile.action.ts";
 import type {Action} from "./percentile.action.ts";
 interface State {
     percentile: number;

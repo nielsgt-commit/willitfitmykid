@@ -4,7 +4,7 @@ import {DECREMENT_AGE, INCREMENT_AGE, SET_AGE, type Action} from "./age.action.t
 interface State {
     age: number;
 }
-
+// Months
 export function ageReducer(state: State, action:Action): State {
  switch (action.type) {
      case INCREMENT_AGE:

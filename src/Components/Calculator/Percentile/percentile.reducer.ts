@@ -3,7 +3,7 @@ import type {Action} from "./percentile.action.ts";
 interface State {
     percentile: number;
 }
-export default function percentileReducer(state: State, action: Action) {
+export function percentileReducer(state: State, action: Action) {
     switch (action.type) {
         case INCREMENT_PERCENTILE:
             return {...state, percentile: state.percentile + 1 };

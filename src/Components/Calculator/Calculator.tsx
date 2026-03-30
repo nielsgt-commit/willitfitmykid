@@ -8,8 +8,8 @@ import calculatorReducer from "./calculator.reducer.ts";
 import  { initialState } from "./initialState.tsx";
 import {ageReducer} from "./Age/age.reducer.ts";
 import {heightReducer} from "./Height/height.reducer.ts";
-
-
+import {percentileReducer} from "./Percentile/percentile.reducer.ts";
+import {sizeReducer} from "./Size/size.reducer.ts";
 
 
 export default function Calculator() {

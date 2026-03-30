@@ -1,18 +1,3 @@
-interface HeightState {
-        height: number,
-}
-
-interface AgeState {
-        age: number,
-}
-
-interface PercentileState {
-        percentile: number,
-}
-interface SizeState {
-        size: number | string | undefined,
-}
-
 export interface CalculatorState {
         age: number,
         height: number,

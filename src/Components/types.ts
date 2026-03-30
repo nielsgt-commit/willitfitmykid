@@ -1,19 +1,23 @@
-//  Keep track of....
-export interface CalculatorState {
-
-        // Measurements
+interface HeightState {
         height: number,
+}
+
+interface AgeState {
         age: number,
+}
+
+interface PercentileState {
         percentile: number,
+}
+interface SizeState {
+        size: number | string | undefined,
+}
 
-        // Sizes
-         size: number | string | undefined,
-
-        // Navigation
-        step: number,
-
-        // Date time
-        date: Date,
+export interface CalculatorState {
+        age: number,
+        height: number,
+        percentile: number,
+        size: string,
 }
 
 export interface ProfileState {

@@ -1,11 +1,11 @@
-import {DECREMENT_AGE, INCREMENT_AGE, SET_AGE} from "../../actions.ts";
-import type {Action} from "../../actions.ts";
+import {DECREMENT_AGE, INCREMENT_AGE, SET_AGE, type Action} from "./age.action.ts";
 
-interface AgeState {
+
+interface State {
     age: number;
 }
 
-export function ageReducer(state: AgeState, action:Action): AgeState {
+export function ageReducer(state: State, action:Action): State {
  switch (action.type) {
      case INCREMENT_AGE:
          return {...state, age: state.age + 1};

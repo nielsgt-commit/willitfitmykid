@@ -6,13 +6,13 @@ export const NEW_CHILD = 'NEW_CHILD';
 export const DELETE_CHILD = 'DELETE_CHILD';
 
 // Actions (calculator)
-export const INCREMENT_AGE = 'INCREMENT_AGE';
-export const DECREMENT_AGE = 'DECREMENT_AGE';
-export const SET_AGE = 'SET_AGE';
 
-export const INCREMENT_HEIGHT = 'INCREMENT_HEIGHT';
-export const DECREMENT_HEIGHT = 'DECREMENT_HEIGHT';
-export const SET_HEIGHT = 'SET_HEIGHT';
+
+
+
+
+
+
 
 export const INCREMENT_PERCENTILE = 'INCREMENT_PERCENTILE';
 export const DECREMENT_PERCENTILE = 'DECREMENT_PERCENTILE';
@@ -52,20 +52,20 @@ export type ProfileAction =
 
 
 export type Action =
-    // Age actions
-    | { type : INCREMENT_AGE}
-    | { type : DECREMENT_AGE}
-    | { type : SET_AGE, payload : number}
 
-    // Height actions
-    | { type : INCREMENT_HEIGHT}
-    | { type : DECREMENT_HEIGHT}
-    | { type : SET_HEIGHT, payload : number}
 
-    // Percentile actions
-    | { type : INCREMENT_PERCENTILE, payload: number}
-    | { type : DECREMENT_PERCENTILE, payload: number}
-    | { type : SET_PERCENTILE, payload : number}
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Date time action
     | { type : GET_DATE }

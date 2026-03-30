@@ -1,12 +1,16 @@
+import {initialState} from "../initialState.tsx";
+import {heightReducer} from "./height.reducer.ts";
+import {useReducer} from "react";
+import { INCREMENT_HEIGHT, DECREMENT_HEIGHT, SET_HEIGHT } from "./height.action.ts";
+
+
 interface HeightProps {
     height: number;
     dispatch: React.Dispatch<any>;
-}
+};
 
-import {DECREMENT_HEIGHT, INCREMENT_HEIGHT, SET_HEIGHT} from "../../actions.ts";
 
 export default function Height( { height, dispatch }: HeightProps) {
-
     return (
         <>
             <h1> Height</h1>

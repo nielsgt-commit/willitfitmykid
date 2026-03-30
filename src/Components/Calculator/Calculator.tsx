@@ -4,19 +4,26 @@ import Height from "./Height/Height.tsx";
 import Age from "./Age/Age.tsx";
 import {useReducer} from "react";
 
-import calculatorReducer from "./calculatorReducer.ts";
+import calculatorReducer from "./calculator.reducer.ts";
 import  { initialState } from "./initialState.tsx";
+import {ageReducer} from "./Age/age.reducer.ts";
+import {heightReducer} from "./Height/height.reducer.ts";
+
+
 
 
 export default function Calculator() {
- const [state, dispatch] = useReducer(calculatorReducer, initialState)
+    const [state1, dispatch1] = useReducer(ageReducer, initialState);
+    const [state2, dispatch2] = useReducer(heightReducer, initialState);
+    const [state3, dispatch3] = useReducer(percentileReducer, initialState);
+    const [state4, dispatch4] = useReducer(sizeReducer, initialState);
 
     return (
         <>
-              <Age age={state.age} dispatch={dispatch} />
-              <Height height={state.height} dispatch={dispatch} />
-              <Percentile percentile={state.percentile } dispatch={dispatch} />
-              <Size size={state.size} dispatch={dispatch} />
+              <Age age={state1.age} dispatch={dispatch1} />
+              <Height height={state2.height} dispatch={dispatch2} />
+              <Percentile percentile={state3.percentile } dispatch={dispatch3} />
+              <Size size={state4.size} dispatch={dispatch4} />
          </>
     )
 }

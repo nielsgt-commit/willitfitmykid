@@ -1,22 +1,4 @@
-export interface AgeState {
-    months: number;
-}
-
-export interface HeightState {
-    cm: number;
-}
-
-export interface PercentileState {
-    value: number;
-}
-
-export interface SizeState {
-    label: number;
-}
-
-
-
-
+export const PERCENTILE = ['P3','P10','P25','P50','P75','P90','P97']
 
 
 
@@ -26,4 +8,11 @@ export interface ProfileState {
     birthday: number;
     height: number;
     percentile: number;
+}
+
+export interface CalculatorState {
+    months: number,
+    height: number,
+    percentile: number,
+    size: number | string | undefined,
 }

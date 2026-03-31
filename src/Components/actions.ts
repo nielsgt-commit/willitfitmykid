@@ -11,3 +11,4 @@ export type ProfileAction =
     | {type: SET_SEX, payload: string}
     | {type: NEW_CHILD}
     | {type: DELETE_CHILD}
+    ;

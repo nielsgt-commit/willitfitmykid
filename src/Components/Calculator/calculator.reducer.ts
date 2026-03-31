@@ -1,12 +1,16 @@
 
-export interface State {
-    age: AgeState;
-    height: HeightState;
-    percentile: PercentileState;
-    size: SizeState;
+interface State {
+    age: number,
+    height: number,
+    percentile: number,
+    size: number | string | undefined,
 }
 
 import type {Action} from "./calculator.action.ts";
+
+// const mont = monthReducer
+
+
 
 export default function calculatorReducer(state:State, action: Action    ) {
 

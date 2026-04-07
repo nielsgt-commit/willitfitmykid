@@ -8,10 +8,6 @@ import Months from "./Months/Months.tsx";
 
 import {useReducer} from "react";
 import  { initialState } from "./initialState.tsx";
-import {monthsReducer} from "./Months/months.Reducer.ts";
-import {heightReducer} from "./Height/height.reducer.ts";
-import {percentileReducer} from "./Percentile/percentile.reducer.ts";
-import {sizeReducer} from "./Size/size.reducer.ts";
 import calculatorReducer from "./calculator.reducer.ts";
 
 export default function Calculator() {

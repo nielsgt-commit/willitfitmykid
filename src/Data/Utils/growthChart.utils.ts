@@ -1,8 +1,15 @@
-export function lookupHeightByAgeMonths( ageMonths: number, percentile: number):number{
+export function lookUpHeight( ageMonths: number, percentile: number):number{
     return (ageMonths / 2 + 14);
 }
 
+export function lookUpAge(height: number, percentile: number): number{
+    return (height - 14) * 2 / 4;
+}
 
-export function lookupPercentileByHeightAgeMonths(height: number, ageMonths: number): number{
+export function lookUpPercentile(height: number, ageMonths: number): number{
     return (height - ageMonths / 2 - 14) * 2
+}
+
+export function lookUpSize(height: number): number{
+     return height * 2
 }

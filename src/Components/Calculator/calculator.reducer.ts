@@ -4,7 +4,13 @@ import {DECREMENT_SIZE, INCREMENT_SIZE, SET_SIZE} from "./Size/size.action.ts";
 import {DECREMENT_AGE, INCREMENT_AGE, SET_AGE} from "./Months/months.action.ts";
 import type {State} from "../types.ts";
 import type {Action} from "./calculator.action.ts"
-import {lookupHeightByAgeMonths} from "../../Data/Utils/growthChart.utils.ts";
+import {
+    lookUpAge,
+    lookUpHeight,
+    lookupHeightByAgeMonths,
+    lookUpPercentile,
+    lookUpSize
+} from "../../Data/Utils/growthChart.utils.ts";
 
 
 
@@ -15,11 +21,19 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
         case SET_AGE:
            const h  = 2+2;
            const p = 3+3;
-                return {height: lookupHeightByAgeMonths(action.payload, p), percentile: p, months: action.payload}
+                return {
+                    height: lookUpHeight(action.payload, p),
+                    percentile: lookUpPercentile(state.height, state.months),
+                    months: action.payload,
+                    size: lookUpSize(state.height)
+                }
         case SET_HEIGHT:
-            return {...state, height: action.payload }
+            return {
+                months: lookUpAge(state.height,state.percentile),
+                height: action.payload
+            }
         case SET_PERCENTILE:
-            return {...state, percentile: action.payload}
+            return {, percentile: action.payload}
         case SET_SIZE :
             return {...state, size: action.payload}
 

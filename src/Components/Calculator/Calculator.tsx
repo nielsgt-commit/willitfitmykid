@@ -15,6 +15,8 @@ import {sizeReducer} from "./Size/size.reducer.ts";
 import calculatorReducer from "./calculator.reducer.ts";
 
 export default function Calculator() {
+    const [state, dispatch] = useReducer(calculatorReducer, initialState);
+
     const [state1, dispatch1] = useReducer(monthsReducer, initialState);
     const [state2, dispatch2] = useReducer(heightReducer, initialState);
     const [state3, dispatch3] = useReducer(percentileReducer, initialState);

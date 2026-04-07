@@ -17,19 +17,14 @@ import calculatorReducer from "./calculator.reducer.ts";
 export default function Calculator() {
     const [state, dispatch] = useReducer(calculatorReducer, initialState);
 
-    const [state1, dispatch1] = useReducer(monthsReducer, initialState);
-    const [state2, dispatch2] = useReducer(heightReducer, initialState);
-    const [state3, dispatch3] = useReducer(percentileReducer, initialState);
-    const [state4, dispatch4] = useReducer(sizeReducer, initialState);
 
-   // const [state, dispatch] = useReducer(calculatorReducer, initialState);
     return (
         <>
-               <p> {(state1.months*2+state2.height)} </p>
-              <Months months={state1.months} dispatch={dispatch1} />
-              <Height height={state2.height} dispatch={dispatch2} />
-              <Percentile percentile={state3.percentile } dispatch={dispatch3} />
-              <Size size={state4.size} dispatch={dispatch4} />
+               <p> {(state.months*2+state.height)} </p>
+              <Months months={state.months} dispatch={dispatch} />
+              <Height height={state.height} dispatch={dispatch} />
+              <Percentile percentile={state.percentile } dispatch={dispatch} />
+              <Size size={state.size} dispatch={dispatch} />
          </>
     )
 }

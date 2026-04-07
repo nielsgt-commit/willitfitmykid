@@ -4,15 +4,18 @@ import {DECREMENT_SIZE, INCREMENT_SIZE, SET_SIZE} from "./Size/size.action.ts";
 import {DECREMENT_AGE, INCREMENT_AGE, SET_AGE} from "./Months/months.action.ts";
 import type {State} from "../types.ts";
 import type {Action} from "./calculator.action.ts"
+import {lookupHeightByAgeMonths} from "../../Data/Utils/growthChart.utils.ts";
 
 
 
-export default function calculatorReducer(state:State, action: Action    ) {
+export default function calculatorReducer(state:State, action: Action    ): State {
 
 // TODO growth chart look up logic
     switch (action.type) {
         case SET_AGE:
-                return {...state, months: action.payload}
+           const h  = 2+2;
+           const p = 3+3;
+                return {height: lookupHeightByAgeMonths(action.payload, p), percentile: p, months: action.payload}
         case SET_HEIGHT:
             return {...state, height: action.payload }
         case SET_PERCENTILE:

@@ -4,21 +4,17 @@ interface State {
     age: number,
     height: number,
     percentile: number,
-    size: number | string | undefined,
+    size: number | string ,
 }
 
 import type {Action} from "./calculator.action.ts";
-import {SET_HEIGHT} from "./Height/height.action.ts";
-import {SET_PERCENTILE} from "./Percentile/percentile.action.ts";
-import {SET_SIZE} from "./Size/size.action.ts";
 
-// const mont = monthReducer
 
 
 
 export default function calculatorReducer(state:State, action: Action    ) {
 
-
+// TODO growth chart look up logic
     switch (action.type) {
         case SET_AGE:
                 return {...state, age: state.age + 2}

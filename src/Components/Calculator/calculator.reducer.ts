@@ -1,16 +1,9 @@
-
-interface State {
-    months: number,
-    height: number,
-    percentile: number,
-    size: number | string ,
-}
-
-import type {Action} from "./calculator.action.ts";
-import {SET_HEIGHT} from "./Height/height.action.ts";
-import {SET_PERCENTILE} from "./Percentile/percentile.action.ts";
-import {SET_SIZE} from "./Size/size.action.ts";
-import {SET_AGE} from "./Months/months.action.ts";
+import {DECREMENT_HEIGHT, INCREMENT_HEIGHT, SET_HEIGHT} from "./Height/height.action.ts";
+import {DECREMENT_PERCENTILE, INCREMENT_PERCENTILE, SET_PERCENTILE} from "./Percentile/percentile.action.ts";
+import {DECREMENT_SIZE, INCREMENT_SIZE, SET_SIZE} from "./Size/size.action.ts";
+import {DECREMENT_AGE, INCREMENT_AGE, SET_AGE} from "./Months/months.action.ts";
+import type {State} from "../types.ts";
+import type {Action} from "./calculator.action.ts"
 
 
 
@@ -19,13 +12,38 @@ export default function calculatorReducer(state:State, action: Action    ) {
 // TODO growth chart look up logic
     switch (action.type) {
         case SET_AGE:
-                return {...state, age: state.months + 2}
+                return {...state, months: action.payload}
         case SET_HEIGHT:
-            return {...state, height: state.height + 2}
+            return {...state, height: action.payload }
         case SET_PERCENTILE:
-            return {...state, percentile: state.percentile + 2}
+            return {...state, percentile: action.payload}
         case SET_SIZE :
-            return {...state, size: (state.size * 2)}
+            return {...state, size: action.payload}
+
+        // Increment and decrement Age
+        case INCREMENT_AGE:
+                return {...state, months: state.months + 1}
+        case DECREMENT_AGE:
+            return {...state, months: state.months - 1}
+
+        // Increment and decrement Height
+        case INCREMENT_HEIGHT:
+            return {...state, height: state.height + 1}
+        case DECREMENT_HEIGHT:
+            return {...state, height: state.height - 1}
+
+        // Increment and decrement Percentile
+        case INCREMENT_PERCENTILE:
+            return {...state, percentile: state.percentile + 1}
+        case DECREMENT_PERCENTILE:
+            return {...state, percentile: state.percentile - 1}
+
+        // Increment and decrement Size
+        case INCREMENT_SIZE:
+            return {...state, size: state.size + 1}
+        case DECREMENT_SIZE:
+            return {...state, size: state.size - 1}
+
         default:
                 return state;
         }

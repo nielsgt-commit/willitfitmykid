@@ -1,4 +1,5 @@
-export const PERCENTILE = ['P3','P10','P25','P50','P75','P90','P97']
+
+
 
 
 
@@ -6,13 +7,13 @@ export const PERCENTILE = ['P3','P10','P25','P50','P75','P90','P97']
 export interface ProfileState {
     name: string;
     birthday: number;
-    height: number;
-    percentile: number;
+    heightNow: number;
+    calculatedPercentile: number;
 }
 
-export interface CalculatorState {
+export interface State {
     months: number,
     height: number,
     percentile: number,
-    size: number | string | undefined,
+    size: number ,
 }

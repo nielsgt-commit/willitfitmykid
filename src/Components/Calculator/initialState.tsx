@@ -1,6 +1,6 @@
-import type { CalculatorState } from "../types";
+import type { State } from "../types";
 
-export const initialState  = {
+export const initialState : State  = {
     months: 20,
     height:  170,
     percentile: 50,

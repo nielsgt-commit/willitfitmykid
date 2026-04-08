@@ -13,7 +13,7 @@ export interface ProfileState {
 
 export interface State {
     months: number,
-    height: number,
+    height: number | undefined,
     percentile: number,
-    size: number ,
+    size: `${number}`,
 }

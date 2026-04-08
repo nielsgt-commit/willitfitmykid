@@ -4,7 +4,7 @@ export function lookUpHeight( ageMonths: number, percentile: number):number{
 }
 
 //
-export function lookUpAge(height: number, percentile: number): number{
+export function lookUpAge(height: number | undefined, percentile: number): number{
     return (height - 14) * 2 / 4;
 }
 

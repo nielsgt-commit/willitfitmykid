@@ -1,12 +1,3 @@
-export const clothingCategories = [
-  "tops",
-  "bottoms",
-  "outerwear",
-  "dresses",
-] as const;
-
-export type Category = typeof clothingCategories[number];
-
 export const regions = ["EU", "US", "UK"] as const;
 export type Region = typeof regions[number];
 
@@ -28,14 +19,12 @@ export type KidsClothingSizeRow = {
   conversions: Partial<Record<Region, string>>;
 };
 
-export type KidsClothingCategoryTable = Record<
+export type KidsClothingTable = Record<
   KidsClothingSizeKey,
   KidsClothingSizeRow
 >;
 
-export type KidsClothingTable = Record<Category, KidsClothingCategoryTable>;
-
-const baseSizeRows: KidsClothingCategoryTable = {
+const kidsClothingSizeRows: KidsClothingTable = {
   "56": {
     key: "56",
     ageLabel: "0-1M",
@@ -152,67 +141,56 @@ const baseSizeRows: KidsClothingCategoryTable = {
   },
 };
 
-export const kidsClothingTable: KidsClothingTable = {
-  tops: { ...baseSizeRows },
-  bottoms: { ...baseSizeRows },
-  outerwear: { ...baseSizeRows },
-  dresses: { ...baseSizeRows },
-};
+export const kidsClothingTable: KidsClothingTable = kidsClothingSizeRows;
 
 export function getSizeRow(
   table: KidsClothingTable,
-  category: Category,
   key: KidsClothingSizeKey,
 ): KidsClothingSizeRow | undefined {
-  return table[category][key];
+  return table[key];
 }
 
 export function convertCanonicalSize(
   table: KidsClothingTable,
-  category: Category,
   key: KidsClothingSizeKey,
   targetRegion: Region,
 ): string | undefined {
-  return table[category][key]?.conversions[targetRegion];
+  return table[key]?.conversions[targetRegion];
 }
 
 export function findCanonicalSize(
   table: KidsClothingTable,
-  category: Category,
   region: Region,
   label: string,
 ): KidsClothingSizeRow | undefined {
-  return Object.values(table[category]).find(
+  return Object.values(table).find(
     (row) => row.conversions[region] === label,
   );
 }
 
 export function convertRegionalSize(
   table: KidsClothingTable,
-  category: Category,
   fromRegion: Region,
   fromLabel: string,
   toRegion: Region,
 ): string | undefined {
-  const row = findCanonicalSize(table, category, fromRegion, fromLabel);
+  const row = findCanonicalSize(table, fromRegion, fromLabel);
   return row?.conversions[toRegion];
 }
 
 export function findByHeight(
   table: KidsClothingTable,
-  category: Category,
   heightCm: number,
 ): KidsClothingSizeRow | undefined {
-  return Object.values(table[category]).find(
+  return Object.values(table).find(
     (row) => heightCm >= row.heightCm.min && heightCm <= row.heightCm.max,
   );
 }
 
 export function listAvailableSizes(
   table: KidsClothingTable,
-  category: Category,
 ): KidsClothingSizeRow[] {
-  return Object.values(table[category]).sort(
+  return Object.values(table).sort(
     (a, b) => Number(a.key) - Number(b.key),
   );
 }

@@ -1,13 +1,12 @@
 import type {
-  KidsClothingCategoryTable,
-  KidsClothingSizeRow,
-  Region,
-  KidsClothingSizeKey,
+    KidsClothingSizeRow,
+    Region,
+    KidsClothingSizeKey, KidsClothingTable,
 } from "../SizeCharts/kids_clothing_sizes";
 
 // Find size by region conversion
 export const findByRegion = (
-  table: KidsClothingCategoryTable,
+  table: KidsClothingTable,
   region: Region,
   label: string,
 ): KidsClothingSizeRow | undefined =>
@@ -15,29 +14,35 @@ export const findByRegion = (
 
 // Find size by ageLabel
 export const findByAgeLabel = (
-  table: KidsClothingCategoryTable,
+  table: KidsClothingTable,
   ageLabel: string,
 ): KidsClothingSizeRow | undefined =>
   Object.values(table).find((row) => row.ageLabel === ageLabel);
 
 // Find size by key
 export const findByKey = (
-  table: KidsClothingCategoryTable,
+  table: KidsClothingTable,
   key: KidsClothingSizeKey,
 ): KidsClothingSizeRow | undefined => table[key];
 
 // Find size by height in cm
 export const findByHeight = (
-  table: KidsClothingCategoryTable,
+  table: KidsClothingTable,
   heightCm: number,
-): KidsClothingSizeRow | undefined =>
+): KidsClothingSizeRow | undefined  =>
   Object.values(table).find(
     (row) => heightCm >= row.heightCm.min && heightCm <= row.heightCm.max,
   );
 
+
+export const findHeightBySize = (
+  table: KidsClothingTable,
+  size: KidsClothingSizeKey,
+): number | undefined => table[size]?.heightCm.min;
+
 // Find all sizes in height range
 export const findByHeightRange = (
-  table: KidsClothingCategoryTable,
+  table: KidsClothingTable,
   minCm: number,
   maxCm: number,
 ): KidsClothingSizeRow[] =>

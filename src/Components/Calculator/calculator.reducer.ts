@@ -4,16 +4,9 @@ import {DECREMENT_SIZE, INCREMENT_SIZE, SET_SIZE} from "./Size/size.action.ts";
 import {DECREMENT_AGE, INCREMENT_AGE, SET_AGE} from "./Months/months.action.ts";
 import type {State} from "../types.ts";
 import type {Action} from "./calculator.action.ts"
-import {
-    lookUpAge,
-    lookUpHeight,
-    lookUpPercentile,
-    lookUpSize
-} from "../../Data/Utils/growthChart.utils.ts";
-import {SET_BIRTHDAY} from "../actions.ts";
-import {findByHeight, findHeightBySize, findHeightRangeBySize} from "../../Data/Utils/sizeChart.utils.ts";
-import {kidsClothingTable} from "../../Data/SizeCharts/kids_clothing_sizes.ts";
 import {EU_SIZE_0_19yo, PERCENTILE} from "../../constants.ts";
+import {kidsClothingTable} from "../../Data/SizeCharts/kids_clothing_sizes.ts";
+import {getSizeRow} from "../../Data/Utils/sizeChart.utils.ts";
 
 
 
@@ -21,12 +14,14 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
 
 // TODO growth chart look up logic
     switch (action.type) {
-        case SET_SIZE :
+        case SET_SIZE : {
+            const sizeRow = getSizeRow(kidsClothingTable, action.payload);
             return {
                 ...state,
                 size: action.payload,
-
+                conversions: sizeRow?.conversions ?? {},
             }
+        }
         case SET_AGE:
                 return {
                     ...state,
@@ -52,6 +47,7 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
             return {
                 ...state,
                 size: sizeStepUp,
+                conversions: getSizeRow(kidsClothingTable, sizeStepUp)?.conversions ?? {},
             }}
         case DECREMENT_SIZE: {
             const currentIndex = EU_SIZE_0_19yo.indexOf(Number(state.size));
@@ -60,21 +56,24 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
             return {
                 ...state,
                 size: sizeStepDown,
+                conversions: getSizeRow(kidsClothingTable, sizeStepDown)?.conversions ?? {},
             }}
 
             // Increment and decrement Height
-            case INCREMENT_HEIGHT:
+            case INCREMENT_HEIGHT: {
                 const heightPlus = state.height + 1;
                 return {
                     ...state,
                     height: heightPlus,
                 }
+            }
             case DECREMENT_HEIGHT: {
                 const heightMinus = state.height - 1;
                 return {
                     ...state,
                     height: heightMinus,
-                }}
+                }
+            }
 
         // Increment and decrement Age
         case INCREMENT_AGE: {

@@ -1,8 +1,18 @@
 
+type UserRecord = {
+    id: string;
+    name: string;
+    birthday: number;
+    heightNow: number;
+    calculatedPercentile: number;
 
+}
 
-
-
+type UserState = {
+    selectedUserId: string | null;
+    usersById: Record<string, UserRecord>;
+    userOrder: string[];
+};
 
 export interface ProfileState {
     name: string;

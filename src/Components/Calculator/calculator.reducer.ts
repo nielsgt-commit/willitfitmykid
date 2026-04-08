@@ -11,6 +11,8 @@ import {
     lookUpSize
 } from "../../Data/Utils/growthChart.utils.ts";
 import {SET_BIRTHDAY} from "../actions.ts";
+import {findByHeight} from "../../Data/Utils/sizeChart.utils.ts";
+import {kidsClothingTable} from "../../Data/SizeCharts/kids_clothing_sizes.ts";
 
 
 
@@ -19,34 +21,36 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
 // TODO growth chart look up logic
     switch (action.type) {
         case SET_AGE:
-           const h  = 2+2;
-           const p = 3+3;
                 return {
-                    height: lookUpHeight(action.payload, p),
-                    percentile: lookUpPercentile(state.height, state.months),
+                    height: lookUpHeight(action.payload, state.percentile),
+                    percentile: state.percentile,
+               //   percentile: lookUpPercentile(state.height, state.months),
                     months: action.payload,
                     size: lookUpSize(state.height)
                 }
         case SET_HEIGHT:
             return {
-                months: lookUpAge(state.height,state.percentile),
+                months: state.months,
+                //months: lookUpAge(state.height,state.percentile),
                 height: action.payload,
                 percentile: lookUpPercentile(state.height, action.payload),
-                size: lookUpSize(state.height)
+                size: findByHeight( kidsClothingTable, state.height)
             }
         case SET_PERCENTILE:
             return {
                 percentile: action.payload,
-                months: lookUpAge(state.height, action.payload),
+                months: state.months,
+               // months: lookUpAge(state.height, action.payload),
                 height: lookUpHeight(state.months, state.percentile),
                 size: lookUpSize(state.height)
             }
         case SET_SIZE :
             return {
                 size: action.payload,
-                percentile: lookUpPercentile(state.height,state.months),
+                percentile: state.percentile,
+                //percentile: lookUpPercentile(state.height,state.months),
                 months: lookUpAge(state.height,state.percentile),
-                height: lookUpHeight(state.months, state.percentile)
+                //height: lookUpHeight(state.months, state.percentile)
             }
 
         // Increment and decrement Age

@@ -15,7 +15,7 @@ export default function Calculator() {
     return (
         <>
 
-              <Size size={state.size} dispatch={dispatch} />
+              <Size size={state.size} conversions={state.conversions} dispatch={dispatch} />
               <Height height={state.height} dispatch={dispatch} />
               <Percentile percentile={state.percentile } dispatch={dispatch}/>
               <Months months={state.months} dispatch={dispatch} />

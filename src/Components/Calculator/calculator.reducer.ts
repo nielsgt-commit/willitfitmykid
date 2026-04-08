@@ -11,7 +11,7 @@ import {
     lookUpSize
 } from "../../Data/Utils/growthChart.utils.ts";
 import {SET_BIRTHDAY} from "../actions.ts";
-import {findByHeight, findHeightBySize} from "../../Data/Utils/sizeChart.utils.ts";
+import {findByHeight, findHeightBySize, findHeightRangeBySize} from "../../Data/Utils/sizeChart.utils.ts";
 import {kidsClothingTable} from "../../Data/SizeCharts/kids_clothing_sizes.ts";
 import {EU_SIZE_0_19yo, PERCENTILE} from "../../constants.ts";
 
@@ -23,85 +23,74 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
     switch (action.type) {
         case SET_SIZE :
             return {
+                ...state,
                 size: action.payload,
-                percentile: state.percentile,
-                //percentile: lookUpPercentile(state.height,state.months),
-                months: lookUpAge(state.height,state.percentile),
-                //height: lookUpHeight(state.months, state.percentile)
-                height: findHeightBySize(kidsClothingTable, state.size),
+
             }
         case SET_AGE:
                 return {
-                    height: lookUpHeight(action.payload, state.percentile),
-                    percentile: state.percentile,
-               //   percentile: lookUpPercentile(state.height, state.months),
+                    ...state,
                     months: action.payload,
-                    size: lookUpSize(state.height)
                 }
-        case SET_HEIGHT: {
-            const row = Number.isFinite(action.payload)
-                ? findByHeight(kidsClothingTable, action.payload)
-                : undefined;
+        case SET_HEIGHT:
 
             return {
-                months: state.months,
-                //months: lookUpAge(state.height,state.percentile),
+                ...state,
                 height: action.payload,
-                percentile: lookUpPercentile(state.height, action.payload),
-                size: row?.conversions.UK ?? state.size,
-            }}
+            }
         case SET_PERCENTILE:
             return {
+                ...state,
                 percentile: action.payload,
-                months: state.months,
-               // months: lookUpAge(state.height, action.payload),
-                height: lookUpHeight(state.months, state.percentile),
-                size: lookUpSize(state.height)
             }
 
+        // Increment and decrement Size
+        case INCREMENT_SIZE: {
+            const currentIndex = EU_SIZE_0_19yo.indexOf(Number(state.size));
+            const nextIndex = Math.min(currentIndex + 1, EU_SIZE_0_19yo.length - 1);
+            const sizeStepUp = `${EU_SIZE_0_19yo[nextIndex === -1 ? 0 : nextIndex]}` as `${number}`;
+            return {
+                ...state,
+                size: sizeStepUp,
+            }}
+        case DECREMENT_SIZE: {
+            const currentIndex = EU_SIZE_0_19yo.indexOf(Number(state.size));
+            const prevIndex = currentIndex === -1 ? 0 : Math.max(currentIndex - 1, 0);
+            const sizeStepDown = `${EU_SIZE_0_19yo[prevIndex]}` as `${number}`;
+            return {
+                ...state,
+                size: sizeStepDown,
+            }}
 
-
-
-
-
-
-
+            // Increment and decrement Height
+            case INCREMENT_HEIGHT:
+                const heightPlus = state.height + 1;
+                return {
+                    ...state,
+                    height: heightPlus,
+                }
+            case DECREMENT_HEIGHT: {
+                const heightMinus = state.height - 1;
+                return {
+                    ...state,
+                    height: heightMinus,
+                }}
 
         // Increment and decrement Age
         case INCREMENT_AGE: {
             const monthsPlus = state.months + 1;
             return {
-                height: lookUpHeight(monthsPlus, state.percentile),
-                percentile: lookUpPercentile(state.height, monthsPlus),
+                ...state,
                 months: monthsPlus,
-                size: lookUpSize(state.height)
             }}
         case DECREMENT_AGE: {
             const monthsMinus = state.months - 1;
             return {
-                height: lookUpHeight(monthsMinus, state.percentile),
-                percentile: lookUpPercentile(state.height, monthsMinus),
+                ...state,
                 months: monthsMinus,
-                size: lookUpSize(state.height)
             }}
 
-        // Increment and decrement Height
-        case INCREMENT_HEIGHT: {
-            const heightPlus = state.height + 1;
-            return {
-                months: lookUpAge(heightPlus, state.percentile),
-                height: heightPlus,
-                percentile: lookUpPercentile(heightPlus, state.months),
-                size: lookUpSize(heightPlus)
-            }}
-        case DECREMENT_HEIGHT: {
-            const heightMinus = state.height - 1;
-            return {
-                months: lookUpAge(heightMinus, state.percentile),
-                height: heightMinus,
-                percentile: lookUpPercentile(heightMinus, state.months),
-                size: lookUpSize(heightMinus)
-            }}
+
 
         // Increment and decrement Percentile
         case INCREMENT_PERCENTILE: {
@@ -110,10 +99,8 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
             const nextIndex = Math.min(currentIndex + 1, numericPercentiles.length - 1);
             const percentilePlus = numericPercentiles[currentIndex === -1 ? 0 : nextIndex];
             return {
+                ...state,
                 percentile: percentilePlus,
-                months: lookUpAge(state.height, percentilePlus),
-                height: lookUpHeight(state.months, percentilePlus),
-                size: lookUpSize(state.height)
             }}
         case DECREMENT_PERCENTILE: {
             const numericPercentiles = PERCENTILE.map(p => parseInt(p.slice(1)));
@@ -121,32 +108,8 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
             const prevIndex = currentIndex === -1 ? 0 : Math.max(currentIndex - 1, 0);
             const percentileMinus = numericPercentiles[prevIndex];
             return {
+                ...state,
                 percentile: percentileMinus,
-                months: lookUpAge(state.height, percentileMinus),
-                height: lookUpHeight(state.months, percentileMinus),
-                size: lookUpSize(state.height)
-            }}
-
-        // Increment and decrement Size
-        case INCREMENT_SIZE: {
-            const currentIndex = EU_SIZE_0_19yo.indexOf(Number(state.size));
-            const nextIndex = Math.min(currentIndex + 1, EU_SIZE_0_19yo.length - 1);
-            const sizeStepUp = `${EU_SIZE_0_19yo[nextIndex === -1 ? 0 : nextIndex]}` as `${number}`;
-            return {
-                size: sizeStepUp,
-                percentile: lookUpPercentile(state.height, state.months),
-                months: lookUpAge(state.height, state.percentile),
-                height: lookUpHeight(state.months, state.percentile)
-            }}
-        case DECREMENT_SIZE: {
-            const currentIndex = EU_SIZE_0_19yo.indexOf(Number(state.size));
-            const prevIndex = currentIndex === -1 ? 0 : Math.max(currentIndex - 1, 0);
-            const sizeStepDown = `${EU_SIZE_0_19yo[prevIndex]}` as `${number}`;
-            return {
-                size: sizeStepDown,
-                percentile: lookUpPercentile(state.height, state.months),
-                months: lookUpAge(state.height, state.percentile),
-                height: lookUpHeight(state.months, state.percentile)
             }}
 
         default:

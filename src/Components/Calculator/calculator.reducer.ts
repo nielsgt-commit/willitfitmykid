@@ -13,7 +13,7 @@ import {
 import {SET_BIRTHDAY} from "../actions.ts";
 import {findByHeight, findHeightBySize} from "../../Data/Utils/sizeChart.utils.ts";
 import {kidsClothingTable} from "../../Data/SizeCharts/kids_clothing_sizes.ts";
-import {EU_SIZE_0_19yo} from "../../constants.ts";
+import {EU_SIZE_0_19yo, PERCENTILE} from "../../constants.ts";
 
 
 
@@ -105,7 +105,10 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
 
         // Increment and decrement Percentile
         case INCREMENT_PERCENTILE: {
-            const percentilePlus = state.percentile + 1;
+            const numericPercentiles = PERCENTILE.map(p => parseInt(p.slice(1)));
+            const currentIndex = numericPercentiles.indexOf(state.percentile);
+            const nextIndex = Math.min(currentIndex + 1, numericPercentiles.length - 1);
+            const percentilePlus = numericPercentiles[currentIndex === -1 ? 0 : nextIndex];
             return {
                 percentile: percentilePlus,
                 months: lookUpAge(state.height, percentilePlus),
@@ -113,7 +116,10 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
                 size: lookUpSize(state.height)
             }}
         case DECREMENT_PERCENTILE: {
-            const percentileMinus = state.percentile - 1;
+            const numericPercentiles = PERCENTILE.map(p => parseInt(p.slice(1)));
+            const currentIndex = numericPercentiles.indexOf(state.percentile);
+            const prevIndex = currentIndex === -1 ? 0 : Math.max(currentIndex - 1, 0);
+            const percentileMinus = numericPercentiles[prevIndex];
             return {
                 percentile: percentileMinus,
                 months: lookUpAge(state.height, percentileMinus),

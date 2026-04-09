@@ -1,10 +1,10 @@
-import {DECREMENT_SIZE, INCREMENT_SIZE, SET_SIZE} from "./Size/size.action.ts";
+import {DECREMENT_SIZE, INCREMENT_SIZE, SET_SIZE, SET_REGION} from "./Size/size.action.ts";
 import {PREV_USER, NEXT_USER} from "../UserSwitcher/UserSwitcher.action.ts";
 import type {State} from "../types.ts";
 import type {Action} from "./calculator.action.ts"
 import {EU_SIZE_0_19yo, PERCENTILE} from "../../constants.ts";
 import {kidsClothingTable} from "../../Data/SizeCharts/kids_clothing_sizes.ts";
-import {getSizeRow} from "../../Data/Utils/sizeChart.utils.ts";
+import {getSizeRow, findCanonicalSize} from "../../Data/Utils/sizeChart.utils.ts";
 import {testUsers} from "../../TestUsers.ts";
 
 const cycleUser = (state: State, offset: number) => {
@@ -33,12 +33,21 @@ export default function calculatorReducer(state:State, action: Action    ): Stat
             }
 
 
-        case SET_SIZE : {
-            const sizeRow = getSizeRow(kidsClothingTable, action.payload);
+        case SET_REGION:
             return {
                 ...state,
-                size: action.payload,
-                conversions: sizeRow?.conversions ?? {},
+                inputRegion: action.payload,
+            };
+
+        case SET_SIZE : {
+            const row = state.inputRegion === 'EU'
+                ? getSizeRow(kidsClothingTable, action.payload as `${number}`)
+                : findCanonicalSize(kidsClothingTable, state.inputRegion, action.payload);
+            if (!row) return state;
+            return {
+                ...state,
+                size: row.key,
+                conversions: row.conversions,
             }
         }
         // Increment and decrement Size

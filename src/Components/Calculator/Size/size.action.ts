@@ -1,10 +1,13 @@
 export const INCREMENT_SIZE = 'INCREMENT_SIZE';
 export const DECREMENT_SIZE = 'DECREMENT_SIZE';
 export const SET_SIZE = 'SET_SIZE';
+export const SET_REGION = 'SET_REGION';
 
+import type {Region} from '../../../Data/SizeCharts/kids_clothing_sizes.ts';
 
 export type Action =
-    | {type: INCREMENT_SIZE}
-    | {type: DECREMENT_SIZE}
-    | {type: SET_SIZE, payload: number}
+    | {type: typeof INCREMENT_SIZE}
+    | {type: typeof DECREMENT_SIZE}
+    | {type: typeof SET_SIZE, payload: string}
+    | {type: typeof SET_REGION, payload: Region}
     ;

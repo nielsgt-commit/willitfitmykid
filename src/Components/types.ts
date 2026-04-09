@@ -1,4 +1,5 @@
 import type {UserRecord} from './../TestUsers.ts'
+import type {Region} from './../Data/SizeCharts/kids_clothing_sizes.ts'
 
 type UserState = {
     selectedUserId: string | null;
@@ -16,5 +17,6 @@ export interface ProfileState {
 export interface State {
     selectedUser: UserRecord ;
     size: `${number}`,
+    inputRegion: Region,
     conversions: Partial<Record<'EU' | 'UK' | 'US', string>>,
 }

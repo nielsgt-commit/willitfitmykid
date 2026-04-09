@@ -1,20 +1,50 @@
-import { INCREMENT_SIZE, DECREMENT_SIZE, SET_SIZE } from "./size.action.ts";
+import { INCREMENT_SIZE, DECREMENT_SIZE, SET_SIZE, SET_REGION } from "./size.action.ts";
+import { regions, type Region } from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
+import { listAvailableSizes } from "../../../Data/Utils/sizeChart.utils.ts";
+import { kidsClothingTable } from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
 
 interface SizeProps {
-    size: number | string | undefined;
+    size: string;
+    inputRegion: Region;
     conversions: Partial<Record<'EU' | 'UK' | 'US', string>>;
     dispatch: React.Dispatch<any>;
-
 }
 
-export default function Size( { size, conversions, dispatch }: SizeProps) {
+const allSizes = listAvailableSizes(kidsClothingTable);
+
+export default function Size({ size, inputRegion, conversions, dispatch }: SizeProps) {
+    const displayValue = conversions?.[inputRegion] ?? size;
+
     return (
         <>
-             <h3> Legg inn størrelse </h3>
-              <button onClick={() => dispatch( { type: DECREMENT_SIZE}) }> - </button>
-              <input type="number" value={size} onChange={(e) => dispatch({ type: SET_SIZE, payload: parseInt(e.target.value) })} />
-                <button onClick={() => dispatch( { type: INCREMENT_SIZE}) }> + </button>
-                <p> EU: {conversions?.EU} UK: {conversions?.UK} US: {conversions?.US} </p>
+            <h3>Legg inn størrelse</h3>
+            <div>
+                {regions.map((r) => (
+                    <button
+                        key={r}
+                        onClick={() => dispatch({ type: SET_REGION, payload: r })}
+                        style={{ fontWeight: inputRegion === r ? 'bold' : 'normal' }}
+                    >
+                        {r}
+                    </button>
+                ))}
+            </div>
+            <button onClick={() => dispatch({ type: DECREMENT_SIZE })}> - </button>
+            <select
+                value={displayValue}
+                onChange={(e) => dispatch({ type: SET_SIZE, payload: e.target.value })}
+            >
+                {allSizes.map((row) => {
+                    const label = row.conversions[inputRegion] ?? row.key;
+                    return (
+                        <option key={row.key} value={label}>
+                            {label}
+                        </option>
+                    );
+                })}
+            </select>
+            <button onClick={() => dispatch({ type: INCREMENT_SIZE })}> + </button>
+            <p>EU: {conversions?.EU} UK: {conversions?.UK} US: {conversions?.US}</p>
         </>
-    )
+    );
 }

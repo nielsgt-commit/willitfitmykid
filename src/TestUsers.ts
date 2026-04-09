@@ -5,6 +5,7 @@ export type UserRecord = {
     birthday: number;
     heightNow: number;
     calculatedPercentile: number;
+    sizeNow: `${number}`;
 }
 
 export const testUsers: UserRecord[] = [
@@ -14,6 +15,7 @@ export const testUsers: UserRecord[] = [
     birthday: 1420070400000, // Jan 1, 2015
     heightNow: 125,
     calculatedPercentile: 75,
+      sizeNow: `122` ,
   },
   {
     id: 2,
@@ -21,6 +23,7 @@ export const testUsers: UserRecord[] = [
     birthday: 1388534400000, // Jan 1, 2014
     heightNow: 145,
     calculatedPercentile: 85,
+      sizeNow:  `134`,
   },
   {
     id: 3,
@@ -28,6 +31,7 @@ export const testUsers: UserRecord[] = [
     birthday: 1356998400000, // Jan 1, 2013
     heightNow: 158,
     calculatedPercentile: 62,
+      sizeNow: `86`,
   },
   {
     id: 4,
@@ -35,5 +39,6 @@ export const testUsers: UserRecord[] = [
     birthday: 1325462400000, // Jan 1, 2012
     heightNow: 168,
     calculatedPercentile: 70,
+      sizeNow: `90`,
   },
 ];

@@ -12,7 +12,6 @@ import {getSizeRow} from "../../Data/Utils/sizeChart.utils.ts";
 
 export default function calculatorReducer(state:State, action: Action    ): State {
 
-// TODO growth chart look up logic
     switch (action.type) {
         case SET_SIZE : {
             const sizeRow = getSizeRow(kidsClothingTable, action.payload);

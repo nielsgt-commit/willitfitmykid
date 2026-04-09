@@ -3,12 +3,13 @@ import Size from "./Size/Size.tsx";
 import Percentile from "./Percentile/Percentile.tsx";
 import Height from "./Height/Height.tsx";
 import Months from "./Months/Months.tsx";
+import {UserSwitcher} from "../UserSwitcher/UserSwitcher.tsx";
 // State
 
 import {useReducer} from "react";
 import  { initialState } from "./initialState.tsx";
 import calculatorReducer from "./calculator.reducer.ts";
-import {UserSwitcher} from "../UserSwitcher/UserSwitcher.tsx";
+import {Result} from "./Result/Result.tsx";
 export default function Calculator() {
     const [state, dispatch] = useReducer(calculatorReducer, initialState);
 
@@ -19,6 +20,7 @@ export default function Calculator() {
               <Height height={state.height} dispatch={dispatch} />
               <Percentile percentile={state.percentile } dispatch={dispatch}/>
               <Months months={state.months} dispatch={dispatch} />
-         </>
+              <Result />
+        </>
     )
 }

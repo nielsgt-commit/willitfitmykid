@@ -1,9 +1,18 @@
-export function UserSwitcher() {
+import type {State} from "../types.ts";
+
+interface UserSwitcherProps {
+    state: State;
+    dispatch: React.Dispatch<any>;
+}
+
+export function UserSwitcher({ state, dispatch}: UserSwitcherProps) {
     return (
-        <select>
-            <option value="1">User 1</option>
-            <option value="2">User 2</option>
-            <option value="3">User 3</option>
-        </select>
+    <>
+            <button onClick={() => dispatch( { type: PREV_USER })}> Prev user </button>
+            <p>  User name </p>
+            <button onClick={() => dispatch( { type: NEXT_USER })}> Next user </button>
+    </>
+
+
     )
 }

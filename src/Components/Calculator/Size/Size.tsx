@@ -10,7 +10,7 @@ interface SizeProps {
 export default function Size( { size, conversions, dispatch }: SizeProps) {
     return (
         <>
-             <h1>Size</h1>
+             <h3> Legg inn størrelse </h3>
               <button onClick={() => dispatch( { type: DECREMENT_SIZE}) }> - </button>
               <input type="number" value={size} onChange={(e) => dispatch({ type: SET_SIZE, payload: parseInt(e.target.value) })} />
                 <button onClick={() => dispatch( { type: INCREMENT_SIZE}) }> + </button>

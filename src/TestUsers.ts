@@ -10,6 +10,8 @@ export type UserRecord = {
     sizeNow: `${number}`;
 }
 
+let nextId = 15;
+
 export const testUsers: UserRecord[] = [
   {
     id: 1,
@@ -138,3 +140,19 @@ export const testUsers: UserRecord[] = [
     sizeNow: `94`,
   },
 ];
+
+export function addUser(user: Omit<UserRecord, 'id'>): UserRecord {
+    const newUser = { ...user, id: nextId++ };
+    testUsers.push(newUser);
+    return newUser;
+}
+
+export function removeUser(id: number): void {
+    const index = testUsers.findIndex(u => u.id === id);
+    if (index !== -1) testUsers.splice(index, 1);
+}
+
+export function updateUser(id: number, updates: Partial<Omit<UserRecord, 'id'>>): void {
+    const user = testUsers.find(u => u.id === id);
+    if (user) Object.assign(user, updates);
+}

@@ -1,8 +1,5 @@
 // Components
 import Size from "./Size/Size.tsx";
-import Percentile from "./Percentile/Percentile.tsx";
-import Height from "./Height/Height.tsx";
-import Months from "./Months/Months.tsx";
 import {UserSwitcher} from "../UserSwitcher/UserSwitcher.tsx";
 // State
 
@@ -16,13 +13,9 @@ export default function Calculator() {
 
     return (
         <>
-              <UserSwitcher />
               <Size size={state.size} conversions={state.conversions} dispatch={dispatch} />
-              <Result />
-              <Height height={state.height} dispatch={dispatch} />
-              <Percentile percentile={state.percentile } dispatch={dispatch}/>
-              <Months months={state.months} dispatch={dispatch} />
-
+              <Result selectedUser={state.selectedUser}  />
+              <UserSwitcher state={state} dispatch={dispatch} />
         </>
     )
 }

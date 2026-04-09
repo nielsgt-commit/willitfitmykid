@@ -1,12 +1,4 @@
-
-type UserRecord = {
-    id: string;
-    name: string;
-    birthday: number;
-    heightNow: number;
-    calculatedPercentile: number;
-
-}
+import type {UserRecord} from './../TestUsers.ts'
 
 type UserState = {
     selectedUserId: string | null;
@@ -22,10 +14,7 @@ export interface ProfileState {
 }
 
 export interface State {
-    months: number,
-    height: number | undefined,
-    heightRange: number[],
-    percentile: number,
+    selectedUser: UserRecord ;
     size: `${number}`,
     conversions: Partial<Record<'EU' | 'UK' | 'US', string>>,
 }

@@ -4,10 +4,10 @@ interface ResultProps {
     state: State;
 }
 
-export function Result({state}: State){
-    const child_name =" Barnets navn";
-    const projected_season = " Sommer";
-    const projected_year = "2027";
+export function Result({selectedUser}: State){
+    const child_name = selectedUser.name;
+    const projected_season = " Sommer"; // getProjectedSeason( selectedUser.birthday, selectedUser.percentile);
+    const projected_year = "2027"; // getProjected
 
     return (
         <>

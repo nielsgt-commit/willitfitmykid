@@ -1,11 +1,8 @@
 import type { State } from "../types";
+import {testUsers} from "../../TestUsers.ts";
 
 export const initialState : State  = {
-
-    months: 20,
-    height:  170,
-    percentile: 50,
+    selectedUser: testUsers[0],
     size: '86',
     conversions: {},
-    heightRange: [81, 86],
 }

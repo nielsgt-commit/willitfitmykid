@@ -1,8 +1,9 @@
 import type {State} from "../../types.ts";
 
 import {Temporal} from "temporal-polyfill";
-import {testUsers} from "../../../TestUsers.ts";
+import {testUsers, type UserRecord} from "../../../TestUsers.ts";
 import type {MonthEntry} from "../../../Data/GrowthCharts/Girls_percentile/girls_0_24.ts";
+import {kidsClothingTable, type KidsClothingSizeKey} from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
 import {girls_0_24} from "../../../Data/GrowthCharts/Girls_percentile/girls_0_24.ts";
 import {girls_24_60} from "../../../Data/GrowthCharts/Girls_percentile/girls_24_60.ts";
 import {boys_0_24} from "../../../Data/GrowthCharts/Boys_percentile/boys_0_24.ts";
@@ -53,17 +54,82 @@ function getProjectedHeight(sex: 'M' | 'F', ageMonths: number, percentile: numbe
     return monthEntry[key] ?? null;
 }
 
+type Season = 'Winter' | 'Spring' | 'Summer' | 'Autumn';
 
+type WillFitWhenResult = {
+    user: UserRecord;
+    ageMonths: number;
+    height: number;
+    season: Season;
+    month: number;
+    year: number;
+};
+
+function getSeason(month: number): Season {
+    if (month >= 3 && month <= 5) return 'Spring';
+    if (month >= 6 && month <= 8) return 'Summer';
+    if (month >= 9 && month <= 11) return 'Autumn';
+    return 'Winter';
+}
+
+function willFitWhen(users: UserRecord[], size: string): WillFitWhenResult[] {
+    const sizeRow = kidsClothingTable[size as KidsClothingSizeKey];
+    if (!sizeRow) return [];
+
+    const { min, max } = sizeRow.heightCm;
+    const today = Temporal.Now.plainDateISO();
+
+    return users.flatMap(user => {
+        const currentAgeMonths = calculateAgeInMonths(user.birthday);
+
+        for (let futureMonth = currentAgeMonths; futureMonth <= 60; futureMonth++) {
+            const projectedHeight = getProjectedHeight(user.sex, futureMonth, user.calculatedPercentile);
+            if (projectedHeight === null) continue;
+
+            const rounded = Math.round(projectedHeight * 10) / 10;
+            if (rounded >= min && rounded <= max) {
+                const monthsAhead = futureMonth - currentAgeMonths;
+                const targetDate = today.add({ months: monthsAhead });
+
+                return [{
+                    user,
+                    ageMonths: futureMonth,
+                    height: rounded,
+                    season: getSeason(targetDate.month),
+                    month: targetDate.month,
+                    year: targetDate.year,
+                }];
+            }
+        }
+
+        return [];
+    });
+}
+
+function willSizeFit(size: string): UserRecord[] {
+    const sizeRow = kidsClothingTable[size as KidsClothingSizeKey];
+    if (!sizeRow) return [];
+
+    const { min, max } = sizeRow.heightCm;
+
+    return testUsers.filter(user => {
+        const ageMonths = calculateAgeInMonths(user.birthday);
+        const projectedHeight = getProjectedHeight(user.sex, ageMonths, user.calculatedPercentile);
+
+        if (projectedHeight === null) return false;
+
+        const roundedHeight = Math.round(projectedHeight * 10) / 10;
+        return roundedHeight >= min && roundedHeight <= max;
+    });
+}
 
 
 
 export function Result({selectedUser, size}: State): ResultProps{
-    const child_name = selectedUser.name;
-    const projected_season = " Sommer"; // getProjectedSeason( selectedUser.birthday, selectedUser.percentile);
-    const projected_year = "2027"; // getProjectedYear( selectedUser.birthday, selectedUser.percentile);
+    const willFit = willSizeFit(size);
+    const willFitWhenResults = willFitWhen(testUsers, size);
 
     const matchesNow = testUsers.filter(testUser => size === testUser.sizeNow);
-
 
     const ageMonths = calculateAgeInMonths(selectedUser.birthday);
 
@@ -71,10 +137,10 @@ export function Result({selectedUser, size}: State): ResultProps{
 
     return (
         <>
-            {matchesNow.length > 0 ? (
-                <p> Dette plagget passer trolig {matchesNow.map(user => user.name).join(", ")} nå. </p>
+            {willFit.length > 0 ? (
+                <p> Dette plagget passer trolig {willFitWhenResults.map(result => `${result.user.name} (${result.season} ${result.year}`).join(", ")}</p>
             ) : (
-                <p>Passer ikke noen nå {ageMonths}</p>
+                <p>Passer ikke noen nå </p>
             )}
         </>
     )

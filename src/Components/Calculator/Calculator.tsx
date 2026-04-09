@@ -10,6 +10,7 @@ import {useReducer} from "react";
 import  { initialState } from "./initialState.tsx";
 import calculatorReducer from "./calculator.reducer.ts";
 import {Result} from "./Result/Result.tsx";
+
 export default function Calculator() {
     const [state, dispatch] = useReducer(calculatorReducer, initialState);
 
@@ -17,10 +18,11 @@ export default function Calculator() {
         <>
               <UserSwitcher />
               <Size size={state.size} conversions={state.conversions} dispatch={dispatch} />
+              <Result />
               <Height height={state.height} dispatch={dispatch} />
               <Percentile percentile={state.percentile } dispatch={dispatch}/>
               <Months months={state.months} dispatch={dispatch} />
-              <Result />
+
         </>
     )
 }

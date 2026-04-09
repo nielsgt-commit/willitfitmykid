@@ -1,8 +1,10 @@
+import {Temporal} from "temporal-polyfill";
 
 export type UserRecord = {
     id: number;
     name: string;
-    birthday: number;
+    sex: 'M' | 'F';
+    birthday: Temporal.PlainDate;
     heightNow: number;
     calculatedPercentile: number;
     sizeNow: `${number}`;
@@ -12,33 +14,37 @@ export const testUsers: UserRecord[] = [
   {
     id: 1,
     name: 'Emma Johnson',
-    birthday: 1420070400000, // Jan 1, 2015
-    heightNow: 125,
-    calculatedPercentile: 75,
-      sizeNow: `122` ,
+    sex: 'F',
+    birthday: Temporal.PlainDate.from('2017-01-01'),
+    heightNow: 135,
+    calculatedPercentile: 50,
+      sizeNow: `135` ,
   },
   {
     id: 2,
     name: 'Liam Smith',
-    birthday: 1388534400000, // Jan 1, 2014
-    heightNow: 145,
-    calculatedPercentile: 85,
-      sizeNow:  `134`,
+    sex: 'M',
+    birthday: Temporal.PlainDate.from('2010-01-01'),
+    heightNow: 168,
+    calculatedPercentile: 10,
+      sizeNow:  `168`,
   },
   {
     id: 3,
     name: 'Sophia Davis',
-    birthday: 1356998400000, // Jan 1, 2013
-    heightNow: 158,
-    calculatedPercentile: 62,
-      sizeNow: `86`,
+    sex: 'F',
+    birthday: Temporal.PlainDate.from('2007-01-01'),
+    heightNow: 175,
+    calculatedPercentile: 90,
+      sizeNow: `175`,
   },
   {
     id: 4,
     name: 'Noah Williams',
-    birthday: 1325462400000, // Jan 1, 2012
-    heightNow: 168,
-    calculatedPercentile: 70,
-      sizeNow: `90`,
+    sex: 'M',
+    birthday: Temporal.PlainDate.from('2019-01-01'),
+    heightNow: 128,
+    calculatedPercentile: 75,
+      sizeNow: `128`,
   },
 ];

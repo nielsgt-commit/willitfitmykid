@@ -13,9 +13,10 @@ export default function Calculator() {
 
     return (
         <>
+
+
               <Size size={state.size} inputRegion={state.inputRegion} conversions={state.conversions} dispatch={dispatch} />
               <Result selectedUser={state.selectedUser} size={state.size}  />
-              <UserSwitcher state={state} dispatch={dispatch} />
         </>
     )
 }

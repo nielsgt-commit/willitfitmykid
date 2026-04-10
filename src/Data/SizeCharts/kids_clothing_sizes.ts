@@ -25,6 +25,20 @@ export type KidsClothingTable = Record<
 >;
 
 const kidsClothingSizeRows: KidsClothingTable = {
+  "44" : {
+    key: "44",
+    ageLabel: "PRE44",
+    heightCm: { min: 40, max: 45},
+    conversions: { EU: "44", US: "PM", UK: "Prem 2" },
+  },
+
+  "50" : {
+    key: "50",
+    ageLabel: "PRE50",
+    heightCm: { min: 45, max: 50 },
+    conversions: { EU: "50", US: "PM", UK: "Early Baby" },
+  },
+
   "56": {
     key: "56",
     ageLabel: "0-1M",
@@ -139,6 +153,19 @@ const kidsClothingSizeRows: KidsClothingTable = {
     heightCm: { min: 159, max: 164 },
     conversions: { EU: "164", US: "14", UK: "13-14Y" },
   },
+  "170" : {
+    key: "170",
+    ageLabel: "14-15Y",
+    heightCm: { min: 165, max: 170 },
+    conversions: { EU: "170", US: "15", UK: "14-15Y" },
+  },
+  "176" : {
+    key: "176",
+    ageLabel: "15-16Y",
+    heightCm: { min: 166, max: 176 },
+    conversions: { EU: "176", US: "16", UK: "15-16Y" },
+  },
+
 };
 
 export const kidsClothingTable: KidsClothingTable = kidsClothingSizeRows;

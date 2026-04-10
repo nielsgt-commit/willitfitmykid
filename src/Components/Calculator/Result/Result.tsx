@@ -6,8 +6,10 @@ import type {MonthEntry} from "../../../Data/GrowthCharts/Girls_percentile/girls
 import {kidsClothingTable, type KidsClothingSizeKey} from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
 import {girls_0_24} from "../../../Data/GrowthCharts/Girls_percentile/girls_0_24.ts";
 import {girls_24_60} from "../../../Data/GrowthCharts/Girls_percentile/girls_24_60.ts";
+import {girls_24_240} from "../../../Data/GrowthCharts/Girls_percentile/girls_24_240.ts";
 import {boys_0_24} from "../../../Data/GrowthCharts/Boys_percentile/boys_0_24.ts";
 import {boys_24_60} from "../../../Data/GrowthCharts/Boys_percentile/boys_24_60.ts";
+import {boys_24_240} from "../../../Data/GrowthCharts/Boys_percentile/boys_24_240.ts";
 
 interface ResultProps {
     state: State;
@@ -22,8 +24,10 @@ function calculateAgeInMonths(birthday: Temporal.PlainDate): number {
 const chartDataMap = {
     'girls_0_24': girls_0_24,
     'girls_24_60': girls_24_60,
+    'girls_24_240': girls_24_240,
     'boys_0_24': boys_0_24,
     'boys_24_60': boys_24_60,
+    'boys_24_240': boys_24_240,
 } as const;
 
 function selectGrowthChart(sex: 'M' | 'F', ageMonths: number): string {
@@ -35,8 +39,7 @@ function selectGrowthChart(sex: 'M' | 'F', ageMonths: number): string {
         return `${sexPrefix}_24_60`;
     }
 
-    // Default to 24-60 for ages beyond 60 months
-    return `${sexPrefix}_24_60`;
+    return `${sexPrefix}_24_240`;
 }
 
 function getProjectedHeight(sex: 'M' | 'F', ageMonths: number, percentile: number): number | null {
@@ -58,11 +61,8 @@ type Season = 'Winter' | 'Spring' | 'Summer' | 'Autumn';
 
 type WillFitWhenResult = {
     user: UserRecord;
-    ageMonths: number;
-    height: number;
-    season: Season;
-    month: number;
-    year: number;
+    start: { season: Season; month: number; year: number; ageMonths: number; height: number };
+    end: { season: Season; month: number; year: number; ageMonths: number; height: number };
 };
 
 function getSeason(month: number): Season {
@@ -81,8 +81,10 @@ function willFitWhen(users: UserRecord[], size: string): WillFitWhenResult[] {
 
     return users.flatMap(user => {
         const currentAgeMonths = calculateAgeInMonths(user.birthday);
+        let start: WillFitWhenResult['start'] | null = null;
+        let end: WillFitWhenResult['end'] | null = null;
 
-        for (let futureMonth = currentAgeMonths; futureMonth <= 60; futureMonth++) {
+        for (let futureMonth = currentAgeMonths; futureMonth <= 216; futureMonth++) {
             const projectedHeight = getProjectedHeight(user.sex, futureMonth, user.calculatedPercentile);
             if (projectedHeight === null) continue;
 
@@ -90,19 +92,23 @@ function willFitWhen(users: UserRecord[], size: string): WillFitWhenResult[] {
             if (rounded >= min && rounded <= max) {
                 const monthsAhead = futureMonth - currentAgeMonths;
                 const targetDate = today.add({ months: monthsAhead });
-
-                return [{
-                    user,
-                    ageMonths: futureMonth,
-                    height: rounded,
+                const point = {
                     season: getSeason(targetDate.month),
                     month: targetDate.month,
                     year: targetDate.year,
-                }];
+                    ageMonths: futureMonth,
+                    height: rounded,
+                };
+
+                if (start === null) start = point;
+                end = point;
+            } else if (start !== null) {
+                break;
             }
         }
 
-        return [];
+        if (start === null || end === null) return [];
+        return [{ user, start, end }];
     });
 }
 
@@ -137,10 +143,16 @@ export function Result({selectedUser, size}: State): ResultProps{
 
     return (
         <>
-            {willFit.length > 0 ? (
-                <p> Dette plagget passer trolig {willFitWhenResults.map(result => `${result.user.name} (${result.season} ${result.year}`).join(", ")}</p>
+            {willFitWhenResults.length > 0 ? (
+                <p> Dette plagget passer trolig {willFitWhenResults.map(result => {
+                    const { user, start, end } = result;
+                    const range = start.season === end.season && start.year === end.year
+                        ? `${start.season} ${start.year}`
+                        : `${start.season} ${start.year} – ${end.season} ${end.year}`;
+                    return `${user.name} (${range})`;
+                }).join(", ")}</p>
             ) : (
-                <p>Passer ikke noen nå </p>
+                <p>Passer ikke noen av barna i listen  </p>
             )}
         </>
     )

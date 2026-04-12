@@ -38,7 +38,6 @@ function selectGrowthChart(sex: 'M' | 'F', ageMonths: number): string {
     } else if (ageMonths < 60) {
         return `${sexPrefix}_24_60`;
     }
-
     return `${sexPrefix}_24_240`;
 }
 
@@ -150,7 +149,7 @@ export function Result({selectedUser, size}: State): ResultProps{
                         ? `${start.season} ${start.year}`
                         : `${start.season} ${start.year} – ${end.season} ${end.year}`;
                     return `${user.name} (${range})`;
-                }).join(", ")}</p>
+                }).join(", ")} </p>
             ) : (
                 <p>Passer ikke noen av barna i listen  </p>
             )}

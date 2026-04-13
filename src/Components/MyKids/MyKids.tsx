@@ -1,13 +1,30 @@
 import { useState } from 'react';
 import { Temporal } from 'temporal-polyfill';
-import {
-    testUsers,
-    addUser,
-    removeUser,
-    updateUser,
-    type UserRecord,
-} from '../../TestUsers.ts';
+import { type UserRecord } from '../../TestUsers.ts';
 import { PERCENTILE } from '../../constants.ts';
+import {
+    getLengthByMonthAndPercentile,
+    getPercentileByMonthAndLength,
+    type Gender,
+    type Percentile,
+} from '../../Utils/growthChartUtils.ts';
+import { monthsSinceBirth } from '../../Utils/age.utils.ts';
+import { useKids } from '../../context/KidsContext.tsx';
+
+const genderOf = (sex: 'M' | 'F'): Gender => (sex === 'F' ? 'girls' : 'boys');
+
+function suggestPercentile(sex: 'M' | 'F', birthday: string, height: number): number | undefined {
+    if (!birthday || !height) return undefined;
+    const months = monthsSinceBirth(Temporal.PlainDate.from(birthday));
+    const p = getPercentileByMonthAndLength(months, height, genderOf(sex));
+    return p ? Number(p.replace('P', '')) : undefined;
+}
+
+function suggestHeight(sex: 'M' | 'F', birthday: string, percentile: number): number | undefined {
+    if (!birthday) return undefined;
+    const months = monthsSinceBirth(Temporal.PlainDate.from(birthday));
+    return getLengthByMonthAndPercentile(months, `P${percentile}` as Percentile, genderOf(sex));
+}
 
 type EditingUser = {
     name: string;
@@ -36,16 +53,15 @@ function toEditingUser(user: UserRecord): EditingUser {
 }
 
 export function MyKids() {
-    const [kids, setKids] = useState<UserRecord[]>(() => [...testUsers]);
+    const { kids, addKid, updateKid, removeKid } = useKids();
     const [editingId, setEditingId] = useState<number | null>(null);
     const [form, setForm] = useState<EditingUser>(emptyForm);
     const [adding, setAdding] = useState(false);
-
-    const refresh = () => setKids([...testUsers]);
+    const [derivedField, setDerivedField] = useState<'height' | 'percentile'>('height');
 
     const handleAdd = () => {
         const height = form.heightNow ? Number(form.heightNow) : 0;
-        addUser({
+        addKid({
             name: form.name,
             sex: form.sex,
             birthday: Temporal.PlainDate.from(form.birthday),
@@ -55,12 +71,11 @@ export function MyKids() {
         });
         setForm(emptyForm);
         setAdding(false);
-        refresh();
     };
 
     const handleUpdate = (id: number) => {
         const height = form.heightNow ? Number(form.heightNow) : 0;
-        updateUser(id, {
+        updateKid(id, {
             name: form.name,
             sex: form.sex,
             birthday: Temporal.PlainDate.from(form.birthday),
@@ -70,27 +85,27 @@ export function MyKids() {
         });
         setEditingId(null);
         setForm(emptyForm);
-        refresh();
     };
 
     const handleRemove = (id: number) => {
-        removeUser(id);
+        removeKid(id);
         if (editingId === id) {
             setEditingId(null);
             setForm(emptyForm);
         }
-        refresh();
     };
 
     const startEdit = (user: UserRecord) => {
         setAdding(false);
         setEditingId(user.id);
         setForm(toEditingUser(user));
+        setDerivedField('percentile');
     };
 
     const startAdd = () => {
         setEditingId(null);
         setForm(emptyForm);
+        setDerivedField('height');
         setAdding(true);
     };
 
@@ -98,6 +113,67 @@ export function MyKids() {
         setEditingId(null);
         setAdding(false);
         setForm(emptyForm);
+        setDerivedField('height');
+    };
+
+    const onHeightChange = (value: string) => {
+        setDerivedField('percentile');
+        const height = Number(value);
+        const suggested =
+            value && height > 0 ? suggestPercentile(form.sex, form.birthday, height) : undefined;
+        setForm({
+            ...form,
+            heightNow: value,
+            percentile: suggested ?? form.percentile,
+        });
+    };
+
+    const onPercentileChange = (value: number) => {
+        setDerivedField('height');
+        const suggested = suggestHeight(form.sex, form.birthday, value);
+        setForm({
+            ...form,
+            percentile: value,
+            heightNow: suggested !== undefined ? String(suggested) : form.heightNow,
+        });
+    };
+
+    const onBirthdayChange = (value: string) => {
+        if (derivedField === 'height') {
+            const suggested = suggestHeight(form.sex, value, form.percentile);
+            setForm({
+                ...form,
+                birthday: value,
+                heightNow: suggested !== undefined ? String(suggested) : form.heightNow,
+            });
+        } else {
+            const height = Number(form.heightNow);
+            const suggested = height > 0 ? suggestPercentile(form.sex, value, height) : undefined;
+            setForm({
+                ...form,
+                birthday: value,
+                percentile: suggested ?? form.percentile,
+            });
+        }
+    };
+
+    const onSexChange = (value: 'M' | 'F') => {
+        if (derivedField === 'height') {
+            const suggested = suggestHeight(value, form.birthday, form.percentile);
+            setForm({
+                ...form,
+                sex: value,
+                heightNow: suggested !== undefined ? String(suggested) : form.heightNow,
+            });
+        } else {
+            const height = Number(form.heightNow);
+            const suggested = height > 0 ? suggestPercentile(value, form.birthday, height) : undefined;
+            setForm({
+                ...form,
+                sex: value,
+                percentile: suggested ?? form.percentile,
+            });
+        }
     };
 
     const percentileValues = PERCENTILE.map(p => Number(p.replace('P', '')));
@@ -110,18 +186,18 @@ export function MyKids() {
             </label>
             <label>
                 Kjønn:
-                <select value={form.sex} onChange={e => setForm({ ...form, sex: e.target.value as 'M' | 'F' })}>
+                <select value={form.sex} onChange={e => onSexChange(e.target.value as 'M' | 'F')}>
                     <option value="F">Jente</option>
                     <option value="M">Gutt</option>
                 </select>
             </label>
             <label>
                 Fødselsdag:
-                <input type="date" value={form.birthday} onChange={e => setForm({ ...form, birthday: e.target.value })} />
+                <input type="date" value={form.birthday} onChange={e => onBirthdayChange(e.target.value)} />
             </label>
             <label>
                 Persentil:
-                <select value={form.percentile} onChange={e => setForm({ ...form, percentile: Number(e.target.value) })}>
+                <select value={form.percentile} onChange={e => onPercentileChange(Number(e.target.value))}>
                     {percentileValues.map(p => (
                         <option key={p} value={p}>{p}</option>
                     ))}
@@ -129,7 +205,7 @@ export function MyKids() {
             </label>
             <label>
                 Høyde (cm):
-                <input type="number" value={form.heightNow} onChange={e => setForm({ ...form, heightNow: e.target.value })} />
+                <input type="number" value={form.heightNow} onChange={e => onHeightChange(e.target.value)} />
             </label>
         </div>
     );

@@ -1,11 +1,5 @@
+import type { UserRecord } from '../../TestUsers.ts';
 
-export const NEXT_USER = 'NEXT_USER';
-export const PREV_USER = 'PREV_USER';
+export const SET_USER = 'SET_USER';
 
-
-export type Action =
-    | {type: NEXT_USER}
-    | {type: PREV_USER}
-    | {type: EDIT_USER}
-    | {type: ADD_USER}
-    ;
+export type Action = { type: typeof SET_USER; payload: UserRecord };

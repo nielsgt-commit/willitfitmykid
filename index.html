@@ -1,13 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="nb">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>willitfitmykid</title>
+    <meta name="theme-color" content="#4a90d9" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>Will It Fit My Kid?</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
   </body>
 </html>

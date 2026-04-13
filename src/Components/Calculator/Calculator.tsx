@@ -16,7 +16,7 @@ export default function Calculator() {
 
 
               <Size size={state.size} inputRegion={state.inputRegion} conversions={state.conversions} dispatch={dispatch} />
-              <Result selectedUser={state.selectedUser} size={state.size}  />
+              <Result size={state.size} />
         </>
     )
 }

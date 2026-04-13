@@ -1,7 +1,8 @@
-import { boys_0_24, MonthEntry } from '../GrowthCharts/Boys_percentile/boys_0_24';
-import { boys_24_60 } from '../GrowthCharts/Boys_percentile/boys_24_60';
-import { girls_0_24 } from '../GrowthCharts/Girls_percentile/girls_0_24';
-import { girls_24_60 } from '../GrowthCharts/Girls_percentile/girls_24_60';
+import { boys_0_24,  } from '../Data/GrowthCharts/Boys_percentile/boys_0_24';
+import { boys_24_240 } from '../Data/GrowthCharts/Boys_percentile/boys_24_240';
+import { girls_0_24 } from '../Data/GrowthCharts/Girls_percentile/girls_0_24';
+import { girls_24_240 } from '../Data/GrowthCharts/Girls_percentile/girls_24_240';
+import type {MonthEntry} from "../Components/types.ts";
 
 export type Gender = 'boys' | 'girls';
 export type Percentile = 'P1' | 'P3' | 'P5' | 'P10' | 'P15' | 'P25' | 'P50' | 'P75' | 'P85' | 'P90' | 'P95' | 'P97';
@@ -9,8 +10,8 @@ export type Percentile = 'P1' | 'P3' | 'P5' | 'P10' | 'P15' | 'P25' | 'P50' | 'P
 const PERCENTILES: Percentile[] = ['P1', 'P3', 'P5', 'P10', 'P15', 'P25', 'P50', 'P75', 'P85', 'P90', 'P95', 'P97'];
 
 // month 24 exists in both datasets — drop the duplicate from the second
-const boysData: MonthEntry[] = [...boys_0_24, ...boys_24_60.slice(1)];
-const girlsData: MonthEntry[] = [...girls_0_24, ...girls_24_60.slice(1)];
+const boysData: MonthEntry[] = [...boys_0_24, ...boys_24_240.slice(1)];
+const girlsData: MonthEntry[] = [...girls_0_24, ...girls_24_240.slice(1)];
 
 function chartData(gender: Gender): MonthEntry[] {
   return gender === 'girls' ? girlsData : boysData;

@@ -1,7 +1,8 @@
 import type {State} from "../../types.ts";
 
 import {Temporal} from "temporal-polyfill";
-import {testUsers, type UserRecord} from "../../../TestUsers.ts";
+import {type UserRecord} from "../../../TestUsers.ts";
+import {useKids} from "../../../context/KidsContext.tsx";
 import type {MonthEntry} from "../../../Data/GrowthCharts/Girls_percentile/girls_0_24.ts";
 import {kidsClothingTable, type KidsClothingSizeKey} from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
 import {girls_0_24} from "../../../Data/GrowthCharts/Girls_percentile/girls_0_24.ts";
@@ -11,9 +12,6 @@ import {boys_0_24} from "../../../Data/GrowthCharts/Boys_percentile/boys_0_24.ts
 import {boys_24_60} from "../../../Data/GrowthCharts/Boys_percentile/boys_24_60.ts";
 import {boys_24_240} from "../../../Data/GrowthCharts/Boys_percentile/boys_24_240.ts";
 
-interface ResultProps {
-    state: State;
-}
 
 function calculateAgeInMonths(birthday: Temporal.PlainDate): number {
     const today = Temporal.Now.plainDateISO();
@@ -111,34 +109,9 @@ function willFitWhen(users: UserRecord[], size: string): WillFitWhenResult[] {
     });
 }
 
-function willSizeFit(size: string): UserRecord[] {
-    const sizeRow = kidsClothingTable[size as KidsClothingSizeKey];
-    if (!sizeRow) return [];
-
-    const { min, max } = sizeRow.heightCm;
-
-    return testUsers.filter(user => {
-        const ageMonths = calculateAgeInMonths(user.birthday);
-        const projectedHeight = getProjectedHeight(user.sex, ageMonths, user.calculatedPercentile);
-
-        if (projectedHeight === null) return false;
-
-        const roundedHeight = Math.round(projectedHeight * 10) / 10;
-        return roundedHeight >= min && roundedHeight <= max;
-    });
-}
-
-
-
-export function Result({selectedUser, size}: State): ResultProps{
-    const willFit = willSizeFit(size);
-    const willFitWhenResults = willFitWhen(testUsers, size);
-
-    const matchesNow = testUsers.filter(testUser => size === testUser.sizeNow);
-
-    const ageMonths = calculateAgeInMonths(selectedUser.birthday);
-
-//
+export function Result({size}: Pick<State, 'size'>) {
+    const { kids } = useKids();
+    const willFitWhenResults = willFitWhen(kids, size);
 
     return (
         <>

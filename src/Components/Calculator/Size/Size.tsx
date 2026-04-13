@@ -1,6 +1,6 @@
 import { INCREMENT_SIZE, DECREMENT_SIZE, SET_SIZE, SET_REGION } from "./size.action.ts";
 import { regions, type Region } from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
-import { listAvailableSizes } from "../../../Data/Utils/sizeChart.utils.ts";
+import { listAvailableSizes } from "../../../Utils/sizeChart.utils.ts";
 import { kidsClothingTable } from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
 
 interface SizeProps {

@@ -7,13 +7,7 @@ import type {MonthEntry} from "../../../Data/GrowthCharts/growthDataGirls.ts";
 import {kidsClothingTable, type KidsClothingSizeKey} from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
 import {growthDataGirls} from "../../../Data/GrowthCharts/growthDataGirls.ts";
 import {growthDataBoys} from "../../../Data/GrowthCharts/growthDataBoys.ts";
-
-
-function calculateAgeInMonths(birthday: Temporal.PlainDate): number {
-    const today = Temporal.Now.plainDateISO();
-    const duration = birthday.until(today, { largestUnit: 'months' });
-    return duration.months + (duration.years * 12);
-}
+import {monthsSinceBirth} from "../../../Utils/age.utils.ts";
 
 function getProjectedHeight(sex: 'M' | 'F', ageMonths: number, percentile: number): number | null {
     const chartData = sex === 'F' ? growthDataGirls : growthDataBoys;
@@ -48,7 +42,7 @@ function willFitWhen(users: UserRecord[], size: string): WillFitWhenResult[] {
     const today = Temporal.Now.plainDateISO();
 
     return users.flatMap(user => {
-        const currentAgeMonths = calculateAgeInMonths(user.birthday);
+        const currentAgeMonths = monthsSinceBirth(user.birthday);
         let start: WillFitWhenResult['start'] | null = null;
         let end: WillFitWhenResult['end'] | null = null;
 
@@ -80,6 +74,72 @@ function willFitWhen(users: UserRecord[], size: string): WillFitWhenResult[] {
     });
 }
 
+function formatSeasonRange(start: WillFitWhenResult['start'], end: WillFitWhenResult['end']): string {
+    const seasons: Season[] = ['Winter', 'Spring', 'Summer', 'Autumn'];
+
+    // Same season and year
+    if (start.season === end.season && start.year === end.year) {
+        return `${start.season} ${start.year}`;
+    }
+
+    // Same year but different seasons
+    if (start.year === end.year) {
+        const startIdx = seasons.indexOf(start.season);
+        const endIdx = seasons.indexOf(end.season);
+
+        if (endIdx > startIdx) {
+            // Forward progression within the year
+            const middleSeasons = seasons.slice(startIdx + 1, endIdx);
+            if (middleSeasons.length === 0) {
+                return `${start.season} through ${end.season} ${end.year}`;
+            } else {
+                return `${start.season} through ${middleSeasons.join(' and ')} to ${end.season} ${end.year}`;
+            }
+        } else {
+            // Wraps around year boundary (e.g., Autumn to Spring)
+            const throughSeasons = [...seasons.slice(startIdx + 1), ...seasons.slice(0, endIdx)];
+            if (throughSeasons.length === 0) {
+                return `${start.season} ${start.year} through ${end.season} ${end.year}`;
+            } else {
+                return `${start.season} ${start.year} through ${throughSeasons.join(' and ')} to ${end.season} ${end.year}`;
+            }
+        }
+    }
+
+    // Different years
+    const startIdx = seasons.indexOf(start.season);
+    const endIdx = seasons.indexOf(end.season);
+
+    // Get remaining seasons in start year
+    const startYearSeasons = seasons.slice(startIdx + 1);
+    // Get seasons before end season in end year
+    const endYearSeasons = seasons.slice(0, endIdx);
+
+    let range = `${start.season} ${start.year}`;
+
+    if (startYearSeasons.length > 0) {
+        range += ` through ${startYearSeasons.join(' and ')}`;
+    }
+
+    // Add middle years if any
+    if (end.year - start.year > 1) {
+        range += ` and all of ${start.year + 1}`;
+        if (end.year - start.year > 2) {
+            range += ` through ${end.year - 1}`;
+        }
+    }
+
+    if (endYearSeasons.length > 0) {
+        range += ` and ${endYearSeasons.join(' and ')} through`;
+    } else {
+        range += ` to`;
+    }
+
+    range += ` ${end.season} ${end.year}`;
+
+    return range;
+}
+
 export function Result({size}: Pick<State, 'size'>) {
     const { kids } = useKids();
     const willFitWhenResults = willFitWhen(kids, size);
@@ -89,9 +149,7 @@ export function Result({size}: Pick<State, 'size'>) {
             {willFitWhenResults.length > 0 ? (
                 <p> Dette plagget passer trolig {willFitWhenResults.map(result => {
                     const { user, start, end } = result;
-                    const range = start.season === end.season && start.year === end.year
-                        ? `${start.season} ${start.year}`
-                        : `${start.season} ${start.year} – ${end.season} ${end.year}`;
+                    const range = formatSeasonRange(start, end);
                     return `${user.name} (${range})`;
                 }).join(", ")} </p>
             ) : (

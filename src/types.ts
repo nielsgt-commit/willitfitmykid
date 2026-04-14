@@ -47,7 +47,7 @@ export type KidsClothingTable = Record<
   KidsClothingSizeRow
 >;
 
-export type Season = 'Winter' | 'Spring' | 'Summer' | 'Autumn';
+export type Season = 'Vinter' | 'Vår' | 'Sommer' | 'Høst';
 
 export type WillFitWhenResult = {
     user: UserRecord;

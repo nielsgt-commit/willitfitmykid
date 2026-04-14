@@ -4,6 +4,7 @@ import type { Region } from "../../../types.ts";
 import { listAvailableSizes } from "../../../Utils/size.utils.ts";
 import { kidsClothingTable } from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
 import {regions} from "../../../constants.ts";
+import { ToggleGroup, ToggleGroupItem } from "./ToggleGroup.tsx";
 import * as React from "react";
 
 interface SizeProps {
@@ -21,17 +22,13 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
     return (
         <>
 
-            <div>
+            <ToggleGroup value={inputRegion} onValueChange={(r) => dispatch({ type: SET_REGION, payload: r as Region })}>
                 {regions.map((r) => (
-                    <button
-                        key={r}
-                        onClick={() => dispatch({ type: SET_REGION, payload: r })}
-                        style={{ fontWeight: inputRegion === r ? 'bold' : 'normal' }}
-                    >
+                    <ToggleGroupItem key={r} value={r}>
                         {r}
-                    </button>
+                    </ToggleGroupItem>
                 ))}
-            </div>
+            </ToggleGroup>
             <button onClick={() => dispatch({ type: DECREMENT_SIZE })}> - </button>
             <select
                 value={displayValue}

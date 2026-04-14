@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useKids } from '../../context/KidsContext.tsx';
 import { KidsForm } from './KidsForm/KidsForm.tsx';
-import type {UserRecord} from "../../types.ts";
+import { KidList } from './KidList.tsx';
+import type { UserRecord } from '../../types.ts';
 
 export function MyKids() {
     const { kids, addKid, updateKid, removeKid } = useKids();
@@ -39,30 +40,14 @@ export function MyKids() {
     return (
         <>
             <h2>Mine barn</h2>
-            <ul>
-                {kids.map(kid => (
-                    <li key={kid.id}>
-                        {editingId === kid.id ? (
-                            <KidsForm
-                                key={kid.id}
-                                mode="edit"
-                                kid={kid}
-                                onSubmit={data => handleUpdate(kid.id, data)}
-                                onCancel={() => setEditingId(null)}
-                            />
-                        ) : (
-                            <>
-                                <div>
-                                    {kid.name} — {kid.sex === 'F' ? 'Jente' : 'Gutt'} — {kid.birthday.toString()} — P{kid.calculatedPercentile}
-                                    {kid.heightNow ? ` — ${kid.heightNow} cm` : ''}
-                                </div>
-                                <button onClick={() => startEdit(kid)}>Rediger</button>
-                                <button onClick={() => handleRemove(kid.id)}>Slett</button>
-                            </>
-                        )}
-                    </li>
-                ))}
-            </ul>
+            <KidList
+                kids={kids}
+                editingId={editingId}
+                onSave={handleUpdate}
+                onEdit={startEdit}
+                onCancelEdit={() => setEditingId(null)}
+                onRemove={handleRemove}
+            />
             {adding ? (
                 <KidsForm
                     mode="add"

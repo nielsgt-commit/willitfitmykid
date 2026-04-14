@@ -46,3 +46,11 @@ export type KidsClothingTable = Record<
   KidsClothingSizeKey,
   KidsClothingSizeRow
 >;
+
+export type Season = 'Winter' | 'Spring' | 'Summer' | 'Autumn';
+
+export type WillFitWhenResult = {
+    user: UserRecord;
+    start: { season: Season; month: number; year: number; ageMonths: number; height: number };
+    end: { season: Season; month: number; year: number; ageMonths: number; height: number };
+};

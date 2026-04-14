@@ -3,7 +3,7 @@ export const DECREMENT_SIZE = 'DECREMENT_SIZE';
 export const SET_SIZE = 'SET_SIZE';
 export const SET_REGION = 'SET_REGION';
 
-import type {Region} from '../../types.ts';
+import type {Region} from '../../../types.ts';
 
 export type Action =
     | {type: typeof INCREMENT_SIZE}

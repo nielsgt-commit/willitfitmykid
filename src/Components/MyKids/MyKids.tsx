@@ -52,10 +52,10 @@ export function MyKids() {
                             />
                         ) : (
                             <>
-                                <span>
+                                <div>
                                     {kid.name} — {kid.sex === 'F' ? 'Jente' : 'Gutt'} — {kid.birthday.toString()} — P{kid.calculatedPercentile}
                                     {kid.heightNow ? ` — ${kid.heightNow} cm` : ''}
-                                </span>
+                                </div>
                                 <button onClick={() => startEdit(kid)}>Rediger</button>
                                 <button onClick={() => handleRemove(kid.id)}>Slett</button>
                             </>

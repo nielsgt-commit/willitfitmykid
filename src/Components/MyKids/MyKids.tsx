@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { type UserRecord } from '../../TestUsers.ts';
 import { useKids } from '../../context/KidsContext.tsx';
 import { KidsForm } from '../KidsForm/KidsForm.tsx';
 

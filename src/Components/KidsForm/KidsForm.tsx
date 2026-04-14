@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Temporal } from 'temporal-polyfill';
-import { type UserRecord } from '../../TestUsers.ts';
 import { PERCENTILE } from '../../constants.ts';
 import {
     getLengthByMonthAndPercentile,
@@ -9,6 +8,7 @@ import {
     type Percentile,
 } from '../../Utils/growth.utils.ts';
 import { monthsSinceBirth } from '../../Utils/age.utils.ts';
+import type {UserRecord} from "../types.ts";
 
 const genderOf = (sex: 'M' | 'F'): Gender => (sex === 'F' ? 'girls' : 'boys');
 

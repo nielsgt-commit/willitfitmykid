@@ -1,5 +1,4 @@
 import {DECREMENT_SIZE, INCREMENT_SIZE, SET_SIZE, SET_REGION} from "./Size/size.action.ts";
-import {SET_USER} from "../UserSwitcher/UserSwitcher.action.ts";
 import type {State} from "../types.ts";
 import type {Action} from "./calculator.action.ts"
 import {EU_SIZE_0_19yo} from "../../constants.ts";
@@ -9,11 +8,6 @@ import {getSizeRow, findCanonicalSize} from "../../Utils/size.utils.ts";
 export default function calculatorReducer(state:State, action: Action): State {
 
     switch (action.type) {
-        case SET_USER:
-            return {
-                ...state,
-                selectedUser: action.payload,
-            };
 
         case SET_REGION:
             return {

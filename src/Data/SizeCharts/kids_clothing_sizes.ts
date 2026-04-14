@@ -1,5 +1,4 @@
-export const regions = ["EU", "US", "UK"] as const;
-export type Region = typeof regions[number];
+import type {Region} from "../../constants.ts";
 
 export type CmRange = {
   min: number;

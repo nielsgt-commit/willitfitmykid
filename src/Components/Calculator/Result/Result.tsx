@@ -1,7 +1,6 @@
 import type {State} from "../../types.ts";
-
 import {Temporal} from "temporal-polyfill";
-import {type UserRecord} from "../../../TestUsers.ts";
+import {type UserRecord} from "../../types.ts";
 import {useKids} from "../../../context/KidsContext.tsx";
 import type {MonthEntry} from "../../../Data/GrowthCharts/growthDataGirls.ts";
 import {kidsClothingTable, type KidsClothingSizeKey} from "../../../Data/SizeCharts/kids_clothing_sizes.ts";

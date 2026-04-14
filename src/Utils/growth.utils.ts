@@ -1,17 +1,13 @@
 import { growthDataBoys } from '../Data/GrowthCharts/growthDataBoys';
 import { growthDataGirls } from '../Data/GrowthCharts/growthDataGirls';
-import type {MonthEntry} from "../Components/types.ts";
-
-export type Gender = 'boys' | 'girls';
-export type Percentile = 'P1' | 'P3' | 'P5' | 'P10' | 'P15' | 'P25' | 'P50' | 'P75' | 'P85' | 'P90' | 'P95' | 'P97';
-
-const PERCENTILES: Percentile[] = ['P1', 'P3', 'P5', 'P10', 'P15', 'P25', 'P50', 'P75', 'P85', 'P90', 'P95', 'P97'];
+import type {Gender, MonthEntry, Percentile} from "../types.ts";
+import {PERCENTILES} from "../constants.ts";
 
 function chartData(gender: Gender): MonthEntry[] {
   return gender === 'girls' ? growthDataGirls : growthDataBoys;
 }
 
-/** Returns length/height (cm) for a given month, percentile and gender */
+/** Returns length/height (cm) for a given month, percentile, and gender */
 export function getLengthByMonthAndPercentile(
   month: number,
   percentile: Percentile,

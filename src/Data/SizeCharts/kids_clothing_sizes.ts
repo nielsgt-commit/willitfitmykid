@@ -1,4 +1,4 @@
-import type {Region} from "../../constants.ts";
+import type {Region} from "../../types.ts";
 
 export type CmRange = {
   min: number;

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Temporal } from 'temporal-polyfill';
-import { PERCENTILE } from '../../constants.ts';
+import { PERCENTILES } from '../../../constants.ts';
 import {
     getLengthByMonthAndPercentile,
     getPercentileByMonthAndLength,
     type Gender,
     type Percentile,
-} from '../../Utils/growth.utils.ts';
-import { monthsSinceBirth } from '../../Utils/age.utils.ts';
-import type {UserRecord} from "../types.ts";
+} from '../../../Utils/growth.utils.ts';
+import { monthsSinceBirth } from '../../../Utils/age.utils.ts';
+import type {UserRecord} from "../../../types.ts";
 
 const genderOf = (sex: 'M' | 'F'): Gender => (sex === 'F' ? 'girls' : 'boys');
 
@@ -138,7 +138,7 @@ export function KidsForm(props: KidsFormProps) {
         props.onSubmit(buildUserRecord(form));
     };
 
-    const percentileValues = PERCENTILE.map(p => Number(p.replace('P', '')));
+    const percentileValues = PERCENTILES.map(p => Number(p.replace('P', '')));
 
     return (
         <>

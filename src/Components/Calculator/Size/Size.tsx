@@ -1,6 +1,6 @@
 import {INCREMENT_SIZE, DECREMENT_SIZE, SET_SIZE, SET_REGION} from "./size.action.ts";
-import type {Action} from "../calculator.action.ts"
-import type { Region } from "../../types.ts";
+import type {Action} from "./size.action.ts"
+import type { Region } from "../../../types.ts";
 import { listAvailableSizes } from "../../../Utils/size.utils.ts";
 import { kidsClothingTable } from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
 import {regions} from "../../../constants.ts";

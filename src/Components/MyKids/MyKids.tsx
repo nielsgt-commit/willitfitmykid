@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useKids } from '../../context/KidsContext.tsx';
-import { KidsForm } from '../KidsForm/KidsForm.tsx';
+import { KidsForm } from './KidsForm/KidsForm.tsx';
+import type {UserRecord} from "../types.ts";
 
 export function MyKids() {
     const { kids, addKid, updateKid, removeKid } = useKids();

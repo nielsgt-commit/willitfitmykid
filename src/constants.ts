@@ -1,4 +1,5 @@
-export const PERCENTILE = ['P1','P3', 'P5', 'P10', 'P15','P25','P50','P75', 'P85','P90', 'P95','P97']
+
+export const PERCENTILES = ['P1','P3', 'P5', 'P10', 'P15','P25','P50','P75', 'P85','P90', 'P95','P97'] as const;
 export const EU_SIZE_0_19yo = [44, 50,56,62,68,74,80,86,92,98,104,110,116,122,128,134,140,146,152,158,164,170,176]
 
 export const regions = ["EU", "US", "UK"] as const;

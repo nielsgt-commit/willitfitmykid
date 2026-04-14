@@ -1,21 +1,13 @@
-import type {State} from "../../../types.ts";
+import type {Percentile, Sex, State} from "../../../types.ts";
 import {Temporal} from "temporal-polyfill";
 import {type UserRecord} from "../../../types.ts";
 import {useKids} from "../../../context/KidsContext.tsx";
-import type {MonthEntry} from "../../../Data/GrowthCharts/growthDataGirls.ts";
 import {kidsClothingTable, type KidsClothingSizeKey} from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
-import {growthDataGirls} from "../../../Data/GrowthCharts/growthDataGirls.ts";
-import {growthDataBoys} from "../../../Data/GrowthCharts/growthDataBoys.ts";
+import {getLengthByMonthAndPercentile} from "../../../Utils/growth.utils.ts";
 import {monthsSinceBirth} from "../../../Utils/age.utils.ts";
 
-function getProjectedHeight(sex: 'M' | 'F', ageMonths: number, percentile: number): number | null {
-    const chartData = sex === 'F' ? growthDataGirls : growthDataBoys;
-
-    const monthEntry = chartData.find((entry: MonthEntry) => entry.Month === Math.floor(ageMonths));
-    if (!monthEntry) return null;
-
-    const key = `P${percentile}` as keyof typeof monthEntry;
-    return monthEntry[key] ?? null;
+function getProjectedHeight(sex: Sex, ageMonths: number, percentile: number): number | null {
+    return getLengthByMonthAndPercentile(Math.floor(ageMonths), `P${percentile}` as Percentile, sex) ?? null;
 }
 
 type Season = 'Winter' | 'Spring' | 'Summer' | 'Autumn';

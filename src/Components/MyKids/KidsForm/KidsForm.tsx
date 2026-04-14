@@ -4,30 +4,26 @@ import { PERCENTILES } from '../../../constants.ts';
 import {
     getLengthByMonthAndPercentile,
     getPercentileByMonthAndLength,
-    type Gender,
-    type Percentile,
 } from '../../../Utils/growth.utils.ts';
 import { monthsSinceBirth } from '../../../Utils/age.utils.ts';
-import type {UserRecord} from "../../../types.ts";
+import type {Sex, Percentile, UserRecord} from "../../../types.ts";
 
-const genderOf = (sex: 'M' | 'F'): Gender => (sex === 'F' ? 'girls' : 'boys');
-
-function suggestPercentile(sex: 'M' | 'F', birthday: string, height: number): number | undefined {
+function suggestPercentile(sex: Sex, birthday: string, height: number): number | undefined {
     if (!birthday || !height) return undefined;
     const months = monthsSinceBirth(Temporal.PlainDate.from(birthday));
-    const p = getPercentileByMonthAndLength(months, height, genderOf(sex));
+    const p = getPercentileByMonthAndLength(months, height, sex);
     return p ? Number(p.replace('P', '')) : undefined;
 }
 
-function suggestHeight(sex: 'M' | 'F', birthday: string, percentile: number): number | undefined {
+function suggestHeight(sex: Sex, birthday: string, percentile: number): number | undefined {
     if (!birthday) return undefined;
     const months = monthsSinceBirth(Temporal.PlainDate.from(birthday));
-    return getLengthByMonthAndPercentile(months, `P${percentile}` as Percentile, genderOf(sex));
+    return getLengthByMonthAndPercentile(months, `P${percentile}` as Percentile, sex);
 }
 
 type EditingUser = {
     name: string;
-    sex: 'M' | 'F';
+    sex: Sex;
     birthday: string;
     percentile: number;
     heightNow: string;
@@ -59,7 +55,6 @@ function buildUserRecord(form: EditingUser): Omit<UserRecord, 'id'> {
         birthday: Temporal.PlainDate.from(form.birthday),
         heightNow: height,
         calculatedPercentile: form.percentile,
-        sizeNow: `${height}` as `${number}`,
     };
 }
 
@@ -97,6 +92,13 @@ export function KidsForm(props: KidsFormProps) {
     };
 
     const onBirthdayChange = (value: string) => {
+        const isComplete = /^\d{4}-\d{2}-\d{2}$/.test(value);
+
+        if (!isComplete) {
+            setForm({ ...form, birthday: value });
+            return;
+        }
+
         if (derivedField === 'height') {
             const suggested = suggestHeight(form.sex, value, form.percentile);
             setForm({
@@ -115,7 +117,7 @@ export function KidsForm(props: KidsFormProps) {
         }
     };
 
-    const onSexChange = (value: 'M' | 'F') => {
+    const onSexChange = (value: Sex) => {
         if (derivedField === 'height') {
             const suggested = suggestHeight(value, form.birthday, form.percentile);
             setForm({
@@ -149,7 +151,7 @@ export function KidsForm(props: KidsFormProps) {
                 </label>
                 <label>
                     Kjønn:
-                    <select value={form.sex} onChange={e => onSexChange(e.target.value as 'M' | 'F')}>
+                    <select value={form.sex} onChange={e => onSexChange(e.target.value as Sex)}>
                         <option value="F">Jente</option>
                         <option value="M">Gutt</option>
                     </select>

@@ -1,27 +1,5 @@
-import type {Region} from "../../types.ts";
+import type {KidsClothingTable} from "../../types.ts";
 
-export type CmRange = {
-  min: number;
-  max: number;
-};
-
-/**
- * Canonical kids clothing size key.
- * In this model, the key is usually the EU height size, e.g. "92", "98", "104".
- */
-export type KidsClothingSizeKey = `${number}`;
-
-export type KidsClothingSizeRow = {
-  key: KidsClothingSizeKey;
-  ageLabel?: string;
-  heightCm: CmRange;
-  conversions: Partial<Record<Region, string>>;
-};
-
-export type KidsClothingTable = Record<
-  KidsClothingSizeKey,
-  KidsClothingSizeRow
->;
 
 const kidsClothingSizeRows: KidsClothingTable = {
   "44" : {

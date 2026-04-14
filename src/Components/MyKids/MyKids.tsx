@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useKids } from '../../context/KidsContext.tsx';
 import { KidsForm } from './KidsForm/KidsForm.tsx';
-import type {UserRecord} from "../types.ts";
+import type {UserRecord} from "../../types.ts";
 
 export function MyKids() {
     const { kids, addKid, updateKid, removeKid } = useKids();
@@ -19,6 +19,7 @@ export function MyKids() {
     };
 
     const handleRemove = (id: number) => {
+        if (!window.confirm('Er du sikker på at du vil slette?')) return;
         removeKid(id);
         if (editingId === id) {
             setEditingId(null);
@@ -43,6 +44,7 @@ export function MyKids() {
                     <li key={kid.id}>
                         {editingId === kid.id ? (
                             <KidsForm
+                                key={kid.id}
                                 mode="edit"
                                 kid={kid}
                                 onSubmit={data => handleUpdate(kid.id, data)}

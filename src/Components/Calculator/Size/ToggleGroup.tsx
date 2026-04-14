@@ -4,6 +4,7 @@ interface ToggleGroupProps<T extends string> {
     value: T;
     onValueChange: (value: T) => void;
     children: React.ReactNode;
+    style?: React.CSSProperties;
 }
 
 interface ToggleGroupItemProps<T extends string> {
@@ -24,7 +25,7 @@ function useToggleGroup() {
     return ctx;
 }
 
-export function ToggleGroup<T extends string>({ value, onValueChange, children }: ToggleGroupProps<T>) {
+export function ToggleGroup<T extends string>({ value, onValueChange, children, style }: ToggleGroupProps<T>) {
     const ctx = React.useMemo(
         () => ({ selected: value, onSelect: onValueChange as (v: string) => void }),
         [value, onValueChange],
@@ -32,7 +33,7 @@ export function ToggleGroup<T extends string>({ value, onValueChange, children }
 
     return (
         <ToggleGroupCtx value={ctx}>
-            <div role="group">{children}</div>
+            <div role="group" style={style}>{children}</div>
         </ToggleGroupCtx>
     );
 }
@@ -47,7 +48,7 @@ export function ToggleGroupItem<T extends string>({ value, children }: ToggleGro
             role="radio"
             aria-checked={isSelected}
             onClick={() => onSelect(value)}
-            style={{ fontWeight: isSelected ? "bold" : "normal" }}
+            style={{ fontWeight: isSelected ? "bold" : "normal", flex: 1, textAlign: "center", background: "none", border: "none", cursor: "pointer" }}
         >
             {children}
         </button>

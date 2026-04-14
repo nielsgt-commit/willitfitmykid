@@ -19,9 +19,7 @@ function AppContent() {
   const [state, dispatch] = useReducer(appReducer, { showMyKids: false });
   const { kids } = useKids();
 
-  const buttonText = kids.length === 0
-    ? 'Legg til barn'
-    : state.showMyKids ? 'Skjul mine barn' : 'Vis mine barn';
+  const buttonText = state.showMyKids ? 'Skjul mine barn' : 'Vis mine barn';
 
   return (
       <>
@@ -29,6 +27,7 @@ function AppContent() {
         <button onClick={() => dispatch({ type: 'TOGGLE_MY_KIDS' })}>
             {buttonText}
         </button>
+        {kids.length === 0 && <p>Legg til barn</p>}
         {state.showMyKids && <MyKids />}
         <Calculator />
       </>

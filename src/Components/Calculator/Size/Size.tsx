@@ -1,6 +1,6 @@
 import { INCREMENT_SIZE, DECREMENT_SIZE, SET_SIZE, SET_REGION } from "./size.action.ts";
 import { regions, type Region } from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
-import { listAvailableSizes } from "../../../Utils/sizeChart.utils.ts";
+import { listAvailableSizes } from "../../../Utils/size.utils.ts";
 import { kidsClothingTable } from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
 
 interface SizeProps {
@@ -17,7 +17,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
 
     return (
         <>
-            <h3>Legg inn størrelse</h3>
+
             <div>
                 {regions.map((r) => (
                     <button
@@ -44,6 +44,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                 })}
             </select>
             <button onClick={() => dispatch({ type: INCREMENT_SIZE })}> + </button>
+            <p> Conversions </p>
             <p>EU: {conversions?.EU} UK: {conversions?.UK} US: {conversions?.US}</p>
         </>
     );

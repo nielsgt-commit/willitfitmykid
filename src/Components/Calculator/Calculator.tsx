@@ -1,6 +1,5 @@
 // Components
 import Size from "./Size/Size.tsx";
-import {UserSwitcher} from "../UserSwitcher/UserSwitcher.tsx";
 // State
 
 import {useReducer} from "react";

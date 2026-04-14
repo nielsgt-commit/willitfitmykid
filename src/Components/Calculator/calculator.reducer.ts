@@ -4,7 +4,7 @@ import type {State} from "../types.ts";
 import type {Action} from "./calculator.action.ts"
 import {EU_SIZE_0_19yo} from "../../constants.ts";
 import {kidsClothingTable} from "../../Data/SizeCharts/kids_clothing_sizes.ts";
-import {getSizeRow, findCanonicalSize} from "../../Utils/sizeChart.utils.ts";
+import {getSizeRow, findCanonicalSize} from "../../Utils/size.utils.ts";
 
 export default function calculatorReducer(state:State, action: Action): State {
 

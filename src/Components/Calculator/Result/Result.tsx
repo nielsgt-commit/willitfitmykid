@@ -76,32 +76,46 @@ function willFitWhen(users: UserRecord[], size: string): WillFitWhenResult[] {
 
 function formatSeasonRange(start: WillFitWhenResult['start'], end: WillFitWhenResult['end']): string {
     const seasons: Season[] = ['Winter', 'Spring', 'Summer', 'Autumn'];
+    const currentYear = Temporal.Now.plainDateISO().year;
+
+    // Helper function to format season with year
+    const formatSeasonYear = (season: Season, year: number): string => {
+        if (year === currentYear) {
+            return `this ${season}`;
+        } else if (year === currentYear + 1) {
+            return `next ${season}`;
+        } else {
+            return `${season} ${year}`;
+        }
+    };
 
     // Same season and year
     if (start.season === end.season && start.year === end.year) {
-        return `${start.season} ${start.year}`;
+        return formatSeasonYear(start.season, start.year);
     }
 
     // Same year but different seasons
     if (start.year === end.year) {
         const startIdx = seasons.indexOf(start.season);
         const endIdx = seasons.indexOf(end.season);
+        const yearPrefix = start.year === currentYear ? "this " : start.year === currentYear + 1 ? "next " : "";
 
         if (endIdx > startIdx) {
             // Forward progression within the year
             const middleSeasons = seasons.slice(startIdx + 1, endIdx);
             if (middleSeasons.length === 0) {
-                return `${start.season} through ${end.season} ${end.year}`;
+                return `${formatSeasonYear(start.season, start.year)} through ${formatSeasonYear(end.season, end.year)}`;
             } else {
-                return `${start.season} through ${middleSeasons.join(' and ')} to ${end.season} ${end.year}`;
+                // For same year, use consistent year prefix
+                return `${formatSeasonYear(start.season, start.year)} through ${yearPrefix}${middleSeasons.join(' and ')} to ${formatSeasonYear(end.season, end.year)}`;
             }
         } else {
             // Wraps around year boundary (e.g., Autumn to Spring)
             const throughSeasons = [...seasons.slice(startIdx + 1), ...seasons.slice(0, endIdx)];
             if (throughSeasons.length === 0) {
-                return `${start.season} ${start.year} through ${end.season} ${end.year}`;
+                return `${formatSeasonYear(start.season, start.year)} through ${formatSeasonYear(end.season, end.year)}`;
             } else {
-                return `${start.season} ${start.year} through ${throughSeasons.join(' and ')} to ${end.season} ${end.year}`;
+                return `${formatSeasonYear(start.season, start.year)} through ${throughSeasons.join(' and ')} to ${formatSeasonYear(end.season, end.year)}`;
             }
         }
     }
@@ -115,27 +129,36 @@ function formatSeasonRange(start: WillFitWhenResult['start'], end: WillFitWhenRe
     // Get seasons before end season in end year
     const endYearSeasons = seasons.slice(0, endIdx);
 
-    let range = `${start.season} ${start.year}`;
+    let range = formatSeasonYear(start.season, start.year);
 
     if (startYearSeasons.length > 0) {
-        range += ` through ${startYearSeasons.join(' and ')}`;
+        const startYearPrefix = start.year === currentYear ? "this " : start.year === currentYear + 1 ? "next " : "";
+        range += ` through ${startYearPrefix}${startYearSeasons.join(' and ')}`;
     }
 
     // Add middle years if any
     if (end.year - start.year > 1) {
-        range += ` and all of ${start.year + 1}`;
+        if (start.year + 1 === currentYear) {
+            range += ` and all of this year`;
+        } else if (start.year + 1 === currentYear + 1) {
+            range += ` and all of next year`;
+        } else {
+            range += ` and all of ${start.year + 1}`;
+        }
+
         if (end.year - start.year > 2) {
             range += ` through ${end.year - 1}`;
         }
     }
 
     if (endYearSeasons.length > 0) {
-        range += ` and ${endYearSeasons.join(' and ')} through`;
+        const endYearPrefix = end.year === currentYear ? "this " : end.year === currentYear + 1 ? "next " : "";
+        range += ` and ${endYearPrefix}${endYearSeasons.join(' and ')} through`;
     } else {
         range += ` to`;
     }
 
-    range += ` ${end.season} ${end.year}`;
+    range += ` ${formatSeasonYear(end.season, end.year)}`;
 
     return range;
 }

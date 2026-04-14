@@ -1,22 +1,20 @@
 import type {State} from "../../../types.ts";
 import {useKids} from "../../../context/KidsContext.tsx";
-import {willFitWhen, formatSeasonRange} from "../../../Utils/fit.utils.ts";
+import {willFitWhen} from "../../../Utils/fit.utils.ts";
+import {ResultList} from "./ResultList.tsx";
 
-export function Result({size}: Pick<State, 'size'>) {
-    const { kids } = useKids();
-    const willFitWhenResults = willFitWhen(kids, size);
+export function Result({size}: Pick<State, "size">) {
+    const {kids} = useKids();
+    const results = willFitWhen(kids, size);
+
+    if (results.length === 0) {
+        return <p>Passer ikke noen av barna i listen</p>;
+    }
 
     return (
-        <>
-            {willFitWhenResults.length > 0 ? (
-                <p> Dette plagget passer trolig {willFitWhenResults.map(result => {
-                    const { user, start, end } = result;
-                    const range = formatSeasonRange(start, end);
-                    return `${user.name} (${range})`;
-                }).join(", ")} </p>
-            ) : (
-                <p>Passer ikke noen av barna i listen  </p>
-            )}
-        </>
-    )
+        <p>
+            Dette plagget passer trolig{" "}
+            <ResultList results={results} />
+        </p>
+    );
 }

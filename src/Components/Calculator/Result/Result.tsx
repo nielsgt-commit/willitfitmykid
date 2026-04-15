@@ -45,6 +45,10 @@ export function Result({size}: Pick<State, "size">) {
         });
     };
 
+    if (kids.length === 0) {
+        return <p>Legg til barn for å finne størrelser som passer</p>;
+    }
+
     if (results.length === 0) {
         return <p className={styles.emptyMessage}>Denne størrelsen passer ikke noen av barna i listen</p>;
     }

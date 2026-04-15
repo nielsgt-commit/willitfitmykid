@@ -1,3 +1,6 @@
+
+
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -9,3 +12,99 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+:root {
+  /* --- Farger (Semantiske) --- */
+  --color-surface-base: #f9fafb;    /* Hovedbakgrunn */
+  --color-surface-raised: #ffffff;  /* Kort / Modaler */
+  --color-surface-sunken: #f3f4f6;  /* Inputs / Gråsoner */
+
+  --color-primary: #2563eb;         /* Hovedknapp / Brand */
+  --color-on-primary: #ffffff;      /* Tekst på hovedknapp */
+  --color-accent: #f59e0b;          /* Highlights / Varsler */
+
+  --color-border-default: #d1d5db;  /* Standard ramme */
+  --color-border-subtle: #e5e7eb;   /* Svake skillelinjer */
+
+  --color-text-main: #111827;       /* Hovedtekst */
+  --color-text-muted: #6b7280;      /* Sekundærtekst */
+
+  --season-color: #f59e0b;
+
+
+  /* --- Spacing (8px skala) --- */
+  --space-xs: 0.25rem; /* 4px */
+  --space-sm: 0.5rem;  /* 8px */
+  --space-md: 1rem;    /* 16px */
+  --space-lg: 1.5rem;  /* 24px */
+  --space-xl: 2rem;    /* 32px */
+
+  /* --- Borders & Shapes --- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --border-width: 1px;
+
+  /* --- Typography --- */
+  --font-main: 'Inter', system-ui, sans-serif;
+  --size-base: 1rem;    /* 16px */
+  --size-h1: 2rem;      /* 32px */
+  --weight-normal: 400;
+  --weight-bold: 700;
+}
+
+/* 2. IMPLEMENTERING PÅ ELEMENTER */
+
+body {
+  background-color: var(--color-surface-base);
+  color: var(--color-text-main);
+  font-family: var(--font-main);
+  margin: 0;
+  padding: var(--space-xl);
+}
+
+/* Eksempel på et "Kort" (Surface raised + Border + Spacing) */
+.card {
+  background-color: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  max-width: 400px;
+}
+
+.card h1 {
+  font-size: var(--size-h1);
+  margin-bottom: var(--space-sm);
+}
+
+.card p {
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: var(--space-md);
+}
+
+/* Eksempel på en Knapp (Primary + Accent + Spacing) */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: var(--weight-bold);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* Accent-element (f.eks. en liten badge) */
+.badge {
+  background-color: var(--color-accent);
+  color: white;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-lg);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+Vær forsiktig når du bruker koden

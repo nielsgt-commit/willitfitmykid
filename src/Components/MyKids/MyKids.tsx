@@ -5,10 +5,15 @@ import { KidsForm } from './KidsForm/KidsForm.tsx';
 import { KidList } from './KidList.tsx';
 import type { UserRecord } from '../../types.ts';
 
-export function MyKids() {
+interface MyKidsProps {
+    initialAdding?: boolean;
+    onCancelFirstAdd?: () => void;
+}
+
+export function MyKids({ initialAdding = false, onCancelFirstAdd }: MyKidsProps) {
     const { kids, addKid, updateKid, removeKid } = useKids();
     const [editingId, setEditingId] = useState<number | null>(null);
-    const [adding, setAdding] = useState(false);
+    const [adding, setAdding] = useState(initialAdding);
 
     const handleAdd = (data: Omit<UserRecord, 'id'>) => {
         addKid(data);
@@ -53,7 +58,10 @@ export function MyKids() {
                 <KidsForm
                     mode="add"
                     onSubmit={handleAdd}
-                    onCancel={() => setAdding(false)}
+                    onCancel={() => {
+                        setAdding(false);
+                        if (kids.length === 0) onCancelFirstAdd?.();
+                    }}
                 />
             ) : (
                 <button onClick={startAdd}>Legg til barn</button>

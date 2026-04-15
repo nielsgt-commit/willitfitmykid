@@ -1,3 +1,4 @@
+import * as React from "react";
 import {useState} from "react";
 import type {Season, State} from "../../../types.ts";
 import {useKids} from "../../../context/KidsContext.tsx";
@@ -5,6 +6,7 @@ import {getSeason, willFitWhen} from "../../../Utils/fit.utils.ts";
 import {ResultList} from "./ResultList.tsx";
 import {SEASONS, SEASON_COLORS} from "./SeasonRange.tsx";
 import {Temporal} from "temporal-polyfill";
+import styles from "./Result.module.css";
 
 function resultIncludesSeason(result: ReturnType<typeof willFitWhen>[number], season: Season): boolean {
     const {start, end} = result;
@@ -44,7 +46,7 @@ export function Result({size}: Pick<State, "size">) {
     };
 
     if (results.length === 0) {
-        return <p style={{display: "flex", flexDirection: "column", alignItems: "center"}}>Denne størrelsen passer ikke noen av barna i listen</p>;
+        return <p className={styles.emptyMessage}>Denne størrelsen passer ikke noen av barna i listen</p>;
     }
 
     const filtered = activeSeasons.size === 0
@@ -52,8 +54,8 @@ export function Result({size}: Pick<State, "size">) {
         : results.filter(r => [...activeSeasons].some(s => resultIncludesSeason(r, s)));
 
     return (
-        <div style={{display: "flex", flexDirection: "column", alignItems: "center", gap: "12px"}}>
-            <div style={{display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center"}}>
+        <div className={styles.container}>
+            <div className={styles.seasonButtons}>
                 {SEASONS.map(season => {
                     const active = activeSeasons.has(season);
                     const color = SEASON_COLORS[season];
@@ -61,17 +63,8 @@ export function Result({size}: Pick<State, "size">) {
                         <button
                             key={season}
                             onClick={() => toggleSeason(season)}
-                            style={{
-                                borderRadius: "9999px",
-                                padding: "4px 14px",
-                                border: `2px solid ${color}`,
-                                background: active ? color : "transparent",
-                                color: active ? "#fff" : color,
-                                fontWeight: 600,
-                                cursor: "pointer",
-                                fontSize: "0.85rem",
-                                transition: "background 0.15s, color 0.15s",
-                            }}
+                            className={`${styles.seasonButton} ${active ? styles.active : ''}`}
+                            style={{'--season-color': color} as React.CSSProperties}
                         >
                             {season}
                         </button>

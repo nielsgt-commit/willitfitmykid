@@ -1,4 +1,6 @@
 import type {Season, WillFitWhenResult} from "../../../types.ts";
+import * as React from "react";
+import styles from "./SeasonRange.module.css";
 
 type SeasonRangeProps = {
     start: WillFitWhenResult['start'];
@@ -42,7 +44,10 @@ export function SeasonRange({start, end, filterSeasons}: SeasonRangeProps) {
                 <span key={`${pair.season}-${pair.year}`}>
                     {i > 0 && i < pairs.length - 1 && ", "}
                     {i > 0 && i === pairs.length - 1 && " og "}
-                    <span style={{ textDecoration: 'underline', textDecorationColor: SEASON_COLORS[pair.season], textUnderlineOffset: '2px' }}>
+                    <span
+                        className={styles.season}
+                        style={{'--season-color': SEASON_COLORS[pair.season]} as React.CSSProperties}
+                    >
                         {pair.season} {pair.year}
                     </span>
                 </span>

@@ -7,6 +7,7 @@ import {regions} from "../../../constants.ts";
 import { ToggleGroup, ToggleGroupItem } from "./ToggleGroup.tsx";
 import { SwipeArea } from "./SwipeArea.tsx";
 import * as React from "react";
+import styles from "./Size.module.css";
 
 interface SizeProps {
     size: string;
@@ -41,14 +42,6 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
     const sizeItemPercent = 100 / allSizes.length;
     const sizeTranslate = `calc(-${sizeIndex * sizeItemPercent}% + ${dragY}px)`;
 
-    const subtleButton: React.CSSProperties = {
-        background: "none",
-        border: "none",
-        cursor: "pointer",
-        padding: "0.25rem",
-        opacity: 0.5,
-    };
-
     const prevRegion = () => {
         const prev = (regionIndex - 1 + regions.length) % regions.length;
         dispatch({ type: SET_REGION, payload: regions[prev] as Region });
@@ -61,13 +54,13 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
 
     return (
         <>
-        <p style={{ display: "flex", flexDirection: "column", alignItems: "center" }}> Region </p>
+        <p className={styles.regionLabel}> Region </p>
         <SwipeArea inputRegion={inputRegion} regions={regions} dispatch={dispatch} onDragMove={handleDragMove}>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <div style={{ display: "flex", alignItems: "center" }}>
+            <div className={styles.sizeContainer}>
+                <div className={styles.regionRow}>
 
-                    <button onClick={prevRegion} style={subtleButton}>&lsaquo;</button>
-                    <div style={{ overflow: "hidden", width: "4rem" }}>
+                    <button onClick={prevRegion} className={styles.subtleButton}>&lsaquo;</button>
+                    <div className={styles.regionWindow}>
                         <ToggleGroup
                             value={inputRegion}
                             onValueChange={(r) => dispatch({ type: SET_REGION, payload: r as Region })}
@@ -85,14 +78,13 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                             ))}
                         </ToggleGroup>
                     </div>
-                    <button onClick={nextRegion} style={subtleButton}>&rsaquo;</button>
+                    <button onClick={nextRegion} className={styles.subtleButton}>&rsaquo;</button>
                 </div>
-                <button onClick={() => dispatch({ type: INCREMENT_SIZE })} style={subtleButton}>&#x2303;</button>
-                <div style={{ overflow: "hidden", height: "5rem" }}>
+                <button onClick={() => dispatch({ type: INCREMENT_SIZE })} className={styles.subtleButton}>&#x2303;</button>
+                <div className={styles.sizeWindow}>
                     <div
+                        className={styles.sizeStrip}
                         style={{
-                            display: "flex",
-                            flexDirection: "column",
                             height: `${allSizes.length * 100}%`,
                             transform: `translateY(${sizeTranslate})`,
                             transition: isDragging ? "none" : "transform 0.3s ease",
@@ -103,14 +95,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                             return (
                                 <div
                                     key={row.key}
-                                    style={{
-                                        flex: 1,
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        fontSize: "3rem",
-                                        fontWeight: "bold",
-                                    }}
+                                    className={styles.sizeItem}
                                 >
                                     {label}
                                 </div>
@@ -118,10 +103,10 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                         })}
                     </div>
                 </div>
-                <button onClick={() => dispatch({ type: DECREMENT_SIZE })} style={subtleButton}>&#x2304;</button>
+                <button onClick={() => dispatch({ type: DECREMENT_SIZE })} className={styles.subtleButton}>&#x2304;</button>
             </div>
-            <p style={{ display: "flex", flexDirection: "column", alignItems: "center" }}> Andre regioner </p>
-            <p style={{display: "flex", flexDirection: "column", alignItems: "center"}}>EU: {conversions?.EU} UK: {conversions?.UK} US: {conversions?.US}</p>
+            <p className={styles.regionLabel}> Andre regioner </p>
+            <p className={styles.conversionsLabel}>EU: {conversions?.EU} UK: {conversions?.UK} US: {conversions?.US}</p>
         </SwipeArea>
         </>
     );

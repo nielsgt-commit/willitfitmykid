@@ -1,4 +1,5 @@
 import * as React from "react";
+import styles from "./ToggleGroup.module.css";
 
 interface ToggleGroupProps<T extends string> {
     value: T;
@@ -48,7 +49,7 @@ export function ToggleGroupItem<T extends string>({ value, children }: ToggleGro
             role="radio"
             aria-checked={isSelected}
             onClick={() => onSelect(value)}
-            style={{ fontWeight: isSelected ? "bold" : "normal", flex: 1, textAlign: "center", background: "none", border: "none", cursor: "pointer" }}
+            className={`${styles.toggleGroupItem} ${isSelected ? styles.selected : ''}`}
         >
             {children}
         </button>

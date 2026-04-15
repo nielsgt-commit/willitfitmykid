@@ -2,6 +2,7 @@ import { useReducer } from "react";
 import Calculator from "./Components/Calculator/Calculator.tsx";
 import { MyKids } from "./Components/MyKids/MyKids.tsx";
 import { KidsProvider, useKids } from "./context/KidsContext.tsx";
+import styles from "./App.module.css";
 
 type AppState = { showMyKids: boolean };
 type AppAction = { type: 'TOGGLE_MY_KIDS' };
@@ -22,7 +23,7 @@ function AppContent() {
   const buttonText = state.showMyKids ? 'Skjul mine barn' : 'Vis mine barn';
 
   return (
-      <div className="app">
+      <div className={styles.app}>
         <h1>Will it fit my kid?</h1>
         <button onClick={() => dispatch({ type: 'TOGGLE_MY_KIDS' })}>
             {buttonText}

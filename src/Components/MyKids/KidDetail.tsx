@@ -1,4 +1,5 @@
 import type { UserRecord } from '../../types.ts';
+import styles from './KidDetail.module.css';
 
 type KidDetailProps = {
     kid: UserRecord;

@@ -49,7 +49,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
         setIsDragging(active);
     }, []);
 
-    const handleDragEnd = React.useCallback((mx: number, my: number) => {
+    const handleDragEnd = React.useCallback((_mx: number, my: number) => {
         const itemHeight = sizeWindowRef.current?.clientHeight ?? 0;
         if (itemHeight === 0 || Math.abs(my) < 5) return;
         const deltaSteps = Math.round(my / itemHeight);

@@ -5,6 +5,7 @@ import {useKids} from "../../../context/KidsContext.tsx";
 import {getSeason, willFitWhen} from "../../../Utils/fit.utils.ts";
 import {ResultList} from "./ResultList.tsx";
 import {SEASONS, SEASON_COLORS} from "./SeasonRange.tsx";
+import {getKidColor} from "../../../constants.ts";
 import {Temporal} from "temporal-polyfill";
 import styles from "./Result.module.css";
 
@@ -90,12 +91,15 @@ export function Result({size}: Pick<State, "size">) {
     }
 
     return (
+        <>
+            <p> Viser resultater som passer i sesong </p>
         <div className={styles.container}>
             <div className={styles.seasonButtons}>
                 {SEASONS.map(season => {
                     const active = activeSeasons.has(season);
                     const color = SEASON_COLORS[season];
                     return (
+
                         <button
                             key={season}
                             onClick={() => toggleSeason(season)}
@@ -107,16 +111,20 @@ export function Result({size}: Pick<State, "size">) {
                     );
                 })}
             </div>
+            <p> Viser resultater for barn </p>
             {kids.length > 0 && (
                 <div className={styles.kidButtons}>
                     {kids.map(kid => {
                         const active = activeKidIds.has(kid.id);
+                        const color = getKidColor(kid.id);
                         return (
                             <button
                                 key={kid.id}
                                 onClick={() => toggleKid(kid.id)}
                                 className={`${styles.kidButton} ${active ? styles.kidActive : ''}`}
+                                style={{'--kid-color': color} as React.CSSProperties}
                             >
+                                <span className={styles.kidDot} />
                                 {kid.name}
                             </button>
                         );
@@ -125,5 +133,6 @@ export function Result({size}: Pick<State, "size">) {
             )}
             {content}
         </div>
+        </>
     );
 }

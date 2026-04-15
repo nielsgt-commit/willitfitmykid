@@ -1,4 +1,6 @@
 import type { UserRecord } from '../../types.ts';
+import { getEffectiveHeight } from '../../Utils/growth.utils.ts';
+import { getKidColor } from '../../constants.ts';
 import styles from './KidDetail.module.css';
 
 type KidDetailProps = {
@@ -6,10 +8,13 @@ type KidDetailProps = {
 };
 
 export function KidDetail({ kid }: KidDetailProps) {
+    const height = getEffectiveHeight(kid);
+    const color = getKidColor(kid.id);
     return (
-        <div>
-            {kid.name} — {kid.sex === 'F' ? 'Jente' : 'Gutt'} — {kid.birthday.toString()} — P{kid.calculatedPercentile}
-            {kid.heightNow ? ` — ${kid.heightNow} cm` : ''}
+        <div className={styles.container}>
+            <span style={{ width: '0.6rem', height: '0.6rem', borderRadius: '50%', backgroundColor: color, flexShrink: 0, display: 'inline-block' }} />
+            {kid.name}  {kid.sex === 'F' ? 'Jente' : 'Gutt'}  {kid.birthday.toString()}  P{kid.calculatedPercentile}
+            {height ? `  ${height} cm${kid.heightNow === undefined ? ' (beregnet)' : ''}` : ''}
         </div>
     );
 }

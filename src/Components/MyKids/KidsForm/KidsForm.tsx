@@ -44,17 +44,16 @@ function toEditingUser(user: UserRecord): EditingUser {
         sex: user.sex,
         birthday: user.birthday.toString(),
         percentile: user.calculatedPercentile,
-        heightNow: String(user.heightNow),
+        heightNow: user.heightNow !== undefined ? String(user.heightNow) : '',
     };
 }
 
-function buildUserRecord(form: EditingUser): Omit<UserRecord, 'id'> {
-    const height = form.heightNow ? Number(form.heightNow) : 0;
+function buildUserRecord(form: EditingUser, derivedField: 'height' | 'percentile'): Omit<UserRecord, 'id'> {
     return {
         name: form.name,
         sex: form.sex,
         birthday: Temporal.PlainDate.from(form.birthday),
-        heightNow: height,
+        heightNow: derivedField === 'percentile' && form.heightNow ? Number(form.heightNow) : undefined,
         calculatedPercentile: form.percentile,
     };
 }
@@ -65,7 +64,7 @@ type KidsFormProps =
 
 export function KidsForm(props: KidsFormProps) {
     const initialForm = props.mode === 'edit' ? toEditingUser(props.kid) : emptyForm;
-    const initialDerived = props.mode === 'edit' ? 'percentile' : 'height';
+    const initialDerived = props.mode === 'edit' && props.kid.heightNow !== undefined ? 'percentile' : 'height';
 
     const [form, setForm] = useState<EditingUser>(initialForm);
     const [derivedField, setDerivedField] = useState<'height' | 'percentile'>(initialDerived);
@@ -138,7 +137,7 @@ export function KidsForm(props: KidsFormProps) {
     };
 
     const handleSubmit = () => {
-        props.onSubmit(buildUserRecord(form));
+        props.onSubmit(buildUserRecord(form, derivedField));
     };
 
     const percentileValues = PERCENTILES.map(p => Number(p.replace('P', '')));

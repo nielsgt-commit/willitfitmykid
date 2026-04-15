@@ -1,7 +1,8 @@
 import { growthDataBoys } from '../Data/GrowthCharts/growthDataBoys';
 import { growthDataGirls } from '../Data/GrowthCharts/growthDataGirls';
-import type {Sex, MonthEntry, Percentile} from "../types.ts";
+import type {Sex, MonthEntry, Percentile, UserRecord} from "../types.ts";
 import {PERCENTILES} from "../constants.ts";
+import { monthsSinceBirth } from './age.utils.ts';
 
 function chartData(sex: Sex): MonthEntry[] {
   return sex === 'F' ? growthDataGirls : growthDataBoys;
@@ -20,6 +21,16 @@ export function getLengthByMonthAndPercentile(
  * Returns the closest percentile for a given month and length.
  * Finds the percentile column whose value is nearest to the provided length.
  */
+/**
+ * Returns the effective height for a kid.
+ * Uses heightNow if set as a user override, otherwise derives from growth curve using today's age.
+ */
+export function getEffectiveHeight(kid: UserRecord): number {
+    if (kid.heightNow !== undefined) return kid.heightNow;
+    const months = monthsSinceBirth(kid.birthday);
+    return getLengthByMonthAndPercentile(months, `P${kid.calculatedPercentile}` as Percentile, kid.sex) ?? 0;
+}
+
 export function getPercentileByMonthAndLength(
   month: number,
   length: number,

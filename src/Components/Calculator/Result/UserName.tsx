@@ -1,3 +1,3 @@
-export function UserName({name}: { name: string }) {
-    return <span>{name}</span>;
+export function UserName({name, color}: { name: string; color?: string }) {
+    return <span style={color ? { color, fontWeight: 600 } : undefined}>{name}</span>;
 }

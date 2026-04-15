@@ -30,8 +30,14 @@ export function KidListItem({ kid, isEditing, onSave, onEdit, onCancelEdit, onRe
 
     return (
         <li>
-            <KidDetail kid={kid} />
-            <KidActions onEdit={onEdit} onRemove={onRemove} />
+            <div className={styles.kidRow}>
+                <div className={styles.kidDetail}>
+                    <KidDetail kid={kid} />
+                </div>
+                <div className={styles.kidActions}>
+                    <KidActions onEdit={onEdit} onRemove={onRemove} />
+                </div>
+            </div>
         </li>
     );
 }

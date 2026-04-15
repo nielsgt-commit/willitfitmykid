@@ -13,7 +13,7 @@ type KidListProps = {
 
 export function KidList({ kids, editingId, onSave, onEdit, onCancelEdit, onRemove }: KidListProps) {
     return (
-        <ul>
+        <ul className={styles.list}>
             {kids.map(kid => (
                 <KidListItem
                     key={kid.id}

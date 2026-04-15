@@ -1,4 +1,4 @@
-import {DECREMENT_SIZE, INCREMENT_SIZE, SET_SIZE, SET_REGION} from "./Size/size.action.ts";
+import {DECREMENT_SIZE, INCREMENT_SIZE, SET_SIZE, SET_REGION, SET_SIZE_FOR_HEIGHT} from "./Size/size.action.ts";
 import type {State} from "../../types.ts";
 import type {Action} from "./Size/size.action.ts"
 import {EU_SIZE_0_19yo} from "../../constants.ts";
@@ -44,6 +44,12 @@ export default function calculatorReducer(state:State, action: Action): State {
                 size: sizeStepDown,
                 conversions: getSizeRow(kidsClothingTable, sizeStepDown)?.conversions ?? {},
             }}
+
+        case SET_SIZE_FOR_HEIGHT: {
+            const row = getSizeRow(kidsClothingTable, action.payload);
+            if (!row) return state;
+            return { ...state, size: row.key, conversions: row.conversions };
+        }
 
         default:
                 return state;

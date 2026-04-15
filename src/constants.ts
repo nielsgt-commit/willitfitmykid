@@ -3,3 +3,9 @@ export const PERCENTILES = ['P1','P3', 'P5', 'P10', 'P15','P25','P50','P75', 'P8
 export const EU_SIZE_0_19yo = [44, 50,56,62,68,74,80,86,92,98,104,110,116,122,128,134,140,146,152,158,164,170,176]
 
 export const regions = ["EU", "US", "UK", "FR", "JP", "IT"] as const;
+
+export const KID_COLORS = ['#e05c5c', '#5c8fe0', '#5cba5c', '#e0a85c', '#a05ce0', '#5cc8c8'] as const;
+
+export function getKidColor(id: number): string {
+    return KID_COLORS[id % KID_COLORS.length];
+}

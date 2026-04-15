@@ -1,24 +1,38 @@
 import {INCREMENT_SIZE, DECREMENT_SIZE, SET_REGION} from "./size.action.ts";
 import type {Action} from "./size.action.ts"
 import type { Region } from "../../../types.ts";
-import { listAvailableSizes } from "../../../Utils/size.utils.ts";
+import { listAvailableSizes, findSizeForHeight } from "../../../Utils/size.utils.ts";
+import { getEffectiveHeight } from "../../../Utils/growth.utils.ts";
 import { kidsClothingTable } from "../../../Data/SizeCharts/kids_clothing_sizes.ts";
-import {regions} from "../../../constants.ts";
+import {regions, getKidColor} from "../../../constants.ts";
 import { ToggleGroup, ToggleGroupItem } from "./ToggleGroup.tsx";
 import { SwipeArea } from "./SwipeArea.tsx";
+import { SizeConversions } from "./SizeConversions.tsx";
 import * as React from "react";
 import styles from "./Size.module.css";
+import { useKids } from "../../../context/KidsContext.tsx";
 
 interface SizeProps {
     size: string;
     inputRegion: Region;
-    conversions: Partial<Record<'EU' | 'UK' | 'US', string>>;
+    conversions: Partial<Record<Region, string>>;
     dispatch: React.Dispatch<Action>;
 }
 
 const allSizes = listAvailableSizes(kidsClothingTable);
 
 export default function Size({ size, inputRegion, conversions, dispatch }: SizeProps) {
+    const { kids } = useKids();
+
+    const kidsBySizeKey = React.useMemo(() => {
+        const map = new Map<string, { name: string; id: number }[]>();
+        for (const kid of kids) {
+            const key = findSizeForHeight(kidsClothingTable, getEffectiveHeight(kid)).key;
+            if (!map.has(key)) map.set(key, []);
+            map.get(key)!.push({ name: kid.name, id: kid.id });
+        }
+        return map;
+    }, [kids]);
     const displayValue = conversions?.[inputRegion] ?? size;
     const [dragX, setDragX] = React.useState(0);
     const [dragY, setDragY] = React.useState(0);
@@ -54,9 +68,10 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
 
     return (
         <>
-        <p className={styles.regionLabel}> Region </p>
         <SwipeArea inputRegion={inputRegion} regions={regions} dispatch={dispatch} onDragMove={handleDragMove}>
             <div className={styles.sizeContainer}>
+
+                <p className={styles.regionLabel}> Region </p>
                 <div className={styles.regionRow}>
 
                     <button onClick={prevRegion} className={styles.subtleButton}>&lsaquo;</button>
@@ -92,12 +107,25 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                     >
                         {allSizes.map((row) => {
                             const label = row.conversions[inputRegion] ?? row.key;
+                            const kidsHere = kidsBySizeKey.get(row.key);
                             return (
                                 <div
                                     key={row.key}
                                     className={styles.sizeItem}
                                 >
                                     {label}
+                                    {kidsHere && (
+                                        <div className={styles.kidDots}>
+                                            {kidsHere.map(({ name, id }) => {
+                                                const color = getKidColor(id);
+                                                return (
+                                                    <div key={id} className={styles.kidDot} title={name} style={{ backgroundColor: color }}>
+                                                        <span className={styles.kidDotName} style={{ color }}>{name}</span>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}
@@ -106,7 +134,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                 <button onClick={() => dispatch({ type: DECREMENT_SIZE })} className={styles.subtleButton}>&#x2304;</button>
             </div>
             <p className={styles.regionLabel}> Andre regioner </p>
-            <p className={styles.conversionsLabel}>EU: {conversions?.EU} UK: {conversions?.UK} US: {conversions?.US}</p>
+            <SizeConversions conversions={conversions} />
         </SwipeArea>
         </>
     );

@@ -20,7 +20,7 @@ export type UserRecord = {
     name: string;
     sex: Sex;
     birthday: Temporal.PlainDate;
-    heightNow: number;
+    heightNow?: number;
     calculatedPercentile: number;
 }
 

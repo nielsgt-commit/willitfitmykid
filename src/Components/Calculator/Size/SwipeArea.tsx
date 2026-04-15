@@ -25,15 +25,19 @@ export function SwipeArea({ inputRegion, regions, dispatch, onDragMove, onDragEn
 
         if (!last) return;
 
-        if (swipeX === -1) {
-            const next = (indexRef.current + 1) % regions.length;
-            dispatch({ type: SET_REGION, payload: regions[next] });
-        } else if (swipeX === 1) {
-            const prev = (indexRef.current - 1 + regions.length) % regions.length;
-            dispatch({ type: SET_REGION, payload: regions[prev] });
-        }
+        const horizontalDominant = Math.abs(mx) > Math.abs(my);
 
-        onDragEnd?.(mx, my);
+        if (horizontalDominant) {
+            if (swipeX === -1) {
+                const next = (indexRef.current + 1) % regions.length;
+                dispatch({ type: SET_REGION, payload: regions[next] });
+            } else if (swipeX === 1) {
+                const prev = (indexRef.current - 1 + regions.length) % regions.length;
+                dispatch({ type: SET_REGION, payload: regions[prev] });
+            }
+        } else {
+            onDragEnd?.(mx, my);
+        }
     }, {
         swipe: { distance: 20, velocity: 0.1, duration: 500 },
     });

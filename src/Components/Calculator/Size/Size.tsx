@@ -54,7 +54,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
         if (itemHeight === 0 || Math.abs(my) < 5) return;
         const deltaSteps = Math.round(my / itemHeight);
         if (deltaSteps === 0) return;
-        const actionType = deltaSteps > 0 ? INCREMENT_SIZE : DECREMENT_SIZE;
+        const actionType = deltaSteps > 0 ? DECREMENT_SIZE : INCREMENT_SIZE;
         const steps = Math.abs(deltaSteps);
         for (let i = 0; i < steps; i++) {
             dispatch({ type: actionType });

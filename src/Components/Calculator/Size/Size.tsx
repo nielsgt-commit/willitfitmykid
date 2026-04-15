@@ -41,12 +41,25 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
     const sizeIndex = allSizes.findIndex(
         (row) => (row.conversions[inputRegion] ?? row.key) === displayValue,
     );
+    const sizeWindowRef = React.useRef<HTMLDivElement>(null);
 
     const handleDragMove = React.useCallback((x: number, y: number, active: boolean) => {
         setDragX(x);
         setDragY(y);
         setIsDragging(active);
     }, []);
+
+    const handleDragEnd = React.useCallback((mx: number, my: number) => {
+        const itemHeight = sizeWindowRef.current?.clientHeight ?? 0;
+        if (itemHeight === 0 || Math.abs(my) < 5) return;
+        const deltaSteps = Math.round(my / itemHeight);
+        if (deltaSteps === 0) return;
+        const actionType = deltaSteps > 0 ? INCREMENT_SIZE : DECREMENT_SIZE;
+        const steps = Math.abs(deltaSteps);
+        for (let i = 0; i < steps; i++) {
+            dispatch({ type: actionType });
+        }
+    }, [dispatch]);
 
     // Region strip: horizontal, 1/N per item
     const regionItemPercent = 100 / regions.length;
@@ -68,7 +81,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
 
     return (
         <>
-        <SwipeArea inputRegion={inputRegion} regions={regions} dispatch={dispatch} onDragMove={handleDragMove}>
+        <SwipeArea inputRegion={inputRegion} regions={regions} dispatch={dispatch} onDragMove={handleDragMove} onDragEnd={handleDragEnd}>
             <div className={styles.sizeContainer}>
 
                 <p className={styles.regionLabel}> Region </p>
@@ -96,7 +109,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                     <button onClick={nextRegion} className={styles.subtleButton}>&rsaquo;</button>
                 </div>
                 <button onClick={() => dispatch({ type: INCREMENT_SIZE })} className={styles.subtleButton}>&#x2303;</button>
-                <div className={styles.sizeWindow}>
+                <div className={styles.sizeWindow} ref={sizeWindowRef}>
                     <div
                         className={styles.sizeStrip}
                         style={{

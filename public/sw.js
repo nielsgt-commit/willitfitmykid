@@ -1,12 +1,13 @@
 const CACHE_NAME = 'wifmk-v1';
+const BASE_URL = self.registration.scope;
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) =>
       cache.addAll([
-        '/',
-        '/index.html',
-        '/manifest.webmanifest',
+        BASE_URL,
+        BASE_URL + 'index.html',
+        BASE_URL + 'manifest.webmanifest',
       ])
     )
   );

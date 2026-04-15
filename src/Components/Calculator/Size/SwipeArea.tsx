@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useDrag } from "@use-gesture/react";
-import { INCREMENT_SIZE, DECREMENT_SIZE, SET_REGION } from "./size.action.ts";
+import { SET_REGION } from "./size.action.ts";
 import type { Action } from "./size.action.ts";
 import type { Region } from "../../../types.ts";
 import styles from "./SwipeArea.module.css";
@@ -10,16 +10,17 @@ interface SwipeAreaProps {
     regions: readonly Region[];
     dispatch: React.Dispatch<Action>;
     onDragMove?: (x: number, y: number, active: boolean) => void;
+    onDragEnd?: (mx: number, my: number) => void;
     children: React.ReactNode;
 }
 
-export function SwipeArea({ inputRegion, regions, dispatch, onDragMove, children }: SwipeAreaProps) {
+export function SwipeArea({ inputRegion, regions, dispatch, onDragMove, onDragEnd, children }: SwipeAreaProps) {
     const indexRef = React.useRef(regions.indexOf(inputRegion));
     React.useEffect(() => {
         indexRef.current = regions.indexOf(inputRegion);
     }, [inputRegion, regions]);
 
-    const bind = useDrag(({ swipe: [swipeX, swipeY], movement: [mx, my], active, last }) => {
+    const bind = useDrag(({ swipe: [swipeX], movement: [mx, my], active, last }) => {
         onDragMove?.(active ? mx : 0, active ? my : 0, active);
 
         if (!last) return;
@@ -32,11 +33,7 @@ export function SwipeArea({ inputRegion, regions, dispatch, onDragMove, children
             dispatch({ type: SET_REGION, payload: regions[prev] });
         }
 
-        if (swipeY === 1) {
-            dispatch({ type: INCREMENT_SIZE });
-        } else if (swipeY === -1) {
-            dispatch({ type: DECREMENT_SIZE });
-        }
+        onDragEnd?.(mx, my);
     }, {
         swipe: { distance: 20, velocity: 0.1, duration: 500 },
     });

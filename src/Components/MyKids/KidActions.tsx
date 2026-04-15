@@ -1,4 +1,4 @@
-import styles from './KidActions.module.css';
+// import styles from './KidActions.module.css';
 
 type KidActionsProps = {
     onEdit: () => void;

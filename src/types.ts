@@ -12,7 +12,7 @@ export type Percentile = (typeof PERCENTILES)[number];
 export interface State {
     size: `${number}`,
     inputRegion: Region,
-    conversions: Partial<Record<'EU' | 'UK' | 'US', string>>,
+    conversions: Partial<Record<Region, string>>,
 }
 
 export type UserRecord = {

@@ -60,9 +60,12 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
     };
 
     return (
+        <>
+        <p style={{ display: "flex", flexDirection: "column", alignItems: "center" }}> Region </p>
         <SwipeArea inputRegion={inputRegion} regions={regions} dispatch={dispatch} onDragMove={handleDragMove}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <div style={{ display: "flex", alignItems: "center" }}>
+
                     <button onClick={prevRegion} style={subtleButton}>&lsaquo;</button>
                     <div style={{ overflow: "hidden", width: "4rem" }}>
                         <ToggleGroup
@@ -72,7 +75,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                                 display: "flex",
                                 width: `${regions.length * 100}%`,
                                 transform: `translateX(${regionTranslate})`,
-                                transition: isDragging ? "none" : "transform 0.3s ease",
+                                transition: isDragging ? "none" : "transform 0.4s ease",
                             }}
                         >
                             {regions.map((r) => (
@@ -85,7 +88,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                     <button onClick={nextRegion} style={subtleButton}>&rsaquo;</button>
                 </div>
                 <button onClick={() => dispatch({ type: INCREMENT_SIZE })} style={subtleButton}>&#x2303;</button>
-                <div style={{ overflow: "hidden", height: "2rem" }}>
+                <div style={{ overflow: "hidden", height: "5rem" }}>
                     <div
                         style={{
                             display: "flex",
@@ -105,6 +108,8 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
+                                        fontSize: "3rem",
+                                        fontWeight: "bold",
                                     }}
                                 >
                                     {label}
@@ -115,8 +120,9 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                 </div>
                 <button onClick={() => dispatch({ type: DECREMENT_SIZE })} style={subtleButton}>&#x2304;</button>
             </div>
-            <p> Conversions </p>
-            <p>EU: {conversions?.EU} UK: {conversions?.UK} US: {conversions?.US}</p>
+            <p style={{ display: "flex", flexDirection: "column", alignItems: "center" }}> Andre regioner </p>
+            <p style={{display: "flex", flexDirection: "column", alignItems: "center"}}>EU: {conversions?.EU} UK: {conversions?.UK} US: {conversions?.US}</p>
         </SwipeArea>
+        </>
     );
 }

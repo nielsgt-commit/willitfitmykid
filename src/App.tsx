@@ -22,7 +22,7 @@ function AppContent() {
   const buttonText = state.showMyKids ? 'Skjul mine barn' : 'Vis mine barn';
 
   return (
-      <>
+      <div className="app">
         <h1>Will it fit my kid?</h1>
         <button onClick={() => dispatch({ type: 'TOGGLE_MY_KIDS' })}>
             {buttonText}
@@ -30,7 +30,7 @@ function AppContent() {
         {kids.length === 0 && <p>Legg til barn</p>}
         {state.showMyKids && <MyKids />}
         <Calculator />
-      </>
+      </div>
   )
 }
 

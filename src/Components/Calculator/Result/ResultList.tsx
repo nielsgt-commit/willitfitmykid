@@ -1,17 +1,18 @@
-import type {WillFitWhenResult} from "../../../types.ts";
+import type {Season, WillFitWhenResult} from "../../../types.ts";
 import {ResultItem} from "./ResultItem.tsx";
 
 type ResultListProps = {
     results: WillFitWhenResult[];
+    filterSeasons?: Set<Season>;
 };
 
-export function ResultList({results}: ResultListProps) {
+export function ResultList({results, filterSeasons}: ResultListProps) {
     const multiUser = results.length > 1;
 
     return (
         <>
             {results.map((result) => (
-                <ResultItem key={result.user.id} result={result} multiUser={multiUser} />
+                <ResultItem key={result.user.id} result={result} multiUser={multiUser} filterSeasons={filterSeasons} />
             ))}
         </>
     );

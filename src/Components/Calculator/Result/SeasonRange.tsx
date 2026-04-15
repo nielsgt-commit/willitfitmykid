@@ -3,11 +3,12 @@ import type {Season, WillFitWhenResult} from "../../../types.ts";
 type SeasonRangeProps = {
     start: WillFitWhenResult['start'];
     end: WillFitWhenResult['end'];
+    filterSeasons?: Set<Season>;
 };
 
-const SEASONS: Season[] = ['Vinter' as Season, 'Vår' as Season, 'Sommer' as Season, 'Høst' as Season];
+export const SEASONS: Season[] = ['Vinter' as Season, 'Vår' as Season, 'Sommer' as Season, 'Høst' as Season];
 
-const SEASON_COLORS: Record<Season, string> = {
+export const SEASON_COLORS: Record<Season, string> = {
     Vinter: '#4a90d9',
     Vår: '#4caf50',
     Sommer: '#e91e78',
@@ -31,8 +32,9 @@ function expandSeasons(start: { season: Season; year: number }, end: { season: S
     return result;
 }
 
-export function SeasonRange({start, end}: SeasonRangeProps) {
-    const pairs = expandSeasons(start, end);
+export function SeasonRange({start, end, filterSeasons}: SeasonRangeProps) {
+    const allPairs = expandSeasons(start, end);
+    const pairs = filterSeasons ? allPairs.filter(p => filterSeasons.has(p.season)) : allPairs;
 
     return (
         <>

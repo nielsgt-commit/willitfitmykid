@@ -1,20 +1,91 @@
-import type {State} from "../../../types.ts";
+import {useState} from "react";
+import type {Season, State} from "../../../types.ts";
 import {useKids} from "../../../context/KidsContext.tsx";
-import {willFitWhen} from "../../../Utils/fit.utils.ts";
+import {getSeason, willFitWhen} from "../../../Utils/fit.utils.ts";
 import {ResultList} from "./ResultList.tsx";
+import {SEASONS, SEASON_COLORS} from "./SeasonRange.tsx";
+import {Temporal} from "temporal-polyfill";
+
+function resultIncludesSeason(result: ReturnType<typeof willFitWhen>[number], season: Season): boolean {
+    const {start, end} = result;
+    const startIdx = SEASONS.indexOf(start.season);
+    const endIdx = SEASONS.indexOf(end.season);
+    const targetIdx = SEASONS.indexOf(season);
+
+    if (start.year === end.year) {
+        return startIdx <= targetIdx && targetIdx <= endIdx;
+    }
+
+    // Multi-year: iterate year by year
+    for (let year = start.year; year <= end.year; year++) {
+        const fromIdx = year === start.year ? startIdx : 0;
+        const toIdx = year === end.year ? endIdx : SEASONS.length - 1;
+        if (fromIdx <= targetIdx && targetIdx <= toIdx) return true;
+    }
+    return false;
+}
+
+function currentSeason(): Season {
+    return getSeason(Temporal.Now.plainDateISO().month);
+}
 
 export function Result({size}: Pick<State, "size">) {
     const {kids} = useKids();
     const results = willFitWhen(kids, size);
+    const [activeSeasons, setActiveSeasons] = useState<Set<Season>>(() => new Set([currentSeason()]));
+
+    const toggleSeason = (season: Season) => {
+        setActiveSeasons(prev => {
+            const next = new Set(prev);
+            if (next.has(season)) next.delete(season);
+            else next.add(season);
+            return next;
+        });
+    };
 
     if (results.length === 0) {
-        return <p>Passer ikke noen av barna i listen</p>;
+        return <p style={{display: "flex", flexDirection: "column", alignItems: "center"}}>Denne størrelsen passer ikke noen av barna i listen</p>;
     }
 
+    const filtered = activeSeasons.size === 0
+        ? []
+        : results.filter(r => [...activeSeasons].some(s => resultIncludesSeason(r, s)));
+
     return (
-        <p>
-            Dette plagget passer trolig{" "}
-            <ResultList results={results} />
-        </p>
+        <div style={{display: "flex", flexDirection: "column", alignItems: "center", gap: "12px"}}>
+            <div style={{display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center"}}>
+                {SEASONS.map(season => {
+                    const active = activeSeasons.has(season);
+                    const color = SEASON_COLORS[season];
+                    return (
+                        <button
+                            key={season}
+                            onClick={() => toggleSeason(season)}
+                            style={{
+                                borderRadius: "9999px",
+                                padding: "4px 14px",
+                                border: `2px solid ${color}`,
+                                background: active ? color : "transparent",
+                                color: active ? "#fff" : color,
+                                fontWeight: 600,
+                                cursor: "pointer",
+                                fontSize: "0.85rem",
+                                transition: "background 0.15s, color 0.15s",
+                            }}
+                        >
+                            {season}
+                        </button>
+                    );
+                })}
+            </div>
+            <p>
+                Dette plagget passer trolig{" "}
+                {activeSeasons.size > 0 && (
+                    filtered.length === 0
+                        ? <span>ikke i valgte sesonger</span>
+                        : <ResultList results={filtered} filterSeasons={activeSeasons} />
+                )}
+            </p>
+        </div>
     );
 }

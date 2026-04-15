@@ -159,7 +159,13 @@ export function KidsForm(props: KidsFormProps) {
                 </label>
                 <label>
                     Fødselsdag:
-                    <input type="date" value={form.birthday} onChange={e => onBirthdayChange(e.target.value)} />
+                    <input
+                        type="date"
+                        value={form.birthday}
+                        onChange={e => onBirthdayChange(e.target.value)}
+                        min={Temporal.Now.plainDateISO().subtract({ years: 18 }).toString()}
+                        max={Temporal.Now.plainDateISO().toString()}
+                    />
                 </label>
                 <label>
                     Persentil:

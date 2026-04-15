@@ -1,0 +1,54 @@
+.regionLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sizeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.regionRow {
+  display: flex;
+  align-items: center;
+}
+
+.regionWindow {
+  overflow: hidden;
+  width: 4rem;
+}
+
+.sizeWindow {
+  overflow: hidden;
+  height: 5rem;
+}
+
+.sizeStrip {
+  display: flex;
+  flex-direction: column;
+}
+
+.sizeItem {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.subtleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  opacity: 0.5;
+}
+
+.conversionsLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

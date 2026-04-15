@@ -1,0 +1,5 @@
+.season {
+  text-decoration: underline;
+  text-decoration-color: var(--season-color);
+  text-underline-offset: 2px;
+}

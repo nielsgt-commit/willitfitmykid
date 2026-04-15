@@ -1,0 +1,6 @@
+.swipeArea {
+  touch-action: none;
+  padding: 0;
+  background-color: var(--color-surface-sunken);
+  width: 100vw;
+}

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import type {Season, State} from "../../../types.ts";
 import {useKids} from "../../../context/KidsContext.tsx";
 import {getSeason, willFitWhen} from "../../../Utils/fit.utils.ts";
@@ -18,7 +18,6 @@ function resultIncludesSeason(result: ReturnType<typeof willFitWhen>[number], se
         return startIdx <= targetIdx && targetIdx <= endIdx;
     }
 
-    // Multi-year: iterate year by year
     for (let year = start.year; year <= end.year; year++) {
         const fromIdx = year === start.year ? startIdx : 0;
         const toIdx = year === end.year ? endIdx : SEASONS.length - 1;
@@ -34,7 +33,20 @@ function currentSeason(): Season {
 export function Result({size}: Pick<State, "size">) {
     const {kids} = useKids();
     const results = willFitWhen(kids, size);
+
     const [activeSeasons, setActiveSeasons] = useState<Set<Season>>(() => new Set([currentSeason()]));
+    const [activeKidIds, setActiveKidIds] = useState<Set<number>>(() => new Set(kids.map(k => k.id)));
+
+    // When kids list changes: add newly added kids as active, remove deleted kids
+    useEffect(() => {
+        setActiveKidIds(prev => {
+            const currentIds = new Set(kids.map(k => k.id));
+            const next = new Set([...prev].filter(id => currentIds.has(id)));
+            kids.forEach(k => { if (!prev.has(k.id)) next.add(k.id); });
+            return next;
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [kids.map(k => k.id).join(',')]);
 
     const toggleSeason = (season: Season) => {
         setActiveSeasons(prev => {
@@ -45,17 +57,37 @@ export function Result({size}: Pick<State, "size">) {
         });
     };
 
-    if (kids.length === 0) {
-        return <p>Legg til barn for å finne størrelser som passer</p>;
-    }
+    const toggleKid = (id: number) => {
+        setActiveKidIds(prev => {
+            const next = new Set(prev);
+            if (next.has(id)) next.delete(id);
+            else next.add(id);
+            return next;
+        });
+    };
 
-    if (results.length === 0) {
-        return <p className={styles.emptyMessage}>Denne størrelsen passer ikke noen av barna i listen</p>;
-    }
-
+    const filteredByKids = results.filter(r => activeKidIds.has(r.user.id));
     const filtered = activeSeasons.size === 0
         ? []
-        : results.filter(r => [...activeSeasons].some(s => resultIncludesSeason(r, s)));
+        : filteredByKids.filter(r => [...activeSeasons].some(s => resultIncludesSeason(r, s)));
+
+    let content: React.ReactNode;
+    if (kids.length === 0) {
+        content = <p>Legg til barn for å finne størrelser som passer og sesong.</p>;
+    } else if (filteredByKids.length === 0) {
+        content = <p className={styles.emptyMessage}>Denne størrelsen passer ikke noen av barna i listen</p>;
+    } else {
+        content = (
+            <p>
+                Dette plagget passer trolig{" "}
+                {activeSeasons.size > 0 && (
+                    filtered.length === 0
+                        ? <span>ikke i valgte sesonger</span>
+                        : <ResultList results={filtered} filterSeasons={activeSeasons} />
+                )}
+            </p>
+        );
+    }
 
     return (
         <div className={styles.container}>
@@ -75,14 +107,23 @@ export function Result({size}: Pick<State, "size">) {
                     );
                 })}
             </div>
-            <p>
-                Dette plagget passer trolig{" "}
-                {activeSeasons.size > 0 && (
-                    filtered.length === 0
-                        ? <span>ikke i valgte sesonger</span>
-                        : <ResultList results={filtered} filterSeasons={activeSeasons} />
-                )}
-            </p>
+            {kids.length > 0 && (
+                <div className={styles.kidButtons}>
+                    {kids.map(kid => {
+                        const active = activeKidIds.has(kid.id);
+                        return (
+                            <button
+                                key={kid.id}
+                                onClick={() => toggleKid(kid.id)}
+                                className={`${styles.kidButton} ${active ? styles.kidActive : ''}`}
+                            >
+                                {kid.name}
+                            </button>
+                        );
+                    })}
+                </div>
+            )}
+            {content}
         </div>
     );
 }

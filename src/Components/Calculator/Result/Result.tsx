@@ -79,7 +79,7 @@ export function Result({size}: Pick<State, "size">) {
         content = <p className={styles.emptyMessage}>Denne størrelsen passer ikke noen av barna i listen</p>;
     } else {
         content = (
-            <p>
+            <p className={styles.resultsMessage}>
                 Dette plagget passer trolig{" "}
                 {activeSeasons.size > 0 && (
                     filtered.length === 0
@@ -92,8 +92,9 @@ export function Result({size}: Pick<State, "size">) {
 
     return (
         <>
-            <p> Viser resultater som passer i sesong </p>
         <div className={styles.container}>
+
+            <p> Viser resultater som passer i sesong </p>
             <div className={styles.seasonButtons}>
                 {SEASONS.map(season => {
                     const active = activeSeasons.has(season);

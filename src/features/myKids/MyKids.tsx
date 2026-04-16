@@ -2,7 +2,7 @@ import { useState } from 'react';
 // import styles from './MyKids.module.css';
 import { useKids } from '../../hooks/context/KidsContext.tsx';
 import { KidsForm } from './kidsForm/KidsForm.tsx';
-import { KidList } from './KidList.tsx';
+import { KidList } from './kidList/KidList.tsx';
 import type { UserRecord } from '../../types/types.ts';
 
 interface MyKidsProps {

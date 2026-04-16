@@ -1,5 +1,5 @@
-import type { UserRecord } from '../../types/types.ts';
-import { KidListItem } from './KidListItem.tsx';
+import type { UserRecord } from '../../../types/types.ts';
+import { KidListItem } from '../kidListItem/KidListItem.tsx';
 import styles from './KidList.module.css';
 
 type KidListProps = {

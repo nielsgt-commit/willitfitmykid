@@ -42,6 +42,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
         (row) => (row.conversions[inputRegion] ?? row.key) === displayValue,
     );
     const sizeWindowRef = React.useRef<HTMLDivElement>(null);
+    const [showConversions, setShowConversions] = React.useState(false);
 
     const handleDragMove = React.useCallback((x: number, y: number, active: boolean) => {
         setDragX(x);
@@ -146,8 +147,8 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                 </div>
                 <button onClick={() => dispatch({ type: DECREMENT_SIZE })} className={styles.subtleButton}>&#x2304;</button>
             </div>
-            <p className={styles.regionLabel}> Andre regioner </p>
-            <SizeConversions conversions={conversions} />
+            <p className={styles.regionLabel} onClick={() => setShowConversions((s) => !s)}> Andre regioner </p>
+            {showConversions ? <SizeConversions conversions={conversions} /> : null}
         </SwipeArea>
         </>
     );

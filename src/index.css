@@ -59,7 +59,7 @@ body {
   color: var(--color-text-main);
   font-family: var(--font-main);
   margin: 0;
-  padding: var(--space-xl);
+  padding: 0;
 }
 
 /* Eksempel på et "Kort" (Surface raised + Border + Spacing) */

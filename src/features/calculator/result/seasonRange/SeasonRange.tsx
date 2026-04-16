@@ -1,20 +1,12 @@
 import type {Season, WillFitWhenResult} from "../../../../types/types.ts";
 import * as React from "react";
 import styles from "./SeasonRange.module.css";
+import {SEASONS, SEASON_COLORS} from "./season.constants.ts";
 
 type SeasonRangeProps = {
     start: WillFitWhenResult['start'];
     end: WillFitWhenResult['end'];
     filterSeasons?: Set<Season>;
-};
-
-export const SEASONS: Season[] = ['Vinter' as Season, 'Vår' as Season, 'Sommer' as Season, 'Høst' as Season];
-
-export const SEASON_COLORS: Record<Season, string> = {
-    Vinter: '#4a90d9',
-    Vår: '#4caf50',
-    Sommer: '#e91e78',
-    Høst: '#e65100',
 };
 
 function expandSeasons(start: { season: Season; year: number }, end: { season: Season; year: number }): { season: Season; year: number }[] {

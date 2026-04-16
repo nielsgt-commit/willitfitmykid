@@ -3,17 +3,13 @@ import styles from "./AppLayout.module.css";
 
 type AppLayoutProps = {
     title: ReactNode;
-    actions?: ReactNode;
     children: ReactNode;
 };
 
-export function AppLayout({ title, actions, children }: AppLayoutProps) {
+export function AppLayout({ title, children }: AppLayoutProps) {
     return (
         <div className={styles.shell}>
-            <header className={styles.header}>
-                {title}
-                {actions && <div className={styles.actions}>{actions}</div>}
-            </header>
+            <header className={styles.header}>{title}</header>
             <main className={styles.main}>{children}</main>
         </div>
     );

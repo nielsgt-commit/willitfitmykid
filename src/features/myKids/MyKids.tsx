@@ -1,5 +1,5 @@
 import { useState } from 'react';
-// import styles from './MyKids.module.css';
+import styles from './MyKids.module.css';
 import { useKids } from '../../hooks/context/KidsContext.tsx';
 import { KidsForm } from './kidsForm/KidsForm.tsx';
 import { KidList } from './kidList/KidList.tsx';
@@ -45,6 +45,7 @@ export function MyKids({ initialAdding = false, onCancelFirstAdd }: MyKidsProps)
 
     return (
         <>
+            <div className={styles.mineBarnContainer}>
             <h2>Mine barn</h2>
             <KidList
                 kids={kids}
@@ -66,6 +67,7 @@ export function MyKids({ initialAdding = false, onCancelFirstAdd }: MyKidsProps)
             ) : (
                 <button onClick={startAdd}>Legg til barn</button>
             )}
+                </div>
         </>
     );
 }

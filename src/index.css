@@ -67,26 +67,22 @@ body {
   background-color: var(--color-surface-raised);
   border: var(--border-width) solid var(--color-border-default);
   border-radius: var(--radius-md);
-  padding: var(--space-lg);
   max-width: 400px;
 }
 
 .card h1 {
   font-size: var(--size-h1);
-  margin-bottom: var(--space-sm);
 }
 
 .card p {
   color: var(--color-text-muted);
   line-height: 1.5;
-  margin-bottom: var(--space-sm);
 }
 
 /* Eksempel på en Knapp (Primary + Accent + Spacing) */
 .btn-primary {
   background-color: var(--color-primary);
   color: var(--color-on-primary);
-  padding: var(--space-sm) var(--space-md);
   border: none;
   border-radius: var(--radius-sm);
   font-weight: var(--weight-bold);
@@ -102,7 +98,6 @@ body {
 .badge {
   background-color: var(--color-accent);
   color: white;
-  padding: var(--space-xs) var(--space-sm);
   border-radius: var(--radius-lg);
   font-size: 0.75rem;
   text-transform: uppercase;

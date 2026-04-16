@@ -1,0 +1,21 @@
+.seasonButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.seasonButton {
+  border-radius: 9999px;
+  border: 2px solid var(--season-color);
+  background: transparent;
+  color: var(--season-color);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.seasonButton.active {
+  background: var(--season-color);
+  color: #fff;
+}

@@ -41,7 +41,7 @@ export function Result({size}: Pick<State, "size">) {
         );
 
     return (
-        <div className={styles.container}>
+        <div className={styles.filterContainer}>
             <p> Viser resultater som passer i sesong </p>
             <SeasonFilter activeSeasons={activeSeasons} onToggle={toggleSeason} />
             <p> Viser resultater for barn </p>

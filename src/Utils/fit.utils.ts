@@ -1,6 +1,6 @@
-import type {Percentile, Sex, Season, UserRecord, WillFitWhenResult, KidsClothingSizeKey} from "../types.ts";
+import type {Percentile, Sex, Season, UserRecord, WillFitWhenResult, KidsClothingSizeKey} from "../types/types.ts";
 import {Temporal} from "temporal-polyfill";
-import {kidsClothingTable} from "../Data/SizeCharts/kids_clothing_sizes.ts";
+import {kidsClothingTable} from "../data/SizeCharts/kids_clothing_sizes.ts";
 import {getLengthByMonthAndPercentile} from "./growth.utils.ts";
 import {monthsSinceBirth} from "./age.utils.ts";
 

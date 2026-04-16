@@ -1,7 +1,7 @@
 import { useReducer } from "react";
-import Calculator from "./components/calculator/calculator.tsx";
-import { MyKids } from "./components/myKids/MyKids.tsx";
-import { KidsProvider, useKids } from "./context/KidsContext.tsx";
+import Calculator from "./features/calculator/calculator.tsx";
+import { MyKids } from "./features/myKids/MyKids.tsx";
+import { KidsProvider, useKids } from "./hooks/context/KidsContext.tsx";
 import styles from "./App.module.css";
 
 type AppState = { showMyKids: boolean; openAddForm: boolean };

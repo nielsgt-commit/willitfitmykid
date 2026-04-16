@@ -1,4 +1,4 @@
-import type {KidsClothingTable} from "../../types.ts";
+import type {KidsClothingTable} from "../../types/types.ts";
 
 
 const kidsClothingSizeRows: KidsClothingTable = {

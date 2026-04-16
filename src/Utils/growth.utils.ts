@@ -1,7 +1,7 @@
 import { growthDataBoys } from '../data/growthCharts/growthDataBoys';
 import { growthDataGirls } from '../data/growthCharts/growthDataGirls';
-import type {Sex, MonthEntry, Percentile, UserRecord} from "../types.ts";
-import {PERCENTILES} from "../constants.ts";
+import type {Sex, MonthEntry, Percentile, UserRecord} from "../types/types.ts";
+import {PERCENTILES} from "../constants/constants.ts";
 import { monthsSinceBirth } from './age.utils.ts';
 
 function chartData(sex: Sex): MonthEntry[] {

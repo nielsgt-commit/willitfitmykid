@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 //import styles from './KidsForm.module.css';
 import { Temporal } from 'temporal-polyfill';
 import { PERCENTILES } from '../../../constants.ts';
@@ -58,87 +58,95 @@ function buildUserRecord(form: EditingUser, derivedField: 'height' | 'percentile
     };
 }
 
+type FormState = {
+    form: EditingUser;
+    derivedField: 'height' | 'percentile';
+};
+
+type Action =
+    | { type: 'SET_NAME'; value: string }
+    | { type: 'SET_SEX'; value: Sex }
+    | { type: 'SET_BIRTHDAY'; value: string }
+    | { type: 'SET_HEIGHT'; value: string }
+    | { type: 'SET_PERCENTILE'; value: number };
+
+function formReducer(state: FormState, action: Action): FormState {
+    const { form, derivedField } = state;
+
+    switch (action.type) {
+        case 'SET_NAME':
+            return { ...state, form: { ...form, name: action.value } };
+
+        case 'SET_SEX': {
+            const sex = action.value;
+            if (derivedField === 'height') {
+                const suggested = suggestHeight(sex, form.birthday, form.percentile);
+                return {
+                    ...state,
+                    form: { ...form, sex, heightNow: suggested !== undefined ? String(suggested) : form.heightNow },
+                };
+            }
+            const height = Number(form.heightNow);
+            const suggested = height > 0 ? suggestPercentile(sex, form.birthday, height) : undefined;
+            return {
+                ...state,
+                form: { ...form, sex, percentile: suggested ?? form.percentile },
+            };
+        }
+
+        case 'SET_BIRTHDAY': {
+            const value = action.value;
+            const isComplete = /^\d{4}-\d{2}-\d{2}$/.test(value);
+            if (!isComplete) {
+                return { ...state, form: { ...form, birthday: value } };
+            }
+            if (derivedField === 'height') {
+                const suggested = suggestHeight(form.sex, value, form.percentile);
+                return {
+                    ...state,
+                    form: { ...form, birthday: value, heightNow: suggested !== undefined ? String(suggested) : form.heightNow },
+                };
+            }
+            const height = Number(form.heightNow);
+            const suggested = height > 0 ? suggestPercentile(form.sex, value, height) : undefined;
+            return {
+                ...state,
+                form: { ...form, birthday: value, percentile: suggested ?? form.percentile },
+            };
+        }
+
+        case 'SET_HEIGHT': {
+            const value = action.value;
+            const height = Number(value);
+            const suggested = value && height > 0 ? suggestPercentile(form.sex, form.birthday, height) : undefined;
+            return {
+                derivedField: 'percentile',
+                form: { ...form, heightNow: value, percentile: suggested ?? form.percentile },
+            };
+        }
+
+        case 'SET_PERCENTILE': {
+            const suggested = suggestHeight(form.sex, form.birthday, action.value);
+            return {
+                derivedField: 'height',
+                form: { ...form, percentile: action.value, heightNow: suggested !== undefined ? String(suggested) : form.heightNow },
+            };
+        }
+    }
+}
+
 type KidsFormProps =
     | { mode: 'add'; onSubmit: (data: Omit<UserRecord, 'id'>) => void; onCancel: () => void }
     | { mode: 'edit'; kid: UserRecord; onSubmit: (data: Omit<UserRecord, 'id'>) => void; onCancel: () => void };
 
 export function KidsForm(props: KidsFormProps) {
     const initialForm = props.mode === 'edit' ? toEditingUser(props.kid) : emptyForm;
-    const initialDerived = props.mode === 'edit' && props.kid.heightNow !== undefined ? 'percentile' : 'height';
+    const initialDerived: 'height' | 'percentile' = props.mode === 'edit' && props.kid.heightNow !== undefined ? 'percentile' : 'height';
 
-    const [form, setForm] = useState<EditingUser>(initialForm);
-    const [derivedField, setDerivedField] = useState<'height' | 'percentile'>(initialDerived);
-
-    const onHeightChange = (value: string) => {
-        setDerivedField('percentile');
-        const height = Number(value);
-        const suggested =
-            value && height > 0 ? suggestPercentile(form.sex, form.birthday, height) : undefined;
-        setForm({
-            ...form,
-            heightNow: value,
-            percentile: suggested ?? form.percentile,
-        });
-    };
-
-    const onPercentileChange = (value: number) => {
-        setDerivedField('height');
-        const suggested = suggestHeight(form.sex, form.birthday, value);
-        setForm({
-            ...form,
-            percentile: value,
-            heightNow: suggested !== undefined ? String(suggested) : form.heightNow,
-        });
-    };
-
-    const onBirthdayChange = (value: string) => {
-        const isComplete = /^\d{4}-\d{2}-\d{2}$/.test(value);
-
-        if (!isComplete) {
-            setForm({ ...form, birthday: value });
-            return;
-        }
-
-        if (derivedField === 'height') {
-            const suggested = suggestHeight(form.sex, value, form.percentile);
-            setForm({
-                ...form,
-                birthday: value,
-                heightNow: suggested !== undefined ? String(suggested) : form.heightNow,
-            });
-        } else {
-            const height = Number(form.heightNow);
-            const suggested = height > 0 ? suggestPercentile(form.sex, value, height) : undefined;
-            setForm({
-                ...form,
-                birthday: value,
-                percentile: suggested ?? form.percentile,
-            });
-        }
-    };
-
-    const onSexChange = (value: Sex) => {
-        if (derivedField === 'height') {
-            const suggested = suggestHeight(value, form.birthday, form.percentile);
-            setForm({
-                ...form,
-                sex: value,
-                heightNow: suggested !== undefined ? String(suggested) : form.heightNow,
-            });
-        } else {
-            const height = Number(form.heightNow);
-            const suggested = height > 0 ? suggestPercentile(value, form.birthday, height) : undefined;
-            setForm({
-                ...form,
-                sex: value,
-                percentile: suggested ?? form.percentile,
-            });
-        }
-    };
-
-    const handleSubmit = () => {
-        props.onSubmit(buildUserRecord(form, derivedField));
-    };
+    const [{ form, derivedField }, dispatch] = useReducer(formReducer, {
+        form: initialForm,
+        derivedField: initialDerived,
+    });
 
     const percentileValues = PERCENTILES.map(p => Number(p.replace('P', '')));
 
@@ -147,11 +155,11 @@ export function KidsForm(props: KidsFormProps) {
             <div>
                 <label>
                     Navn:
-                    <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+                    <input value={form.name} onChange={e => dispatch({ type: 'SET_NAME', value: e.target.value })} />
                 </label>
                 <label>
                     Kjønn:
-                    <select value={form.sex} onChange={e => onSexChange(e.target.value as Sex)}>
+                    <select value={form.sex} onChange={e => dispatch({ type: 'SET_SEX', value: e.target.value as Sex })}>
                         <option value="F">Jente</option>
                         <option value="M">Gutt</option>
                     </select>
@@ -161,14 +169,14 @@ export function KidsForm(props: KidsFormProps) {
                     <input
                         type="date"
                         value={form.birthday}
-                        onChange={e => onBirthdayChange(e.target.value)}
+                        onChange={e => dispatch({ type: 'SET_BIRTHDAY', value: e.target.value })}
                         min={Temporal.Now.plainDateISO().subtract({ years: 18 }).toString()}
                         max={Temporal.Now.plainDateISO().toString()}
                     />
                 </label>
                 <label>
                     Persentil:
-                    <select value={form.percentile} onChange={e => onPercentileChange(Number(e.target.value))}>
+                    <select value={form.percentile} onChange={e => dispatch({ type: 'SET_PERCENTILE', value: Number(e.target.value) })}>
                         {percentileValues.map(p => (
                             <option key={p} value={p}>{p}</option>
                         ))}
@@ -176,10 +184,13 @@ export function KidsForm(props: KidsFormProps) {
                 </label>
                 <label>
                     Høyde (cm):
-                    <input type="number" value={form.heightNow} onChange={e => onHeightChange(e.target.value)} />
+                    <input type="number" value={form.heightNow} onChange={e => dispatch({ type: 'SET_HEIGHT', value: e.target.value })} />
                 </label>
             </div>
-            <button onClick={handleSubmit} disabled={props.mode === 'add' && (!form.name || !form.birthday)}>
+            <button
+                onClick={() => props.onSubmit(buildUserRecord(form, derivedField))}
+                disabled={props.mode === 'add' && (!form.name || !form.birthday)}
+            >
                 {props.mode === 'add' ? 'Legg til' : 'Lagre'}
             </button>
             <button onClick={props.onCancel}>Avbryt</button>

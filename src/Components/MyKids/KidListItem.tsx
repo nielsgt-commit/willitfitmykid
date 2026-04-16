@@ -2,7 +2,7 @@ import type { UserRecord } from '../../types.ts';
 import styles from './KidListItem.module.css';
 import { KidDetail } from './KidDetail.tsx';
 import { KidActions } from './KidActions.tsx';
-import { KidsForm } from './KidsForm/KidsForm.tsx';
+import { KidsForm } from './kidsForm/KidsForm.tsx';
 
 type KidListItemProps = {
     kid: UserRecord;

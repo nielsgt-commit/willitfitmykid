@@ -1,5 +1,5 @@
-import { growthDataBoys } from '../Data/GrowthCharts/growthDataBoys';
-import { growthDataGirls } from '../Data/GrowthCharts/growthDataGirls';
+import { growthDataBoys } from '../data/growthCharts/growthDataBoys';
+import { growthDataGirls } from '../data/growthCharts/growthDataGirls';
 import type {Sex, MonthEntry, Percentile, UserRecord} from "../types.ts";
 import {PERCENTILES} from "../constants.ts";
 import { monthsSinceBirth } from './age.utils.ts';

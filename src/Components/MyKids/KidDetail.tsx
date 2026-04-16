@@ -1,5 +1,5 @@
 import type { UserRecord } from '../../types.ts';
-import { getEffectiveHeight } from '../../Utils/growth.utils.ts';
+import { getEffectiveHeight } from '../../utils/growth.utils.ts';
 import { getKidColor } from '../../constants.ts';
 import styles from './KidDetail.module.css';
 

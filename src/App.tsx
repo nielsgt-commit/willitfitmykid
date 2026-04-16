@@ -1,6 +1,6 @@
 import { useReducer } from "react";
-import Calculator from "./Components/Calculator/Calculator.tsx";
-import { MyKids } from "./Components/MyKids/MyKids.tsx";
+import Calculator from "./components/calculator/calculator.tsx";
+import { MyKids } from "./components/myKids/MyKids.tsx";
 import { KidsProvider, useKids } from "./context/KidsContext.tsx";
 import styles from "./App.module.css";
 

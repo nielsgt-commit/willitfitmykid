@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useEffect, useReducer} from "react";
 import type {Season, State} from "../../../types.ts";
 import {useKids} from "../../../context/KidsContext.tsx";
 import {getSeason, willFitWhen} from "../../../Utils/fit.utils.ts";
@@ -35,50 +35,59 @@ export function Result({size}: Pick<State, "size">) {
     const {kids} = useKids();
     const results = willFitWhen(kids, size);
 
-    const [activeSeasons, setActiveSeasons] = useState<Set<Season>>(() => new Set([currentSeason()]));
-    const [activeKidIds, setActiveKidIds] = useState<Set<number>>(() => new Set(kids.map(k => k.id)));
+    type FilterState = { activeSeasons: Set<Season>; activeKidIds: Set<number> };
+    type FilterAction =
+        | { type: 'TOGGLE_SEASON'; season: Season }
+        | { type: 'TOGGLE_KID'; id: number }
+        | { type: 'SYNC_KIDS'; kidIds: number[] };
+
+    function filterReducer(state: FilterState, action: FilterAction): FilterState {
+        switch (action.type) {
+            case 'TOGGLE_SEASON': {
+                const next = new Set(state.activeSeasons);
+                next.has(action.season) ? next.delete(action.season) : next.add(action.season);
+                return { ...state, activeSeasons: next };
+            }
+            case 'TOGGLE_KID': {
+                const next = new Set(state.activeKidIds);
+                next.has(action.id) ? next.delete(action.id) : next.add(action.id);
+                return { ...state, activeKidIds: next };
+            }
+            case 'SYNC_KIDS': {
+                const currentIds = new Set(action.kidIds);
+                const next = new Set([...state.activeKidIds].filter(id => currentIds.has(id)));
+                action.kidIds.forEach(id => { if (!state.activeKidIds.has(id)) next.add(id); });
+                return { ...state, activeKidIds: next };
+            }
+        }
+    }
+
+    const [{ activeSeasons, activeKidIds }, dispatch] = useReducer(
+        filterReducer,
+        null,
+        () => ({
+            activeSeasons: new Set<Season>([currentSeason()]),
+            activeKidIds: new Set<number>(kids.map(k => k.id)),
+        })
+    );
 
     // When kids list changes: add newly added kids as active, remove deleted kids
     useEffect(() => {
-        setActiveKidIds(prev => {
-            const currentIds = new Set(kids.map(k => k.id));
-            const next = new Set([...prev].filter(id => currentIds.has(id)));
-            kids.forEach(k => { if (!prev.has(k.id)) next.add(k.id); });
-            return next;
-        });
+        dispatch({ type: 'SYNC_KIDS', kidIds: kids.map(k => k.id) });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [kids.map(k => k.id).join(',')]);
-
-    const toggleSeason = (season: Season) => {
-        setActiveSeasons(prev => {
-            const next = new Set(prev);
-            if (next.has(season)) next.delete(season);
-            else next.add(season);
-            return next;
-        });
-    };
-
-    const toggleKid = (id: number) => {
-        setActiveKidIds(prev => {
-            const next = new Set(prev);
-            if (next.has(id)) next.delete(id);
-            else next.add(id);
-            return next;
-        });
-    };
 
     const filteredByKids = results.filter(r => activeKidIds.has(r.user.id));
     const filtered = activeSeasons.size === 0
         ? []
         : filteredByKids.filter(r => [...activeSeasons].some(s => resultIncludesSeason(r, s)));
 
-    let content: React.ReactNode;
-    if (kids.length === 0) {
-        content = <p>Legg til barn for å finne størrelser som passer og sesong.</p>;
-    } else if (filteredByKids.length === 0) {
-        content = <p className={styles.emptyMessage}>Denne størrelsen passer ikke noen av barna i listen</p>;
-    } else {
-        content = (
+    const content: React.ReactNode =
+        kids.length === 0 ? (
+            <p>Legg til barn for å finne størrelser som passer og sesong.</p>
+        ) : filteredByKids.length === 0 ? (
+            <p className={styles.emptyMessage}>Denne størrelsen passer ikke noen av barna i listen</p>
+        ) : (
             <p className={styles.resultsMessage}>
                 Dette plagget passer trolig{" "}
                 {activeSeasons.size > 0 && (
@@ -88,7 +97,6 @@ export function Result({size}: Pick<State, "size">) {
                 )}
             </p>
         );
-    }
 
     return (
         <>
@@ -103,7 +111,7 @@ export function Result({size}: Pick<State, "size">) {
 
                         <button
                             key={season}
-                            onClick={() => toggleSeason(season)}
+                            onClick={() => dispatch({ type: 'TOGGLE_SEASON', season })}
                             className={`${styles.seasonButton} ${active ? styles.active : ''}`}
                             style={{'--season-color': color} as React.CSSProperties}
                         >
@@ -121,7 +129,7 @@ export function Result({size}: Pick<State, "size">) {
                         return (
                             <button
                                 key={kid.id}
-                                onClick={() => toggleKid(kid.id)}
+                                onClick={() => dispatch({ type: 'TOGGLE_KID', id: kid.id })}
                                 className={`${styles.kidButton} ${active ? styles.kidActive : ''}`}
                                 style={{'--kid-color': color} as React.CSSProperties}
                             >

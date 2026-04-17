@@ -1,5 +1,4 @@
 import * as React from "react";
-import styles from "@features/calculator/size/ToggleGroup.module.css";
 
 interface ToggleGroupProps<T extends string> {
     value: T;
@@ -49,7 +48,6 @@ export function ToggleGroupItem<T extends string>({ value, children }: ToggleGro
             role="radio"
             aria-checked={isSelected}
             onClick={() => onSelect(value)}
-            className={`${styles.toggleGroupItem} ${isSelected ? styles.selected : ''}`}
         >
             {children}
         </button>

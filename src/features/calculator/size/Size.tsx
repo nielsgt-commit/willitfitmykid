@@ -7,7 +7,6 @@ import {getEffectiveHeight} from "@utils/growth.utils.ts";
 import {getKidColor, regions} from "@constants/constants.ts";
 import * as React from "react";
 import {SwipeArea} from "@features/calculator/size/SwipeArea.tsx";
-import styles from "@features/calculator/size/Size.module.css";
 import {ToggleGroup, ToggleGroupItem} from "@features/calculator/size/ToggleGroup.tsx";
 import {SizeConversions} from "@features/calculator/size/SizeConversions.tsx";
 
@@ -83,13 +82,13 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
     return (
         <>
         <SwipeArea inputRegion={inputRegion} regions={regions} dispatch={dispatch} onDragMove={handleDragMove} onDragEnd={handleDragEnd}>
-            <div className={styles.sizeContainer}>
+            <div>
 
-                <p className={styles.regionLabel}> Region </p>
-                <div className={styles.regionRow}>
+                <p> Region </p>
+                <div>
 
-                    <button onClick={prevRegion} className={styles.subtleButton}>&lsaquo;</button>
-                    <div className={styles.regionWindow}>
+                    <button onClick={prevRegion}>&lsaquo;</button>
+                    <div>
                         <ToggleGroup
                             value={inputRegion}
                             onValueChange={(r) => dispatch({ type: SET_REGION, payload: r as Region })}
@@ -107,12 +106,11 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                             ))}
                         </ToggleGroup>
                     </div>
-                    <button onClick={nextRegion} className={styles.subtleButton}>&rsaquo;</button>
+                    <button onClick={nextRegion}>&rsaquo;</button>
                 </div>
-                <button onClick={() => dispatch({ type: INCREMENT_SIZE })} className={styles.subtleButton}>&#x2303;</button>
-                <div className={styles.sizeWindow} ref={sizeWindowRef}>
+                <button onClick={() => dispatch({ type: INCREMENT_SIZE })}>&#x2303;</button>
+                <div ref={sizeWindowRef}>
                     <div
-                        className={styles.sizeStrip}
                         style={{
                             height: `${allSizes.length * 100}%`,
                             transform: `translateY(${sizeTranslate})`,
@@ -123,18 +121,15 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                             const label = row.conversions[inputRegion] ?? row.key;
                             const kidsHere = kidsBySizeKey.get(row.key);
                             return (
-                                <div
-                                    key={row.key}
-                                    className={styles.sizeItem}
-                                >
+                                <div key={row.key}>
                                     {label}
                                     {kidsHere && (
-                                        <div className={styles.kidDots}>
+                                        <div>
                                             {kidsHere.map(({ name, id }) => {
                                                 const color = getKidColor(id);
                                                 return (
-                                                    <div key={id} className={styles.kidDot} title={name} style={{ backgroundColor: color }}>
-                                                        <span className={styles.kidDotName} style={{ color }}>{name}</span>
+                                                    <div key={id} title={name} style={{ backgroundColor: color }}>
+                                                        <span style={{ color }}>{name}</span>
                                                     </div>
                                                 );
                                             })}
@@ -145,9 +140,9 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                         })}
                     </div>
                 </div>
-                <button onClick={() => dispatch({ type: DECREMENT_SIZE })} className={styles.subtleButton}>&#x2304;</button>
+                <button onClick={() => dispatch({ type: DECREMENT_SIZE })}>&#x2304;</button>
             </div>
-            <p className={styles.regionLabel} onClick={() => setShowConversions((s) => !s)}> Andre regioner </p>
+            <p onClick={() => setShowConversions((s) => !s)}> Andre regioner </p>
             {showConversions ? <SizeConversions conversions={conversions} /> : null}
         </SwipeArea>
         </>

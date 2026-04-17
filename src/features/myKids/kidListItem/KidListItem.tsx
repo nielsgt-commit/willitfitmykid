@@ -1,6 +1,5 @@
 import {KidsForm} from "@features/myKids/kidsForm/KidsForm.tsx";
 import type {UserRecord} from "@/types/types.ts";
-import styles from "@features/myKids/kidListItem/KidListItem.module.css";
 import {KidDetail} from "@features/myKids/kidDetail/KidDetail.tsx";
 import {KidActions} from "@features/myKids/kidActions/KidActions.tsx";
 
@@ -31,11 +30,11 @@ export function KidListItem({ kid, isEditing, onSave, onEdit, onCancelEdit, onRe
 
     return (
         <li>
-            <div className={styles.kidRow}>
-                <div className={styles.kidDetail}>
+            <div>
+                <div>
                     <KidDetail kid={kid} />
                 </div>
-                <div className={styles.kidActions}>
+                <div>
                     <KidActions onEdit={onEdit} onRemove={onRemove} />
                 </div>
             </div>

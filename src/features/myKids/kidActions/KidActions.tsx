@@ -1,5 +1,3 @@
-// import styles from './KidActions.module.css';
-
 type KidActionsProps = {
     onEdit: () => void;
     onRemove: () => void;

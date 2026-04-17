@@ -5,7 +5,6 @@ import {useKids} from "@hooks/context/KidsContext.tsx";
 import {useResultFilters} from "@features/calculator/result/useResultFilters.ts";
 import {willFitWhen} from "@utils/fit.utils.ts";
 import {selectFiltered, selectFilteredByKids} from "@features/calculator/result/result.selectors.ts";
-import styles from "@features/calculator/result/Result.module.css";
 import {ResultList} from "@features/calculator/result/resultList/ResultList.tsx";
 import {SeasonFilter} from "@features/calculator/result/seasonFilter/SeasonFilter.tsx";
 import {KidFilter} from "@features/calculator/result/kidFilter/KidFilter.tsx";
@@ -29,9 +28,9 @@ export function Result({size}: Pick<State, "size">) {
         kids.length === 0 ? (
             <p>Legg til barn for å finne størrelser som passer og sesong.</p>
         ) : filteredByKids.length === 0 ? (
-            <p className={styles.emptyMessage}>Denne størrelsen passer ikke noen av barna i listen</p>
+            <p>Denne størrelsen passer ikke noen av barna i listen</p>
         ) : (
-            <p className={styles.resultsMessage}>
+            <p>
                 Dette plagget passer trolig{" "}
                 {activeSeasons.size > 0 && (
                     filtered.length === 0
@@ -42,7 +41,7 @@ export function Result({size}: Pick<State, "size">) {
         );
 
     return (
-        <div className={styles.filterContainer}>
+        <div>
             <p> Viser resultater som passer i sesong </p>
             <SeasonFilter activeSeasons={activeSeasons} onToggle={toggleSeason} />
             <p> Viser resultater for barn </p>

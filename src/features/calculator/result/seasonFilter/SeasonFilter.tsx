@@ -1,5 +1,4 @@
 import type {Season} from "@/types/types.ts";
-import styles from "@features/calculator/result/seasonFilter/SeasonFilter.module.css";
 import {SEASON_COLORS, SEASONS} from "@features/calculator/result/seasonRange/season.constants.ts";
 
 
@@ -10,7 +9,7 @@ type SeasonFilterProps = {
 
 export function SeasonFilter({activeSeasons, onToggle}: SeasonFilterProps) {
     return (
-        <div className={styles.seasonButtons}>
+        <div>
             {SEASONS.map(season => {
                 const active = activeSeasons.has(season);
                 const color = SEASON_COLORS[season];
@@ -18,7 +17,7 @@ export function SeasonFilter({activeSeasons, onToggle}: SeasonFilterProps) {
                     <button
                         key={season}
                         onClick={() => onToggle(season)}
-                        className={`${styles.seasonButton} ${active ? styles.active : ''}`}
+                        aria-pressed={active}
                         style={{'--season-color': color} as React.CSSProperties}
                     >
                         {season}

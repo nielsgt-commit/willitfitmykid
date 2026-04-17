@@ -1,5 +1,4 @@
 import { useReducer } from 'react';
-//import styles from './KidsForm.module.css';
 import { Temporal } from 'temporal-polyfill';
 import { PERCENTILES } from '@constants/constants.ts';
 

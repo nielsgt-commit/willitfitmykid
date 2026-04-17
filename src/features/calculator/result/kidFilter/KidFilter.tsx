@@ -1,6 +1,5 @@
 import type {UserRecord} from "@/types/types.ts";
 import {getKidColor} from "@constants/constants.ts";
-import styles from "@features/calculator/result/kidFilter/KidFilter.module.css"
 
 
 type KidFilterProps = {
@@ -12,7 +11,7 @@ type KidFilterProps = {
 export function KidFilter({kids, activeKidIds, onToggle}: KidFilterProps) {
     if (kids.length === 0) return null;
     return (
-        <div className={styles.kidButtons}>
+        <div>
             {kids.map(kid => {
                 const active = activeKidIds.has(kid.id);
                 const color = getKidColor(kid.id);
@@ -20,10 +19,10 @@ export function KidFilter({kids, activeKidIds, onToggle}: KidFilterProps) {
                     <button
                         key={kid.id}
                         onClick={() => onToggle(kid.id)}
-                        className={`${styles.kidButton} ${active ? styles.kidActive : ''}`}
+                        aria-pressed={active}
                         style={{'--kid-color': color} as React.CSSProperties}
                     >
-                        <span className={styles.kidDot} />
+                        <span />
                         {kid.name}
                     </button>
                 );

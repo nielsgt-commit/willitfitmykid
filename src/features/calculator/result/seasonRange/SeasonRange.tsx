@@ -1,6 +1,5 @@
 import type {Season, WillFitWhenResult} from "@/types/types.ts";
 import {SEASON_COLORS, SEASONS} from "@features/calculator/result/seasonRange/season.constants.ts";
-import styles from "@features/calculator/result/seasonRange/SeasonRange.module.css";
 import * as React from "react";
 
 
@@ -38,7 +37,6 @@ export function SeasonRange({start, end, filterSeasons}: SeasonRangeProps) {
                     {i > 0 && i < pairs.length - 1 && ", "}
                     {i > 0 && i === pairs.length - 1 && " og "}
                     <span
-                        className={styles.season}
                         style={{'--season-color': SEASON_COLORS[pair.season]} as React.CSSProperties}
                     >
                         {pair.season} {pair.year}

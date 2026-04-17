@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import styles from '@features/myKids/MyKids.module.css';
 import { useKids } from '@hooks/context/KidsContext.tsx';
 import { KidsForm } from './kidsForm/KidsForm.tsx';
 import { KidList } from '@features/myKids/kidList/KidList.tsx';
@@ -45,7 +44,7 @@ export function MyKids({ initialAdding = false, onCancelFirstAdd }: MyKidsProps)
 
     return (
         <>
-            <div className={styles.mineBarnContainer}>
+            <div>
             <h2>Mine barn</h2>
             <KidList
                 kids={kids}

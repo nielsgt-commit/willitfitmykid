@@ -1,7 +1,8 @@
-import type { UserRecord } from '../../../types/types.ts';
-import { getEffectiveHeight } from '../../../utils/growth.utils.ts';
-import { getKidColor } from '../../../constants/constants.ts';
-import styles from './KidDetail.module.css';
+import {getEffectiveHeight} from "@utils/growth.utils.ts";
+import type {UserRecord} from "@/types/types.ts";
+import {getKidColor} from "@constants/constants.ts";
+import styles from "@features/MyKids.module.css";
+
 
 type KidDetailProps = {
     kid: UserRecord;

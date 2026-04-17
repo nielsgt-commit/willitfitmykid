@@ -1,5 +1,5 @@
 import { Temporal } from 'temporal-polyfill';
-import type {UserRecord} from "../../types/types.ts";
+import type {UserRecord} from "@myTypes/types.ts";
 
 const STORAGE_KEY = 'wifmk.kids.v1';
 

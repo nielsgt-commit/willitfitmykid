@@ -1,14 +1,15 @@
 import * as React from "react";
 import {useMemo} from "react";
-import type {State} from "../../../types/types.ts";
-import {useKids} from "../../../hooks/context/KidsContext.tsx";
-import {willFitWhen} from "../../../utils/fit.utils.ts";
-import {ResultList} from "./resultList/ResultList.tsx";
-import {SeasonFilter} from "./seasonFilter/SeasonFilter.tsx";
-import {KidFilter} from "./kidFilter/KidFilter.tsx";
-import {useResultFilters} from "./useResultFilters.ts";
-import {selectFiltered, selectFilteredByKids} from "./result.selectors.ts";
-import styles from "./Result.module.css";
+import type {State} from "@/types/types.ts";
+import {useKids} from "@hooks/context/KidsContext.tsx";
+import {useResultFilters} from "@features/calculator/result/useResultFilters.ts";
+import {willFitWhen} from "@utils/fit.utils.ts";
+import {selectFiltered, selectFilteredByKids} from "@features/calculator/result/result.selectors.ts";
+import styles from "@features/MyKids.module.css";
+import {ResultList} from "@features/calculator/result/resultList/ResultList.tsx";
+import {SeasonFilter} from "@features/calculator/result/seasonFilter/SeasonFilter.tsx";
+import {KidFilter} from "@features/calculator/result/kidFilter/KidFilter.tsx";
+
 
 export function Result({size}: Pick<State, "size">) {
     const {kids} = useKids();

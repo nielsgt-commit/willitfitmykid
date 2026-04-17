@@ -1,16 +1,16 @@
-import {INCREMENT_SIZE, DECREMENT_SIZE, SET_REGION} from "./size.action.ts";
-import type {Action} from "./size.action.ts"
-import type { Region } from "../../../types/types.ts";
-import { listAvailableSizes, findSizeForHeight } from "../../../utils/size.utils.ts";
-import { getEffectiveHeight } from "../../../utils/growth.utils.ts";
-import { kidsClothingTable } from "../../../data/sizeCharts/kids_clothing_sizes.ts";
-import {regions, getKidColor} from "../../../constants/constants.ts";
-import { ToggleGroup, ToggleGroupItem } from "./ToggleGroup.tsx";
-import { SwipeArea } from "./SwipeArea.tsx";
-import { SizeConversions } from "./SizeConversions.tsx";
+import {kidsClothingTable} from "@data/sizeCharts/kids_clothing_sizes.ts";
+import type {Region} from "@/types/types.ts";
+import {type Action, DECREMENT_SIZE, INCREMENT_SIZE, SET_REGION} from "@features/calculator/size/size.action.ts";
+import {findSizeForHeight, listAvailableSizes} from "@utils/size.utils.ts";
+import {useKids} from "@hooks/context/KidsContext.tsx";
+import {getEffectiveHeight} from "@utils/growth.utils.ts";
+import {getKidColor, regions} from "@constants/constants.ts";
 import * as React from "react";
-import styles from "./Size.module.css";
-import { useKids } from "../../../hooks/context/KidsContext.tsx";
+import {SwipeArea} from "@features/calculator/size/SwipeArea.tsx";
+import styles from "@features/MyKids.module.css";
+import {ToggleGroup, ToggleGroupItem} from "@features/calculator/size/ToggleGroup.tsx";
+import {SizeConversions} from "@features/calculator/size/SizeConversions.tsx";
+
 
 interface SizeProps {
     size: string;

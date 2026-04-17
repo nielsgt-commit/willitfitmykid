@@ -1,4 +1,4 @@
-import type { State } from "../../types/types.ts";
+import type {State} from "@/types/types.ts";
 
 export const initialState: State = {
     size: '86',

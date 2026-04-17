@@ -4,7 +4,7 @@ export const SET_SIZE = 'SET_SIZE';
 export const SET_REGION = 'SET_REGION';
 export const SET_SIZE_FOR_HEIGHT = 'SET_SIZE_FOR_HEIGHT';
 
-import type {Region, KidsClothingSizeKey} from '../../../types/types.ts';
+import type {Region, KidsClothingSizeKey} from '@myTypes/types.ts';
 
 export type Action =
     | {type: typeof INCREMENT_SIZE}

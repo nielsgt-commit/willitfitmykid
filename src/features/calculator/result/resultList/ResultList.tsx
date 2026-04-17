@@ -1,5 +1,6 @@
-import type {Season, WillFitWhenResult} from "../../../../types/types.ts";
-import {ResultItem} from "../resultItem/ResultItem.tsx";
+import type {Season, WillFitWhenResult} from "@/types/types.ts";
+import {ResultItem} from "@features/calculator/result/resultItem/ResultItem.tsx";
+
 
 type ResultListProps = {
     results: WillFitWhenResult[];

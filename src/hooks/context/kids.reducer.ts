@@ -1,4 +1,4 @@
-import type { UserRecord } from '../../types/types.ts';
+import type { UserRecord } from '@myTypes/types.ts';
 import { ADD_KID, UPDATE_KID, REMOVE_KID, type Action } from './kids.action.ts';
 
 export type KidsState = { kids: UserRecord[]; nextId: number };

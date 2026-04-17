@@ -1,8 +1,8 @@
 import { useReducer } from "react";
-import { MyKids } from "../features/myKids/MyKids.tsx";
-import { useKids } from "../hooks/context/KidsContext.tsx";
-import appReducer from "./app.reducer.ts";
-import { TOGGLE_MY_KIDS, OPEN_ADD_FORM, CLOSE_MY_KIDS } from "./app.action.ts";
+import { MyKids } from "@features/myKids/MyKids.tsx";
+import { useKids } from "@hooks/context/KidsContext.tsx";
+import appReducer from "@app/app.reducer.ts";
+import { TOGGLE_MY_KIDS, OPEN_ADD_FORM, CLOSE_MY_KIDS } from "@app/app.action.ts";
 
 export function ToggleMyKids() {
     const [state, dispatch] = useReducer(appReducer, { showMyKids: false, openAddForm: false });

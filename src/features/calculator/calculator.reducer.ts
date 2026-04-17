@@ -1,9 +1,15 @@
-import {DECREMENT_SIZE, INCREMENT_SIZE, SET_SIZE, SET_REGION, SET_SIZE_FOR_HEIGHT} from "./size/size.action.ts";
-import type {State} from "../../types/types.ts";
-import type {Action} from "./size/size.action.ts"
-import {EU_SIZE_0_19yo} from "../../constants/constants.ts";
-import {kidsClothingTable} from "../../data/sizeCharts/kids_clothing_sizes.ts";
-import {getSizeRow, findCanonicalSize} from "../../utils/size.utils.ts";
+import {
+    type Action,
+    DECREMENT_SIZE,
+    INCREMENT_SIZE,
+    SET_REGION,
+    SET_SIZE, SET_SIZE_FOR_HEIGHT
+} from "@features/calculator/size/size.action.ts";
+import type {State} from "@/types/types.ts";
+import {findCanonicalSize, getSizeRow} from "@utils/size.utils.ts";
+import {kidsClothingTable} from "@data/sizeCharts/kids_clothing_sizes.ts";
+import {EU_SIZE_0_19yo} from "@constants/constants.ts";
+
 
 export default function calculatorReducer(state:State, action: Action): State {
 

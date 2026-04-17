@@ -1,5 +1,5 @@
-import { KidsProvider } from "./hooks/context/KidsContext.tsx";
-import { AppContent } from "./app/AppContent.tsx";
+import { KidsProvider } from "@hooks/context/KidsContext.tsx";
+import { AppContent } from "@app/AppContent.tsx";
 
 function App() {
     return (

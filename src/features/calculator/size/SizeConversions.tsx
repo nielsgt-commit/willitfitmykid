@@ -1,5 +1,6 @@
-import styles from "./SizeConversions.module.css";
-import type { Region } from "../../../types/types.ts";
+import type {Region} from "@/types/types.ts";
+import styles from "@features/MyKids.module.css";
+
 
 interface SizeConversionsProps {
     conversions: Partial<Record<Region, string>>;

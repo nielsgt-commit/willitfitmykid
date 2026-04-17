@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, useMemo, type ReactNode } from 'react';
-import { loadKids, saveKids } from '../../services/storage/kidsStorage.ts';
-import type { UserRecord } from '../../types/types.ts';
-import kidsReducer from './kids.reducer.ts';
+import { loadKids, saveKids } from '@services/storage/kidsStorage.ts';
+import type { UserRecord } from '@myTypes/types.ts';
+import kidsReducer from '@hooks/context/kids.reducer.ts';
 import { ADD_KID, UPDATE_KID, REMOVE_KID } from './kids.action.ts';
 
 type KidsContextValue = {

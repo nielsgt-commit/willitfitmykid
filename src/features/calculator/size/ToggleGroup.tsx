@@ -1,5 +1,5 @@
 import * as React from "react";
-import styles from "./ToggleGroup.module.css";
+import styles from "@features/calculator/size/ToggleGroup.module.css";
 
 interface ToggleGroupProps<T extends string> {
     value: T;

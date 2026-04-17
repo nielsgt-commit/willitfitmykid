@@ -1,5 +1,5 @@
 
-import type {KidsClothingSizeKey, KidsClothingSizeRow, KidsClothingTable, Region} from "../types/types.ts";
+import type {KidsClothingSizeKey, KidsClothingSizeRow, KidsClothingTable, Region} from "@myTypes/types.ts";
 
 const getRows = (table: KidsClothingTable): KidsClothingSizeRow[] =>
   Object.values(table);

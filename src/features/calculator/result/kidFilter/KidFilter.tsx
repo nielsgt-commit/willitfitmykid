@@ -1,7 +1,7 @@
-import * as React from "react";
-import type {UserRecord} from "../../../../types/types.ts";
-import {getKidColor} from "../../../../constants/constants.ts";
-import styles from "./KidFilter.module.css";
+import styles from "@features/MyKids.module.css";
+import type {UserRecord} from "@/types/types.ts";
+import {getKidColor} from "@constants/constants.ts";
+
 
 type KidFilterProps = {
     kids: UserRecord[];

@@ -1,17 +1,15 @@
-// Components
-import Size from "./size/Size.tsx";
-// State
+import {useKids} from "@hooks/context/KidsContext.tsx";
+import type {State} from "@/types/types.ts";
+import {initialState} from "@features/calculator/initialState.tsx";
+import {kidsClothingTable} from "@data/sizeCharts/kids_clothing_sizes.ts";
+import {findSizeForHeight} from "@utils/size.utils.ts";
+import {getEffectiveHeight} from "@utils/growth.utils.ts";
+import {useEffect, useReducer} from "react";
+import calculatorReducer from "@features/calculator/calculator.reducer.ts";
+import {SET_SIZE_FOR_HEIGHT} from "@features/calculator/size/size.action.ts";
+import Size from "@features/calculator/size/Size.tsx";
+import {Result} from "@features/calculator/result/Result.tsx";
 
-import {useReducer, useEffect} from "react";
-import  { initialState } from "./initialState.tsx";
-import calculatorReducer from "./calculator.reducer.ts";
-import {Result} from "./result/Result.tsx";
-import { useKids } from "../../hooks/context/KidsContext.tsx";
-import { kidsClothingTable } from "../../data/sizeCharts/kids_clothing_sizes.ts";
-import { findSizeForHeight } from "../../utils/size.utils.ts";
-import { SET_SIZE_FOR_HEIGHT } from "./size/size.action.ts";
-import { getEffectiveHeight } from "../../utils/growth.utils.ts";
-import type { State } from "../../types/types.ts";
 
 function getInitialState(kids: ReturnType<typeof useKids>['kids']): State {
     if (kids.length === 0) {

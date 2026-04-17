@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import styles from './MyKids.module.css';
-import { useKids } from '../../hooks/context/KidsContext.tsx';
+import styles from '@features/MyKids.module.css';
+import { useKids } from '@hooks/context/KidsContext.tsx';
 import { KidsForm } from './kidsForm/KidsForm.tsx';
-import { KidList } from './kidList/KidList.tsx';
-import type { UserRecord } from '../../types/types.ts';
+import { KidList } from '@features/myKids/kidList/KidList.tsx';
+import type { UserRecord } from '@myTypes/types.ts';
 
 interface MyKidsProps {
     initialAdding?: boolean;

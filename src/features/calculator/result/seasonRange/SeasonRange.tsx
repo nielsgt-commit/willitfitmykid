@@ -1,7 +1,8 @@
-import type {Season, WillFitWhenResult} from "../../../../types/types.ts";
+import type {Season, WillFitWhenResult} from "@/types/types.ts";
+import {SEASON_COLORS, SEASONS} from "@features/calculator/result/seasonRange/season.constants.ts";
+import styles from "@features/MyKids.module.css";
 import * as React from "react";
-import styles from "./SeasonRange.module.css";
-import {SEASONS, SEASON_COLORS} from "./season.constants.ts";
+
 
 type SeasonRangeProps = {
     start: WillFitWhenResult['start'];

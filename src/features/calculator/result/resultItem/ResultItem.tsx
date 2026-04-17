@@ -1,7 +1,8 @@
-import type {Season, WillFitWhenResult} from "../../../../types/types.ts";
-import {UserName} from "../userName/UserName.tsx";
-import {SeasonRange} from "../seasonRange/SeasonRange.tsx";
-import {getKidColor} from "../../../../constants/constants.ts";
+import type {Season, WillFitWhenResult} from "@/types/types.ts";
+import {getKidColor} from "@constants/constants.ts";
+import {UserName} from "@features/calculator/result/userName/UserName.tsx";
+import {SeasonRange} from "@features/calculator/result/seasonRange/SeasonRange.tsx";
+
 
 type ResultItemProps = {
     result: WillFitWhenResult;

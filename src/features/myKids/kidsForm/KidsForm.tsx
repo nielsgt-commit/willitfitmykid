@@ -1,13 +1,11 @@
 import { useReducer } from 'react';
 //import styles from './KidsForm.module.css';
 import { Temporal } from 'temporal-polyfill';
-import { PERCENTILES } from '../../../constants/constants.ts';
-import {
-    getLengthByMonthAndPercentile,
-    getPercentileByMonthAndLength,
-} from '../../../utils/growth.utils.ts';
-import { monthsSinceBirth } from '../../../utils/age.utils.ts';
-import type {Sex, Percentile, UserRecord} from "../../../types/types.ts";
+import { PERCENTILES } from '@constants/constants.ts';
+
+import { monthsSinceBirth } from '@utils/age.utils.ts';
+import type {Sex, Percentile, UserRecord} from "@myTypes/types.ts";
+import {getLengthByMonthAndPercentile, getPercentileByMonthAndLength} from "@utils/growth.utils.ts";
 
 function suggestPercentile(sex: Sex, birthday: string, height: number): number | undefined {
     if (!birthday || !height) return undefined;

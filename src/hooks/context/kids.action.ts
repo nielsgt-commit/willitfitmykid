@@ -2,7 +2,7 @@ export const ADD_KID = 'ADD_KID';
 export const UPDATE_KID = 'UPDATE_KID';
 export const REMOVE_KID = 'REMOVE_KID';
 
-import type { UserRecord } from '../../types/types.ts';
+import type { UserRecord } from '@myTypes/types.ts';
 
 export type Action =
     | { type: typeof ADD_KID; payload: Omit<UserRecord, 'id'> }

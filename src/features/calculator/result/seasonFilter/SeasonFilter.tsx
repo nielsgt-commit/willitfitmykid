@@ -1,7 +1,7 @@
-import * as React from "react";
-import type {Season} from "../../../../types/types.ts";
-import {SEASONS, SEASON_COLORS} from "../seasonRange/season.constants.ts";
-import styles from "./SeasonFilter.module.css";
+import type {Season} from "@/types/types.ts";
+import styles from "@features/MyKids.module.css";
+import {SEASON_COLORS, SEASONS} from "@features/calculator/result/seasonRange/season.constants.ts";
+
 
 type SeasonFilterProps = {
     activeSeasons: Set<Season>;

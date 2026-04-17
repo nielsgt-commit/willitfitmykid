@@ -1,8 +1,8 @@
-import { growthDataBoys } from '../data/growthCharts/growthDataBoys';
-import { growthDataGirls } from '../data/growthCharts/growthDataGirls';
-import type {Sex, MonthEntry, Percentile, UserRecord} from "../types/types.ts";
-import {PERCENTILES} from "../constants/constants.ts";
-import { monthsSinceBirth } from './age.utils.ts';
+import { growthDataBoys } from '@data/growthCharts/growthDataBoys';
+import { growthDataGirls } from '@data/growthCharts/growthDataGirls';
+import type {Sex, MonthEntry, Percentile, UserRecord} from "@myTypes/types.ts";
+import {PERCENTILES} from "@constants/constants.ts";
+import { monthsSinceBirth } from '@utils/age.utils.ts';
 
 function chartData(sex: Sex): MonthEntry[] {
   return sex === 'F' ? growthDataGirls : growthDataBoys;

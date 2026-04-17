@@ -1,7 +1,7 @@
 import {getEffectiveHeight} from "@utils/growth.utils.ts";
 import type {UserRecord} from "@/types/types.ts";
 import {getKidColor} from "@constants/constants.ts";
-import styles from "@features/myKids/kidDetail/kidDetail.module.css";
+import styles from "@features/myKids/kidDetail/KidDetail.module.css";
 
 
 type KidDetailProps = {

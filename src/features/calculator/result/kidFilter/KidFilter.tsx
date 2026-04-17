@@ -1,6 +1,6 @@
-import styles from "@features/MyKids.module.css";
 import type {UserRecord} from "@/types/types.ts";
 import {getKidColor} from "@constants/constants.ts";
+import styles from "@features/calculator/result/kidFilter/KidFilter.module.css"
 
 
 type KidFilterProps = {

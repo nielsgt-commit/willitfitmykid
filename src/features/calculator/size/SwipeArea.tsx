@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDrag } from "@use-gesture/react";
 import type {Region} from "@/types/types.ts";
 import {type Action, SET_REGION} from "@features/calculator/size/size.action.ts";
-import styles from "@features/MyKids.module.css";
+import styles from "@features/calculator/size/SwipeArea.module.css";
 
 
 interface SwipeAreaProps {

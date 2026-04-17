@@ -1,5 +1,5 @@
 import type {Season} from "@/types/types.ts";
-import styles from "@features/MyKids.module.css";
+import styles from "@features/calculator/result/seasonFilter/SeasonFilter.module.css";
 import {SEASON_COLORS, SEASONS} from "@features/calculator/result/seasonRange/season.constants.ts";
 
 

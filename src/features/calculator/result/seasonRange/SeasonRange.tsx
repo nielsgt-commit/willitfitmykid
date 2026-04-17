@@ -1,6 +1,6 @@
 import type {Season, WillFitWhenResult} from "@/types/types.ts";
 import {SEASON_COLORS, SEASONS} from "@features/calculator/result/seasonRange/season.constants.ts";
-import styles from "@features/MyKids.module.css";
+import styles from "@features/calculator/result/seasonRange/SeasonRange.module.css";
 import * as React from "react";
 
 

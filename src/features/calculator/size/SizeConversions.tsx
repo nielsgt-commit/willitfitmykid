@@ -1,5 +1,5 @@
 import type {Region} from "@/types/types.ts";
-import styles from "@features/MyKids.module.css";
+import styles from "@features/calculator/size/SizeConversions.module.css";
 
 
 interface SizeConversionsProps {

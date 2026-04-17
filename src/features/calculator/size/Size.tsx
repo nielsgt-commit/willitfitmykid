@@ -7,7 +7,7 @@ import {getEffectiveHeight} from "@utils/growth.utils.ts";
 import {getKidColor, regions} from "@constants/constants.ts";
 import * as React from "react";
 import {SwipeArea} from "@features/calculator/size/SwipeArea.tsx";
-import styles from "@features/MyKids.module.css";
+import styles from "@features/calculator/size/Size.module.css";
 import {ToggleGroup, ToggleGroupItem} from "@features/calculator/size/ToggleGroup.tsx";
 import {SizeConversions} from "@features/calculator/size/SizeConversions.tsx";
 

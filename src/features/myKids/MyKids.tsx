@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from '@features/MyKids.module.css';
+import styles from '@features/myKids/MyKids.module.css';
 import { useKids } from '@hooks/context/KidsContext.tsx';
 import { KidsForm } from './kidsForm/KidsForm.tsx';
 import { KidList } from '@features/myKids/kidList/KidList.tsx';

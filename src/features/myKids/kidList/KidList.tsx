@@ -1,6 +1,6 @@
 import {KidListItem} from "@features/myKids/kidListItem/KidListItem.tsx";
 import type {UserRecord} from "@/types/types.ts";
-import styles from "@features/MyKids.module.css";
+import styles from "@features/myKids/kidList/KidList.module.css";
 
 
 type KidListProps = {

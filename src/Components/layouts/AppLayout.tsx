@@ -1,4 +1,4 @@
-import styles from "@features/MyKids.module.css";
+import styles from "@components/layouts/AppLayout.module.css";
 import type {ReactNode} from "react";
 
 type AppLayoutProps = {

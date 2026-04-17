@@ -1,8 +1,8 @@
-import type {Percentile, Sex, Season, UserRecord, WillFitWhenResult, KidsClothingSizeKey} from "../types/types.ts";
+import type {Percentile, Sex, Season, UserRecord, WillFitWhenResult, KidsClothingSizeKey} from "@myTypes/types.ts";
 import {Temporal} from "temporal-polyfill";
-import {getLengthByMonthAndPercentile} from "@utils/growth.utils.ts";
-import {monthsSinceBirth} from "@utils/age.utils.ts";
 import {kidsClothingTable} from "@data/sizeCharts/kids_clothing_sizes.ts";
+import {monthsSinceBirth} from "@utils/age.utils.ts";
+import {getLengthByMonthAndPercentile} from "@utils/growth.utils.ts";
 
 function getProjectedHeight(sex: Sex, ageMonths: number, percentile: number): number | null {
     return getLengthByMonthAndPercentile(Math.floor(ageMonths), `P${percentile}` as Percentile, sex) ?? null;
@@ -34,6 +34,7 @@ export function willFitWhen(users: UserRecord[], size: string): WillFitWhenResul
             const rounded = Math.round(projectedHeight * 10) / 10;
             if (rounded >= min && rounded <= max) {
                 const monthsAhead = futureMonth - currentAgeMonths;
+
                 const targetDate = today.add({ months: monthsAhead });
                 const point = {
                     season: getSeason(targetDate.month),

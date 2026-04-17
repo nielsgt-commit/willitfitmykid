@@ -1,8 +1,8 @@
 import type {Percentile, Sex, Season, UserRecord, WillFitWhenResult, KidsClothingSizeKey} from "../types/types.ts";
 import {Temporal} from "temporal-polyfill";
-import {kidsClothingTable} from "../data/sizeCharts/kids_clothing_sizes.ts"
 import {getLengthByMonthAndPercentile} from "./growth.utils.ts";
 import {monthsSinceBirth} from "./age.utils.ts";
+import {kidsClothingTable} from "../data/sizeCharts/kids_clothing_sizes.ts";
 
 function getProjectedHeight(sex: Sex, ageMonths: number, percentile: number): number | null {
     return getLengthByMonthAndPercentile(Math.floor(ageMonths), `P${percentile}` as Percentile, sex) ?? null;

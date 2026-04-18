@@ -1,0 +1,22 @@
+.select {
+    font-family: var(--font-main);
+    font-size: var(--size-base);
+    color: var(--color-text-main);
+    background-color: var(--color-surface-sunken);
+    padding: var(--space-sm) var(--space-md);
+    border: var(--border-width) solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

@@ -1,0 +1,116 @@
+.button {
+    font-family: var(--font-main);
+    font-size: var(--size-base);
+    font-weight: var(--weight-bold);
+    padding: var(--space-sm) var(--space-lg);
+    min-height: 40px;
+    border-radius: 9999px;
+    border: var(--border-width) solid transparent;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    background-color: color-mix(in srgb, var(--color-text-main) 12%, transparent);
+    color: color-mix(in srgb, var(--color-text-main) 38%, transparent);
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.primary {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.primary:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 92%, black);
+}
+
+.primary:active:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 88%, black);
+}
+
+.secondary {
+    background-color: var(--color-surface-raised);
+    color: var(--color-text-main);
+    border-color: var(--color-border-default);
+}
+
+.secondary:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-text-main) 8%, var(--color-surface-raised));
+}
+
+.secondary:active:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-text-main) 12%, var(--color-surface-raised));
+}
+
+.tonal {
+    background-color: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface-raised));
+    color: var(--color-primary);
+}
+
+.tonal:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 22%, var(--color-surface-raised));
+}
+
+.tonal:active:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 28%, var(--color-surface-raised));
+}
+
+.outlined {
+    background-color: transparent;
+    color: var(--color-primary);
+    border-color: var(--color-border-default);
+}
+
+.outlined:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+.outlined:active:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.outlined:disabled {
+    background-color: transparent;
+    border-color: color-mix(in srgb, var(--color-text-main) 12%, transparent);
+}
+
+.text {
+    background-color: transparent;
+    color: var(--color-primary);
+    padding: var(--space-sm) var(--space-md);
+}
+
+.text:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+.text:active:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.text:disabled {
+    background-color: transparent;
+}
+
+.elevated {
+    background-color: var(--color-surface-raised);
+    color: var(--color-primary);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.elevated:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 8%, var(--color-surface-raised));
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.elevated:active:not(:disabled) {
+    background-color: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface-raised));
+}

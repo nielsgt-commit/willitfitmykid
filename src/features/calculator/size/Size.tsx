@@ -3,12 +3,13 @@ import type {Region} from "@/types/types.ts";
 import {type Action, DECREMENT_SIZE, INCREMENT_SIZE, SET_REGION} from "@features/calculator/size/size.action.ts";
 import {findSizeForHeight, listAvailableSizes} from "@utils/size.utils.ts";
 import {useKids} from "@hooks/context/KidsContext.tsx";
+import {useKidFilter} from "@hooks/context/KidFilterContext.tsx";
 import {getEffectiveHeight} from "@utils/growth.utils.ts";
 import {getKidColor, regions} from "@constants/constants.ts";
 import * as React from "react";
 import {SwipeArea} from "@features/calculator/size/SwipeArea.tsx";
 import {ToggleGroup, ToggleGroupItem} from "@features/calculator/size/ToggleGroup.tsx";
-import {SizeConversions} from "@features/calculator/size/SizeConversions.tsx";
+import styles from "@features/calculator/size/Size.module.css";
 
 
 interface SizeProps {
@@ -22,16 +23,18 @@ const allSizes = listAvailableSizes(kidsClothingTable);
 
 export default function Size({ size, inputRegion, conversions, dispatch }: SizeProps) {
     const { kids } = useKids();
+    const { activeKidIds } = useKidFilter();
 
     const kidsBySizeKey = React.useMemo(() => {
         const map = new Map<string, { name: string; id: number }[]>();
         for (const kid of kids) {
+            if (!activeKidIds.has(kid.id)) continue;
             const key = findSizeForHeight(kidsClothingTable, getEffectiveHeight(kid)).key;
             if (!map.has(key)) map.set(key, []);
             map.get(key)!.push({ name: kid.name, id: kid.id });
         }
         return map;
-    }, [kids]);
+    }, [kids, activeKidIds]);
     const displayValue = conversions?.[inputRegion] ?? size;
     const [dragX, setDragX] = React.useState(0);
     const [dragY, setDragY] = React.useState(0);
@@ -41,7 +44,6 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
         (row) => (row.conversions[inputRegion] ?? row.key) === displayValue,
     );
     const sizeWindowRef = React.useRef<HTMLDivElement>(null);
-    const [showConversions, setShowConversions] = React.useState(false);
 
     const handleDragMove = React.useCallback((x: number, y: number, active: boolean) => {
         setDragX(x);
@@ -85,10 +87,10 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
             <div>
 
                 <p> Region </p>
-                <div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.0rem" }}>
 
                     <button onClick={prevRegion}>&lsaquo;</button>
-                    <div>
+                    <div style={{ overflow: "hidden", flex: 1 }}>
                         <ToggleGroup
                             value={inputRegion}
                             onValueChange={(r) => dispatch({ type: SET_REGION, payload: r as Region })}
@@ -100,7 +102,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                             }}
                         >
                             {regions.map((r) => (
-                                <ToggleGroupItem key={r} value={r}>
+                                <ToggleGroupItem key={r} value={r} style={{ width: `${100 / regions.length}%` }}>
                                     {r}
                                 </ToggleGroupItem>
                             ))}
@@ -108,8 +110,10 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                     </div>
                     <button onClick={nextRegion}>&rsaquo;</button>
                 </div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.0rem" }}>
                 <button onClick={() => dispatch({ type: INCREMENT_SIZE })}>&#x2303;</button>
-                <div ref={sizeWindowRef}>
+                <div className={styles.sizeWindowWrapper}>
+                <div ref={sizeWindowRef} className={styles.sizeWindow}>
                     <div
                         style={{
                             height: `${allSizes.length * 100}%`,
@@ -121,7 +125,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                             const label = row.conversions[inputRegion] ?? row.key;
                             const kidsHere = kidsBySizeKey.get(row.key);
                             return (
-                                <div key={row.key}>
+                                <div key={row.key} style={{ height: `${100 / allSizes.length}%`, display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
                                     {label}
                                     {kidsHere && (
                                         <div>
@@ -140,10 +144,10 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                         })}
                     </div>
                 </div>
+                </div>
                 <button onClick={() => dispatch({ type: DECREMENT_SIZE })}>&#x2304;</button>
+                </div>
             </div>
-            <p onClick={() => setShowConversions((s) => !s)}> Andre regioner </p>
-            {showConversions ? <SizeConversions conversions={conversions} /> : null}
         </SwipeArea>
         </>
     );

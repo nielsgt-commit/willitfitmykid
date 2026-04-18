@@ -1,11 +1,14 @@
-import { useReducer } from "react";
-import { MyKids } from "@features/myKids/MyKids.tsx";
+import type { Dispatch } from "react";
 import { useKids } from "@hooks/context/KidsContext.tsx";
-import appReducer from "@app/app.reducer.ts";
-import { TOGGLE_MY_KIDS, OPEN_ADD_FORM, CLOSE_MY_KIDS } from "@app/app.action.ts";
+import type { AppState } from "@app/app.reducer.ts";
+import { TOGGLE_MY_KIDS, OPEN_ADD_FORM, type Action } from "@app/app.action.ts";
 
-export function ToggleMyKids() {
-    const [state, dispatch] = useReducer(appReducer, { showMyKids: false, openAddForm: false });
+type ToggleMyKidsProps = {
+    state: AppState;
+    dispatch: Dispatch<Action>;
+};
+
+export function ToggleMyKids({ state, dispatch }: ToggleMyKidsProps) {
     const { kids } = useKids();
 
     return (
@@ -17,12 +20,6 @@ export function ToggleMyKids() {
                 <button onClick={() => dispatch({ type: TOGGLE_MY_KIDS })}>
                     {state.showMyKids ? 'Skjul mine barn' : 'Vis mine barn'}
                 </button>
-            )}
-            {state.showMyKids && (
-                <MyKids
-                    initialAdding={state.openAddForm}
-                    onCancelFirstAdd={() => dispatch({ type: CLOSE_MY_KIDS })}
-                />
             )}
         </>
     );

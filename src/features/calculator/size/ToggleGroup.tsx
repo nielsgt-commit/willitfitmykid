@@ -10,6 +10,7 @@ interface ToggleGroupProps<T extends string> {
 interface ToggleGroupItemProps<T extends string> {
     value: T;
     children: React.ReactNode;
+    style?: React.CSSProperties;
 }
 
 interface ToggleGroupContext<T extends string> {
@@ -38,7 +39,7 @@ export function ToggleGroup<T extends string>({ value, onValueChange, children, 
     );
 }
 
-export function ToggleGroupItem<T extends string>({ value, children }: ToggleGroupItemProps<T>) {
+export function ToggleGroupItem<T extends string>({ value, children, style }: ToggleGroupItemProps<T>) {
     const { selected, onSelect } = useToggleGroup();
     const isSelected = selected === value;
 
@@ -48,6 +49,7 @@ export function ToggleGroupItem<T extends string>({ value, children }: ToggleGro
             role="radio"
             aria-checked={isSelected}
             onClick={() => onSelect(value)}
+            style={style}
         >
             {children}
         </button>

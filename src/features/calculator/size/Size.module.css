@@ -1,21 +1,148 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+}
+
+.centerGroup {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #888;
+    border-radius: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+.regionStripRow {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.regionStripWindow {
+    overflow: hidden;
+    padding: 2rem   ;
+    width: 100%;
+    mask-image: linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
+}
+
+.sizeRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.sideControl {
+    display: none;
+}
+
+.regionChip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: #aaa;
+    font: inherit;
+    font-size: 4rem;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0;
+}
+
+.regionChip[aria-checked="true"] {
+    color: #000;
+}
+
+.regionChip:focus-visible {
+    outline: 2px solid #333;
+    outline-offset: 2px;
+}
+
+.arrowButton {
+    display: none;
+}
+
 .sizeWindowWrapper {
     position: relative;
-    width: 100%;
+    flex: 1;
+    min-width: 0;
 }
 
-.sizeWindowWrapper::after {
-    content: "size";
+.sizeStepOverlay {
     position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1em;
-    color: #888;
-    pointer-events: none;
+    left: 0;
+    right: 0;
+    height: 3rem;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    z-index: 2;
+    color: transparent;
 }
+
+.sizeStepOverlayTop {
+    top: 0;
+}
+
+.sizeStepOverlayBottom {
+    bottom: 0;
+}
+
+.sizeStepOverlay:focus-visible {
+    outline: 2px dashed #333;
+    outline-offset: -4px;
+}
+
 
 .sizeWindow {
+    --slot-h: 6rem;
     overflow: hidden;
     width: 100%;
-    height: 2rem;
+    height: calc(var(--slot-h) * 2);
+    font-size: 4rem;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+}
+
+.sizeItem {
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.sizeSentinel {
+    color: #aaa;
+    font-size: var(--font-size, 2rem);
+    letter-spacing: 0.1em;
+}
+
+.kidChips {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.kidChip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: var(--kid-color);
+    color: white;
+    font-size: 0.75rem;
+    line-height: 1;
+    font-weight: 600;
+    white-space: nowrap;
 }

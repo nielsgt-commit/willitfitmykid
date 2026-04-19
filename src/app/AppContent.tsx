@@ -54,9 +54,9 @@ export function AppContent() {
 
     return (
         <AppLayout
-            header={<h6>Will it fit my kid?</h6>}
+            header={<h6></h6>}
             toggle={<ToggleMyKids state={appState} dispatch={appDispatch} />}
-            chips={<KidFilter kids={kids} activeKidIds={activeKidIds} onToggle={toggleKid} />}
+            chips={showCalculator ? <KidFilter kids={kids} activeKidIds={activeKidIds} onToggle={toggleKid} /> : undefined}
             conversions={showCalculator ? <SizeConversions conversions={calcState.conversions} /> : undefined}
             size={showCalculator ? (
                 <Size

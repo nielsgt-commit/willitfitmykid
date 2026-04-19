@@ -19,7 +19,7 @@ interface SizeProps {
     dispatch: React.Dispatch<Action>;
 }
 
-const allSizes = listAvailableSizes(kidsClothingTable);
+const allSizes = [...listAvailableSizes(kidsClothingTable)].reverse();
 
 export default function Size({ size, inputRegion, conversions, dispatch }: SizeProps) {
     const { kids } = useKids();
@@ -52,103 +52,145 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
     }, []);
 
     const handleDragEnd = React.useCallback((_mx: number, my: number) => {
-        const itemHeight = sizeWindowRef.current?.clientHeight ?? 0;
-        if (itemHeight === 0 || Math.abs(my) < 5) return;
+        if (Math.abs(my) < 5) return;
+        const itemEl = sizeWindowRef.current?.querySelector<HTMLElement>('[data-size-item]');
+        const itemHeight = itemEl?.getBoundingClientRect().height ?? 0;
+        if (itemHeight === 0) return;
         const deltaSteps = Math.round(my / itemHeight);
         if (deltaSteps === 0) return;
-        const actionType = deltaSteps > 0 ? DECREMENT_SIZE : INCREMENT_SIZE;
+        const actionType = deltaSteps > 0 ? INCREMENT_SIZE : DECREMENT_SIZE;
         const steps = Math.abs(deltaSteps);
         for (let i = 0; i < steps; i++) {
             dispatch({ type: actionType });
         }
     }, [dispatch]);
 
-    // Region strip: horizontal, 1/N per item
+    // Region strip: horizontal, each chip = 1/3 of window so prev/next peek at the edges.
+    const REGION_SLOTS = 3;
     const regionItemPercent = 100 / regions.length;
-    const regionTranslate = `calc(-${regionIndex * regionItemPercent}% + ${dragX}px)`;
+    const regionTranslate = `calc(${(1 - regionIndex) * regionItemPercent}% + ${dragX}px)`;
 
-    // Size strip: vertical, 1/N per item
-    const sizeItemPercent = 100 / allSizes.length;
-    const sizeTranslate = `calc(-${sizeIndex * sizeItemPercent}% + ${dragY}px)`;
+    // Size strip: vertical, fixed slot height in rem so window can show multiple slots.
+    // Current slot is centered in a 2-slot-tall window: offset by half a slot.
+    // A MAX sentinel is prepended and a MIN sentinel appended, so DOM positions are shifted by 1.
+    const SLOT_REM = 6;
+    const sizeTranslate = `calc(${(-0.5 - sizeIndex) * SLOT_REM}rem + ${dragY}px)`;
+
+    const prevRegionIndex = (regionIndex - 1 + regions.length) % regions.length;
+    const nextRegionIndex = (regionIndex + 1) % regions.length;
 
     const prevRegion = () => {
-        const prev = (regionIndex - 1 + regions.length) % regions.length;
-        dispatch({ type: SET_REGION, payload: regions[prev] as Region });
+        dispatch({ type: SET_REGION, payload: regions[prevRegionIndex] as Region });
     };
 
     const nextRegion = () => {
-        const next = (regionIndex + 1) % regions.length;
-        dispatch({ type: SET_REGION, payload: regions[next] as Region });
+        dispatch({ type: SET_REGION, payload: regions[nextRegionIndex] as Region });
     };
 
     return (
-        <>
         <SwipeArea inputRegion={inputRegion} regions={regions} dispatch={dispatch} onDragMove={handleDragMove} onDragEnd={handleDragEnd}>
-            <div>
-
-                <p> Region </p>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.0rem" }}>
-
-                    <button onClick={prevRegion}>&lsaquo;</button>
-                    <div style={{ overflow: "hidden", flex: 1 }}>
-                        <ToggleGroup
-                            value={inputRegion}
-                            onValueChange={(r) => dispatch({ type: SET_REGION, payload: r as Region })}
-                            style={{
-                                display: "flex",
-                                width: `${regions.length * 100}%`,
-                                transform: `translateX(${regionTranslate})`,
-                                transition: isDragging ? "none" : "transform 0.4s ease",
-                            }}
-                        >
-                            {regions.map((r) => (
-                                <ToggleGroupItem key={r} value={r} style={{ width: `${100 / regions.length}%` }}>
-                                    {r}
-                                </ToggleGroupItem>
-                            ))}
-                        </ToggleGroup>
+            <div className={styles.container}>
+                <div className={styles.sizeRow}>
+                    <div className={styles.sideControl}>
+                        <button
+                            className={styles.arrowButton}
+                            onClick={prevRegion}
+                            aria-label="Previous region"
+                        >&lsaquo;</button>
+                        <span className={styles.sideLabel}>{regions[prevRegionIndex]}</span>
                     </div>
-                    <button onClick={nextRegion}>&rsaquo;</button>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.0rem" }}>
-                <button onClick={() => dispatch({ type: INCREMENT_SIZE })}>&#x2303;</button>
-                <div className={styles.sizeWindowWrapper}>
-                <div ref={sizeWindowRef} className={styles.sizeWindow}>
-                    <div
-                        style={{
-                            height: `${allSizes.length * 100}%`,
-                            transform: `translateY(${sizeTranslate})`,
-                            transition: isDragging ? "none" : "transform 0.3s ease",
-                        }}
-                    >
-                        {allSizes.map((row) => {
-                            const label = row.conversions[inputRegion] ?? row.key;
-                            const kidsHere = kidsBySizeKey.get(row.key);
-                            return (
-                                <div key={row.key} style={{ height: `${100 / allSizes.length}%`, display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
-                                    {label}
-                                    {kidsHere && (
-                                        <div>
-                                            {kidsHere.map(({ name, id }) => {
-                                                const color = getKidColor(id);
-                                                return (
-                                                    <div key={id} title={name} style={{ backgroundColor: color }}>
-                                                        <span style={{ color }}>{name}</span>
-                                                    </div>
-                                                );
-                                            })}
+
+                    <div className={styles.centerGroup}>
+                    <div className={styles.regionStripRow}>
+                        <div className={styles.regionStripWindow}>
+                            <ToggleGroup
+                                value={inputRegion}
+                                onValueChange={(r) => dispatch({ type: SET_REGION, payload: r as Region })}
+                                style={{
+                                    display: "flex",
+                                    width: `${(regions.length * 100) / REGION_SLOTS}%`,
+                                    transform: `translateX(${regionTranslate})`,
+                                    transition: isDragging ? "none" : "transform 0.4s ease",
+                                }}
+                            >
+                                {regions.map((r) => (
+                                    <ToggleGroupItem
+                                        key={r}
+                                        value={r}
+                                        className={styles.regionChip}
+                                        style={{ width: `${100 / regions.length}%` }}
+                                    >
+                                        {r}
+                                    </ToggleGroupItem>
+                                ))}
+                            </ToggleGroup>
+                        </div>
+                    </div>
+
+                    <div className={styles.sizeWindowWrapper}>
+                        <button
+                            type="button"
+                            className={`${styles.sizeStepOverlay} ${styles.sizeStepOverlayTop}`}
+                            onClick={() => dispatch({ type: INCREMENT_SIZE })}
+                            aria-label="Larger size"
+                        >larger</button>
+                        <button
+                            type="button"
+                            className={`${styles.sizeStepOverlay} ${styles.sizeStepOverlayBottom}`}
+                            onClick={() => dispatch({ type: DECREMENT_SIZE })}
+                            aria-label="Smaller size"
+                        >smaller</button>
+                        <div ref={sizeWindowRef} className={styles.sizeWindow}>
+                            <div
+                                style={{
+                                    height: `${(allSizes.length + 2) * SLOT_REM}rem`,
+                                    transform: `translateY(${sizeTranslate})`,
+                                    transition: isDragging ? "none" : "transform 0.3s ease",
+                                }}
+                            >
+                                <div className={`${styles.sizeItem} ${styles.sizeSentinel}`} aria-hidden="true">MAX</div>
+                                {allSizes.map((row) => {
+                                    const label = row.conversions[inputRegion] ?? row.key;
+                                    const kidsHere = kidsBySizeKey.get(row.key);
+                                    return (
+                                        <div key={row.key} data-size-item className={styles.sizeItem}>
+                                            {label}
+                                            {kidsHere && (
+                                                <div className={styles.kidChips}>
+                                                    {kidsHere.map(({ name, id }) => {
+                                                        const color = getKidColor(id);
+                                                        return (
+                                                            <span
+                                                                key={id}
+                                                                className={styles.kidChip}
+                                                                title={name}
+                                                                style={{'--kid-color': color} as React.CSSProperties}
+                                                            >
+                                                                {name}
+                                                            </span>
+                                                        );
+                                                    })}
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
-                            );
-                        })}
+                                    );
+                                })}
+                                <div className={`${styles.sizeItem} ${styles.sizeSentinel}`} aria-hidden="true">MIN</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                </div>
-                <button onClick={() => dispatch({ type: DECREMENT_SIZE })}>&#x2304;</button>
+                    </div>
+
+                    <div className={styles.sideControl}>
+                        <button
+                            className={styles.arrowButton}
+                            onClick={nextRegion}
+                            aria-label="Next region"
+                        >&rsaquo;</button>
+                        <span className={styles.sideLabel}>{regions[nextRegionIndex]}</span>
+                    </div>
                 </div>
             </div>
         </SwipeArea>
-        </>
     );
 }

@@ -3,8 +3,9 @@
     grid-template-columns: repeat(6, 1fr);
     grid-template-areas:
         "header header header header header header"
-        "toggle toggle chips  chips  chips  chips"
+        "toggle toggle toggle toggle toggle toggle"
         "body   body   body   body   body   body"
+        "chips  chips  chips  chips  chips  chips"
         "result result result result result result"
         "overlay overlay overlay overlay overlay overlay";
     gap: 0.5rem;
@@ -13,20 +14,42 @@
 
 .app-layout__header {
     grid-area: header;
-    background-color: #222;
+    background-color: var(--color-surface-raised);
     margin: 0;
+    border-radius: 0.5rem;
+    box-shadow: #000000 2px 2px 2px 2px
 }
 
-.app-layout__toggle  { grid-area: toggle; }
-.app-layout__chips   { grid-area: chips; }
-.app-layout__result  { grid-area: result; }
-.app-layout__overlay { grid-area: overlay; }
+.app-layout__toggle  {
+    grid-area: toggle;
+    border-radius: 0.5rem;
+    box-shadow: #000000 2px 2px 2px 2px;
+}
+.app-layout__chips   {
+    grid-area: chips;
+    border-radius: 0.5rem;
+    padding: 2rem   ;
+    box-shadow: #000000 2px 2px 2px 2px;
+}
+.app-layout__result  {
+    grid-area: result;
+    border-radius: 0.5rem;
+    padding: 2rem   ;
+    box-shadow: #000000 2px 2px 2px 2px;
+}
+.app-layout__overlay {
+    grid-area: overlay;
+    border-radius: 0.5rem;
+    box-shadow: #000000 2px 2px 2px 2px;
+}
 
 .app-layout__body {
     grid-area: body;
     display: flex;
     align-items: stretch;
     gap: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: #000000 2px 2px 2px 2px;
 }
 
 .app-layout--flipped .app-layout__body {
@@ -37,6 +60,7 @@
 .app-layout__body > .app-layout__size {
     flex: 1;
     min-width: 0;
+    padding: 2rem;
 }
 
 .app-layout__flip {

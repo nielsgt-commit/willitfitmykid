@@ -1,5 +1,6 @@
 import {KidListItem} from "@features/myKids/kidListItem/KidListItem.tsx";
 import type {UserRecord} from "@/types/types.ts";
+import styles from "./KidList.module.css";
 
 
 type KidListProps = {
@@ -13,7 +14,7 @@ type KidListProps = {
 
 export function KidList({ kids, editingId, onSave, onEdit, onCancelEdit, onRemove }: KidListProps) {
     return (
-        <ul>
+        <ul className={styles.kidList}>
             {kids.map(kid => (
                 <KidListItem
                     key={kid.id}

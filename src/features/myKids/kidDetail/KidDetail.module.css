@@ -1,0 +1,48 @@
+.kidDetail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "name        percentile"
+    "secondary   secondary";
+  gap: 0.25rem 0.75rem;
+}
+
+.name {
+  grid-area: name;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.percentile {
+  grid-area: percentile;
+  text-align: right;
+}
+
+.secondary {
+  grid-area: secondary;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.sex {
+  grid-column: 1;
+}
+
+.birthday {
+  grid-column: 2;
+}
+
+.height {
+  grid-column: 3;
+}
+
+.colorDot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}

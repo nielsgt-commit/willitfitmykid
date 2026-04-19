@@ -1,0 +1,58 @@
+.item {
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+}
+
+.actions {
+    grid-area: 1 / 1;
+    justify-self: end;
+    align-self: stretch;
+    display: flex;
+    align-items: stretch;
+    z-index: 0;
+}
+
+.actions button {
+    border: 0;
+    margin: 0;
+    padding: 0 1rem;
+    min-width: 3.5rem;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    line-height: 1;
+    color: white;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.actions button:first-child {
+    background: #f0a000;
+}
+
+.actions button:last-child {
+    background: #d23f3f;
+}
+
+.content {
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 1;
+    background: var(--list-item-bg, white);
+    transform: translate3d(var(--swipe-x, 0px), 0, 0);
+    will-change: transform;
+}
+
+.content.animating {
+    transition: transform 180ms ease-out;
+}
+
+.item:focus-within .content {
+    --swipe-x: calc(-1 * var(--actions-width, 0px));
+}

@@ -14,12 +14,24 @@ export function ToggleMyKids({ state, dispatch }: ToggleMyKidsProps) {
     return (
         <>
             {kids.length === 0 && !state.showMyKids && (
-                <button onClick={() => dispatch({ type: OPEN_ADD_FORM })}>Legg til barn</button>
+                <button
+                    onClick={e => {
+                        e.stopPropagation();
+                        dispatch({ type: OPEN_ADD_FORM });
+                    }}
+                >
+                    Legg til barn
+                </button>
             )}
             {kids.length > 0 && (
-                <button onClick={() => dispatch({ type: TOGGLE_MY_KIDS })}>
-                    {state.showMyKids ? 'Skjul mine barn' : 'Vis mine barn'}
-                </button>
+                <h2
+                    onClick={e => {
+                        e.stopPropagation();
+                        dispatch({ type: TOGGLE_MY_KIDS });
+                    }}
+                >
+                    {state.showMyKids ? 'Mine barn' : 'Mine barn'}
+                </h2>
             )}
         </>
     );

@@ -18,12 +18,11 @@ export function KidDetail({ kid }: KidDetailProps) {
                 {kid.name}
             </div>
             <div className={styles.percentile}>P{kid.calculatedPercentile}</div>
-            <div className={styles.secondary}>
-                <div className={styles.sex}>{kid.sex === 'F' ? 'Jente' : 'Gutt'}</div>
-                <div className={styles.birthday}>{kid.birthday.toString()}</div>
-                <div className={styles.height}>
-                    {height ? `${height} cm${kid.heightNow === undefined ? ' (beregnet)' : ''}` : ''}
-                </div>
+            <hr className={styles.divider} />
+            <div className={styles.sex}>{kid.sex === 'F' ? 'Jente' : 'Gutt'}</div>
+            <div className={styles.birthday}>{kid.birthday.toString()}</div>
+            <div className={styles.height}>
+                {height ? `${height} cm` : ''}
             </div>
         </div>
     );

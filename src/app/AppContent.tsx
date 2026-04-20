@@ -2,9 +2,8 @@ import { useEffect, useReducer, useState } from "react";
 import Size from "@features/calculator/size/Size.tsx";
 import { SizeConversions } from "@features/calculator/size/SizeConversions.tsx";
 import { Result } from "@features/calculator/result/Result.tsx";
-import { MyKids } from "@features/myKids/MyKids.tsx";
+import { MyKidsCard } from "@features/myKids/myKidsCard/MyKidsCard.tsx";
 import { AppLayout } from "../components/layouts/AppLayout.tsx";
-import { ToggleMyKids } from "./ToggleMyKids.tsx";
 import { Splash } from "./Splash.tsx";
 import { KidFilter } from "@features/calculator/result/kidFilter/KidFilter.tsx";
 import { useKids } from "@hooks/context/KidsContext.tsx";
@@ -55,7 +54,14 @@ export function AppContent() {
     return (
         <AppLayout
             header={<h6></h6>}
-            toggle={<ToggleMyKids state={appState} dispatch={appDispatch} />}
+            toggle={
+                <MyKidsCard
+                    state={appState}
+                    dispatch={appDispatch}
+                    initialAdding={appState.openAddForm}
+                    onCancelFirstAdd={() => appDispatch({ type: CLOSE_MY_KIDS })}
+                />
+            }
             chips={showCalculator ? <KidFilter kids={kids} activeKidIds={activeKidIds} onToggle={toggleKid} /> : undefined}
             conversions={showCalculator ? <SizeConversions conversions={calcState.conversions} /> : undefined}
             size={showCalculator ? (
@@ -67,12 +73,6 @@ export function AppContent() {
                 />
             ) : undefined}
             result={showCalculator ? <Result size={calcState.size} /> : undefined}
-            overlay={appState.showMyKids ? (
-                <MyKids
-                    initialAdding={appState.openAddForm}
-                    onCancelFirstAdd={() => appDispatch({ type: CLOSE_MY_KIDS })}
-                />
-            ) : undefined}
         />
     );
 }

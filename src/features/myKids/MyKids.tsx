@@ -45,7 +45,6 @@ export function MyKids({ initialAdding = false, onCancelFirstAdd }: MyKidsProps)
     return (
         <>
             <div>
-            <h2>Mine barn</h2>
             <KidList
                 kids={kids}
                 editingId={editingId}

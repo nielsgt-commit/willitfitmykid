@@ -4,16 +4,23 @@ import type { UserRecord } from '@myTypes/types.ts';
 import kidsReducer from '@hooks/context/kids.reducer.ts';
 import { ADD_KID, UPDATE_KID, REMOVE_KID, REPLACE_KIDS } from './kids.action.ts';
 
-type KidsContextValue = {
+type KidsState = {
     kids: UserRecord[];
     nextId: number;
+};
+
+type KidsActions = {
     addKid: (kid: Omit<UserRecord, 'id'>) => void;
     updateKid: (id: number, updates: Partial<Omit<UserRecord, 'id'>>) => void;
     removeKid: (id: number) => void;
     replaceKids: (data: { kids: UserRecord[]; nextId: number }) => void;
 };
 
-const KidsContext = createContext<KidsContextValue | null>(null);
+// State and actions live in separate contexts so action-only consumers (e.g.
+// MyKids) don't re-render when the kid data changes — the actions object is
+// built once from the stable dispatch and never changes identity.
+const KidsStateContext = createContext<KidsState | null>(null);
+const KidsActionsContext = createContext<KidsActions | null>(null);
 
 export function KidsProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(kidsReducer, undefined, loadKids);
@@ -22,21 +29,37 @@ export function KidsProvider({ children }: { children: ReactNode }) {
         saveKids(state.kids, state.nextId);
     }, [state]);
 
-    const value = useMemo<KidsContextValue>(() => ({
-        kids: state.kids,
-        nextId: state.nextId,
+    const stateValue = useMemo<KidsState>(
+        () => ({ kids: state.kids, nextId: state.nextId }),
+        [state.kids, state.nextId],
+    );
+
+    const actions = useMemo<KidsActions>(() => ({
         addKid: (kid) => dispatch({ type: ADD_KID, payload: kid }),
         updateKid: (id, updates) => dispatch({ type: UPDATE_KID, payload: { id, updates } }),
         removeKid: (id) => dispatch({ type: REMOVE_KID, payload: id }),
         replaceKids: (data) => dispatch({ type: REPLACE_KIDS, payload: data }),
-    }), [state.kids, state.nextId]);
+    }), []);
 
-    return <KidsContext.Provider value={value}>{children}</KidsContext.Provider>;
+    return (
+        <KidsActionsContext value={actions}>
+            <KidsStateContext value={stateValue}>
+                {children}
+            </KidsStateContext>
+        </KidsActionsContext>
+    );
 }
 
 // eslint-disable-next-line react-refresh/only-export-components -- hook co-located with its provider
-export function useKids(): KidsContextValue {
-    const ctx = useContext(KidsContext);
+export function useKids(): KidsState {
+    const ctx = useContext(KidsStateContext);
     if (!ctx) throw new Error('useKids must be used within KidsProvider');
+    return ctx;
+}
+
+// eslint-disable-next-line react-refresh/only-export-components -- hook co-located with its provider
+export function useKidsActions(): KidsActions {
+    const ctx = useContext(KidsActionsContext);
+    if (!ctx) throw new Error('useKidsActions must be used within KidsProvider');
     return ctx;
 }

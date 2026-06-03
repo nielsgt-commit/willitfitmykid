@@ -1,5 +1,5 @@
 import { useRef, useState, type ChangeEvent } from 'react';
-import { useKids } from '@hooks/context/KidsContext.tsx';
+import { useKids, useKidsActions } from '@hooks/context/KidsContext.tsx';
 import { AddKidFlow } from './kidsForm/AddKidFlow.tsx';
 import { KidList } from '@features/myKids/kidList/KidList.tsx';
 import { ShareSizes } from '@features/myKids/shareSizes/ShareSizes.tsx';
@@ -13,7 +13,8 @@ interface MyKidsProps {
 }
 
 export function MyKids({ initialAdding = false, onCancelFirstAdd }: MyKidsProps) {
-    const { kids, nextId, addKid, updateKid, removeKid, replaceKids } = useKids();
+    const { kids, nextId } = useKids();
+    const { addKid, updateKid, removeKid, replaceKids } = useKidsActions();
     const [editingId, setEditingId] = useState<number | null>(null);
     const [adding, setAdding] = useState(initialAdding);
     const [showSizes, setShowSizes] = useState(false);

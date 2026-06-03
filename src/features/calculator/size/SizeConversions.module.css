@@ -1,0 +1,32 @@
+.card {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm) var(--space-md);
+    margin: 0;
+    padding: var(--space-sm) var(--space-md);
+    list-style: none;
+    background-color: var(--color-surface-raised);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-raised);
+}
+
+.item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+.region {
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+.value {
+    color: var(--color-text-main);
+    font-weight: 600;
+}

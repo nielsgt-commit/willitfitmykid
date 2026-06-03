@@ -5,6 +5,12 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
+    /* Card chrome lives on the swipe track itself: its own box-shadow is not
+       clipped by its own overflow:hidden (only descendant shadows would be). */
+    background-color: var(--color-surface-raised);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-raised);
 }
 
 .actions {
@@ -27,24 +33,24 @@
     justify-content: center;
     font-size: 1.25rem;
     line-height: 1;
-    color: white;
+    color: var(--color-on-primary);
     cursor: pointer;
     box-sizing: border-box;
 }
 
 .actions button:first-child {
-    background: #f0a000;
+    background: var(--color-accent);
 }
 
 .actions button:last-child {
-    background: #d23f3f;
+    background: var(--color-danger);
 }
 
 .content {
     grid-area: 1 / 1;
     position: relative;
     z-index: 1;
-    background: var(--list-item-bg, white);
+    background: var(--list-item-bg, var(--color-surface-raised));
     transform: translate3d(var(--swipe-x, 0px), 0, 0);
     will-change: transform;
 }

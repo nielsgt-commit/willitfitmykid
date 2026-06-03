@@ -159,19 +159,16 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                                             {label}
                                             {kidsHere && (
                                                 <div className={styles.kidChips}>
-                                                    {kidsHere.map(({ name, id }) => {
-                                                        const color = getKidColor(id);
-                                                        return (
-                                                            <span
-                                                                key={id}
-                                                                className={styles.kidChip}
-                                                                title={name}
-                                                                style={{'--kid-color': color} as React.CSSProperties}
-                                                            >
-                                                                {name}
-                                                            </span>
-                                                        );
-                                                    })}
+                                                    {kidsHere.map(({ name, id }) => (
+                                                        <span
+                                                            key={id}
+                                                            className={styles.kidChip}
+                                                            title={name}
+                                                            style={{'--kid-color': getKidColor(id)} as React.CSSProperties}
+                                                        >
+                                                            {name}
+                                                        </span>
+                                                    ))}
                                                 </div>
                                             )}
                                         </div>

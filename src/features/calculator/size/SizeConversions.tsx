@@ -1,4 +1,5 @@
 import type {Region} from "@/types/types.ts";
+import styles from "./SizeConversions.module.css";
 
 
 interface SizeConversionsProps {
@@ -7,9 +8,12 @@ interface SizeConversionsProps {
 
 export function SizeConversions({ conversions }: SizeConversionsProps) {
     return (
-        <ul>
+        <ul className={styles.card}>
             {(Object.entries(conversions) as [Region, string][]).map(([region, value]) => (
-                <li key={region}>{region}: {value}</li>
+                <li key={region} className={styles.item}>
+                    <span className={styles.region}>{region}</span>
+                    <span className={styles.value}>{value}</span>
+                </li>
             ))}
         </ul>
     );

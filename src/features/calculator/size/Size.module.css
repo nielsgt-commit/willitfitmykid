@@ -10,8 +10,10 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    border: 1px solid #888;
-    border-radius: 0.5rem;
+    background-color: var(--color-surface-raised);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-raised);
     padding: 0.25rem 0;
 }
 
@@ -54,7 +56,7 @@
     justify-content: center;
     border: 0;
     background: transparent;
-    color: #aaa;
+    color: var(--color-text-muted);
     font: inherit;
     font-size: 1.5rem;
     line-height: 1;
@@ -64,11 +66,11 @@
 }
 
 .regionChip[aria-checked="true"] {
-    color: #000;
+    color: var(--color-text-main);
 }
 
 .regionChip:focus-visible {
-    outline: 2px solid #333;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
 
@@ -105,7 +107,7 @@
 }
 
 .sizeStepOverlay:focus-visible {
-    outline: 2px dashed #333;
+    outline: 2px dashed var(--color-primary);
     outline-offset: -4px;
 }
 
@@ -129,7 +131,7 @@
 }
 
 .sizeSentinel {
-    color: #aaa;
+    color: var(--color-text-muted);
     font-size: var(--font-size, 2rem);
     letter-spacing: 0.1em;
 }
@@ -146,8 +148,8 @@
     align-items: center;
     padding: 0.15rem 0.5rem;
     border-radius: 999px;
-    background: var(--kid-color);
-    color: white;
+    border: var(--border-width) solid var(--kid-color, var(--color-text-muted));
+    color: var(--kid-color, var(--color-text-muted));
     font-size: 0.75rem;
     line-height: 1;
     font-weight: 600;

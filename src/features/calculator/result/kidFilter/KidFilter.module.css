@@ -40,8 +40,9 @@
 }
 
 .chip[aria-pressed="true"] {
-    background: var(--chip-color);
-    color: white;
+    color: var(--chip-color);
+    /* Selected = outline only (no fill): a doubled border in the kid colour. */
+    box-shadow: inset 0 0 0 1px var(--chip-color);
 }
 
 .chip[aria-pressed="true"] .dot {
@@ -53,7 +54,7 @@
 .chip[aria-pressed="true"] .dot::before {
     content: "✓";
     font-size: 0.875rem;
-    color: white;
+    color: var(--chip-color);
     font-weight: 700;
     line-height: 1;
 }

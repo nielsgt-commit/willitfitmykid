@@ -1,0 +1,165 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Card chrome shared by the expandable (details) and static (no-fit) rows. */
+.details,
+.row {
+    box-sizing: border-box;
+    background-color: var(--color-surface-raised);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-raised);
+}
+
+/* The always-visible row. Fixed height so it never reflows as data changes. */
+.summary,
+.row {
+    box-sizing: border-box;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 0 var(--space-sm);
+}
+
+.summary {
+    list-style: none;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.summary::-webkit-details-marker {
+    display: none;
+}
+
+.summary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+    border-radius: var(--radius-md);
+}
+
+.avatar {
+    flex: 0 0 auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--border-width) solid var(--color-text-muted);
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.body {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.1rem;
+}
+
+.name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.verdict {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.3rem;
+    min-width: 0;
+    font-size: 0.75rem;
+    /* Single condensed line — clip rather than wrap so height stays fixed. */
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.lead,
+.connector,
+.arrow {
+    color: var(--color-text-muted);
+    flex: 0 0 auto;
+}
+
+.noFitText {
+    color: var(--color-text-muted);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.seasonTag {
+    flex: 0 0 auto;
+    padding: 0.05rem 0.4rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.pillFit,
+.pillNoFit {
+    flex: 0 0 auto;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.pillFit {
+    color: var(--color-success);
+    background-color: color-mix(in srgb, var(--color-success) 12%, transparent);
+}
+
+.pillNoFit {
+    color: var(--color-danger);
+    background-color: color-mix(in srgb, var(--color-danger) 10%, transparent);
+}
+
+/* Affordance for the on-click reveal of the full season range. */
+.chevron {
+    flex: 0 0 auto;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform 0.18s ease;
+}
+
+.details[open] .chevron {
+    transform: rotate(180deg);
+}
+
+/* Revealed panel: the kid's full season range, every (season, year) cell. */
+.expand {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    padding: var(--space-sm);
+    border-top: var(--border-width) solid var(--color-border-subtle);
+}
+
+.empty {
+    margin: 0;
+    padding: var(--space-md);
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}

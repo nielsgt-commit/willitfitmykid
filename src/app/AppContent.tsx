@@ -1,17 +1,18 @@
 import { useEffect, useReducer, useState } from "react";
 import Size from "@features/calculator/size/Size.tsx";
-import { Result } from "@features/calculator/result/Result.tsx";
-import { MyKidsCard } from "@features/myKids/myKidsCard/MyKidsCard.tsx";
+import { SizeConversions } from "@features/calculator/size/SizeConversions.tsx";
+import { ResultPanel } from "@features/calculator/result/resultViews/ResultPanel.tsx";
+import { MyKids } from "@features/myKids/MyKids.tsx";
 import { AppLayout } from "../components/layouts/AppLayout.tsx";
+import { Switch } from "../components/core/Switch.tsx";
 import { Splash } from "./Splash.tsx";
+import { Tabs, type Tab } from "./Tabs.tsx";
 import { KidFilter } from "@features/calculator/result/kidFilter/KidFilter.tsx";
 import { KidCards } from "@features/myKids/kidCards/KidCards.tsx";
 import { SeasonFilter } from "@features/calculator/result/seasonFilter/SeasonFilter.tsx";
 import { useSeasonFilter } from "@features/calculator/result/useSeasonFilter.ts";
 import { useKids } from "@hooks/context/KidsContext.tsx";
 import { useKidFilter } from "@hooks/context/KidFilterContext.tsx";
-import appReducer from "./app.reducer.ts";
-import { CLOSE_MY_KIDS } from "./app.action.ts";
 import calculatorReducer from "@features/calculator/calculator.reducer.ts";
 import { initialState } from "@features/calculator/initialState.tsx";
 import { kidsClothingTable } from "@data/sizeCharts/kids_clothing_sizes.ts";
@@ -31,8 +32,9 @@ function getInitialCalcState(kids: UserRecord[]): State {
 }
 
 export function AppContent() {
-    const [appState, appDispatch] = useReducer(appReducer, { showMyKids: false, openAddForm: false });
+    const [tab, setTab] = useState<Tab>("results");
     const [showSplash, setShowSplash] = useState(true);
+    const [showConversions, setShowConversions] = useState(false);
     const { kids } = useKids();
     const { activeKidIds, toggleKid } = useKidFilter();
     const { activeSeasons, toggleSeason } = useSeasonFilter();
@@ -53,21 +55,22 @@ export function AppContent() {
 
     if (showSplash) return <Splash />;
 
-    const showCalculator = !appState.showMyKids;
+    const showResults = tab === "results";
 
     return (
         <AppLayout
-            header={null}
-            toggle={
-                <MyKidsCard
-                    state={appState}
-                    dispatch={appDispatch}
-                    initialAdding={appState.openAddForm}
-                    onCancelFirstAdd={() => appDispatch({ type: CLOSE_MY_KIDS })}
-                />
+            header={
+                <>
+                    <Tabs value={tab} onChange={setTab} />
+                    {!showResults && <MyKids />}
+                </>
             }
-            kidCards={showCalculator ? <KidCards kids={kids} /> : undefined}
-            size={showCalculator ? (
+            toggle={null}
+            kidCards={showResults ? <KidCards kids={kids} /> : undefined}
+            conversions={showResults && showConversions ? (
+                <SizeConversions conversions={calcState.conversions} />
+            ) : undefined}
+            size={showResults ? (
                 <Size
                     size={calcState.size}
                     inputRegion={calcState.inputRegion}
@@ -75,12 +78,20 @@ export function AppContent() {
                     dispatch={calcDispatch}
                 />
             ) : undefined}
-            result={showCalculator ? <Result size={calcState.size} activeSeasons={activeSeasons} /> : undefined}
-            sheet={showCalculator ? (
+            result={showResults ? <ResultPanel size={calcState.size} activeSeasons={activeSeasons} /> : undefined}
+            sheet={showResults ? (
                 <>
                     <p>Viser resultater som passer i sesong</p>
                     <SeasonFilter activeSeasons={activeSeasons} onToggle={toggleSeason} />
                     <KidFilter kids={kids} activeKidIds={activeKidIds} onToggle={toggleKid} />
+                    <div className="app-sheet__row">
+                        <p>Viser konverteringer</p>
+                        <Switch
+                            checked={showConversions}
+                            onChange={setShowConversions}
+                            label="Viser konverteringer"
+                        />
+                    </div>
                 </>
             ) : undefined}
         />

@@ -1,3 +1,35 @@
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+/* Matches the kid cards: raised surface, subtle border, same radius + shadow. */
+.addButton {
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--space-md);
+    background-color: var(--color-surface-raised);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-raised);
+    color: var(--color-primary);
+    font: inherit;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 120ms ease;
+}
+
+.addButton:hover {
+    background-color: color-mix(in srgb, var(--color-primary) 6%, var(--color-surface-raised));
+}
+
+.addButton:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 .settings {
     margin-top: var(--space-md);
     border-top: var(--border-width) solid var(--color-border-subtle);
@@ -21,9 +53,53 @@
 
 .settingsBody {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: var(--space-sm);
     padding-top: var(--space-sm);
+}
+
+.settingsActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.settingsAction {
+    flex: 1 1 8rem;
+    min-height: 40px;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    border: var(--border-width) solid var(--color-border-default);
+    background: var(--color-surface-raised);
+    color: var(--color-text-main);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 120ms ease;
+}
+
+.settingsAction:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-text-main) 6%, var(--color-surface-raised));
+}
+
+.settingsAction:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.settingsAction:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.primaryAction {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    border-color: transparent;
+}
+
+.primaryAction:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-primary) 92%, black);
 }
 
 .note {

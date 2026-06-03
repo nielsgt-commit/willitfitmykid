@@ -29,7 +29,7 @@ export function KidCards({ kids }: KidCardsProps) {
                     <li key={kid.id} className={styles.card}>
                         <span
                             className={styles.avatar}
-                            style={{ backgroundColor: getKidColor(kid.id) }}
+                            style={{ borderColor: getKidColor(kid.id), color: getKidColor(kid.id) }}
                             aria-hidden="true"
                         >
                             {getInitials(kid.name)}

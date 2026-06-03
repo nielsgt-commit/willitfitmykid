@@ -23,12 +23,12 @@
 }
 
 .input[aria-invalid="true"] {
-    border-color: #b3261e;
+    border-color: var(--color-danger);
 }
 
 .input[aria-invalid="true"]:focus-visible {
-    border-color: #b3261e;
-    box-shadow: inset 0 0 0 1px #b3261e;
+    border-color: var(--color-danger);
+    box-shadow: inset 0 0 0 1px var(--color-danger);
 }
 
 .input:disabled {
@@ -60,5 +60,5 @@
 .errorText {
     font-family: var(--font-main);
     font-size: 0.75rem;
-    color: #b3261e;
+    color: var(--color-danger);
 }

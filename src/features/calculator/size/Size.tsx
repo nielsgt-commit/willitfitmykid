@@ -6,7 +6,7 @@ import {useKids} from "@hooks/context/KidsContext.tsx";
 import {useKidFilter} from "@hooks/context/KidFilterContext.tsx";
 import {getEffectiveHeight} from "@utils/growth.utils.ts";
 import {getKidColor, regions} from "@constants/constants.ts";
-import * as React from "react";
+import {useCallback, useMemo, useRef, useState, type CSSProperties, type Dispatch} from "react";
 import {SwipeArea} from "@features/calculator/size/SwipeArea.tsx";
 import {ToggleGroup, ToggleGroupItem} from "@features/calculator/size/ToggleGroup.tsx";
 import styles from "@features/calculator/size/Size.module.css";
@@ -16,7 +16,7 @@ interface SizeProps {
     size: string;
     inputRegion: Region;
     conversions: Partial<Record<Region, string>>;
-    dispatch: React.Dispatch<Action>;
+    dispatch: Dispatch<Action>;
 }
 
 const allSizes = [...listAvailableSizes(kidsClothingTable)].reverse();
@@ -25,7 +25,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
     const { kids } = useKids();
     const { activeKidIds } = useKidFilter();
 
-    const kidsBySizeKey = React.useMemo(() => {
+    const kidsBySizeKey = useMemo(() => {
         const map = new Map<string, { name: string; id: number }[]>();
         for (const kid of kids) {
             if (!activeKidIds.has(kid.id)) continue;
@@ -36,22 +36,22 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
         return map;
     }, [kids, activeKidIds]);
     const displayValue = conversions?.[inputRegion] ?? size;
-    const [dragX, setDragX] = React.useState(0);
-    const [dragY, setDragY] = React.useState(0);
-    const [isDragging, setIsDragging] = React.useState(false);
+    const [dragX, setDragX] = useState(0);
+    const [dragY, setDragY] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
     const regionIndex = regions.indexOf(inputRegion);
     const sizeIndex = allSizes.findIndex(
         (row) => (row.conversions[inputRegion] ?? row.key) === displayValue,
     );
-    const sizeWindowRef = React.useRef<HTMLDivElement>(null);
+    const sizeWindowRef = useRef<HTMLDivElement>(null);
 
-    const handleDragMove = React.useCallback((x: number, y: number, active: boolean) => {
+    const handleDragMove = useCallback((x: number, y: number, active: boolean) => {
         setDragX(x);
         setDragY(y);
         setIsDragging(active);
     }, []);
 
-    const handleDragEnd = React.useCallback((_mx: number, my: number) => {
+    const handleDragEnd = useCallback((_mx: number, my: number) => {
         if (Math.abs(my) < 5) return;
         const itemEl = sizeWindowRef.current?.querySelector<HTMLElement>('[data-size-item]');
         const itemHeight = itemEl?.getBoundingClientRect().height ?? 0;
@@ -164,7 +164,7 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
                                                             key={id}
                                                             className={styles.kidChip}
                                                             title={name}
-                                                            style={{'--kid-color': getKidColor(id)} as React.CSSProperties}
+                                                            style={{'--kid-color': getKidColor(id)} as CSSProperties}
                                                         >
                                                             {name}
                                                         </span>

@@ -4,7 +4,7 @@
     gap: var(--space-md);
 }
 
-/* Matches the kid cards: raised surface, subtle border, same radius + shadow. */
+/* Matches the kid cards: raised surface, subtle border, same radius. */
 .addButton {
     width: 100%;
     box-sizing: border-box;
@@ -12,7 +12,6 @@
     background-color: var(--color-surface-raised);
     border: var(--border-width) solid var(--color-border-subtle);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-raised);
     color: var(--color-primary);
     font: inherit;
     font-weight: 700;

@@ -27,7 +27,6 @@
 .tab[aria-selected="true"] {
     background: var(--color-surface-raised);
     color: var(--color-text-main);
-    box-shadow: var(--shadow-card);
 }
 
 .tab:focus-visible {

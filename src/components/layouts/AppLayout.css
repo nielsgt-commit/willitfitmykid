@@ -47,8 +47,16 @@
     min-height: 0;
 }
 
+/*
+ * Allowed to shrink and scroll internally so a long result list (many kids /
+ * expanded rows) never pushes the size wheel down on small screens.
+ */
 .app-layout__result {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
 }
 
 .app-layout__wheelgroup {

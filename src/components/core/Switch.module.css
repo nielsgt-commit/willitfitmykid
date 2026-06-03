@@ -24,7 +24,6 @@
     height: calc(1.5rem - 4px);
     border-radius: 50%;
     background: var(--color-surface-raised);
-    box-shadow: var(--shadow-card);
     transition: transform 150ms ease;
 }
 

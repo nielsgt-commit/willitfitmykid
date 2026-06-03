@@ -5,12 +5,11 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-    /* Card chrome lives on the swipe track itself: its own box-shadow is not
-       clipped by its own overflow:hidden (only descendant shadows would be). */
+    /* Card chrome lives on the swipe track so overflow:hidden clips the
+       sliding content + actions to the rounded corners. */
     background-color: var(--color-surface-raised);
     border: var(--border-width) solid var(--color-border-subtle);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-raised);
 }
 
 .actions {

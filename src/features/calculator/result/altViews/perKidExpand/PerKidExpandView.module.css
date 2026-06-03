@@ -14,7 +14,6 @@
     background-color: var(--color-surface-raised);
     border: var(--border-width) solid var(--color-border-subtle);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-raised);
 }
 
 /* The always-visible row. Fixed height so it never reflows as data changes. */

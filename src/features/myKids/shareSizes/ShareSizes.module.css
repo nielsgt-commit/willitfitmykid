@@ -6,7 +6,6 @@
     background: var(--color-surface-raised);
     border: var(--border-width) solid var(--color-border-subtle);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-raised);
 }
 
 .head {

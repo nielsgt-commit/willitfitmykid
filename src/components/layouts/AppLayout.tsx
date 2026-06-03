@@ -5,6 +5,7 @@ import "./AppLayout.css";
 type AppLayoutProps = {
     header: ReactNode;
     toggle: ReactNode;
+    kidCards?: ReactNode;
     result?: ReactNode;
     conversions?: ReactNode;
     size?: ReactNode;
@@ -15,7 +16,7 @@ type AppLayoutProps = {
 // Peek height kept in sync with --peek-h in AppLayout.css (8rem ≈ 128px).
 const PEEK_PX = 128;
 
-export function AppLayout({ header, toggle, result, conversions, size, sheet, overlay }: AppLayoutProps) {
+export function AppLayout({ header, toggle, kidCards, result, conversions, size, sheet, overlay }: AppLayoutProps) {
     const hasCanvas = size !== undefined;
 
     const sheetRef = useRef<HTMLElement>(null);
@@ -62,6 +63,8 @@ export function AppLayout({ header, toggle, result, conversions, size, sheet, ov
                 {header}
                 {toggle}
             </header>
+
+            {kidCards !== undefined && <div className="app-layout__kids">{kidCards}</div>}
 
             {hasCanvas && (
                 <main className="app-layout__canvas">

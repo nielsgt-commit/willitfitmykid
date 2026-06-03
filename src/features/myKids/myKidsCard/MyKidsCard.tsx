@@ -1,7 +1,6 @@
 import type { Dispatch, KeyboardEvent } from "react";
 import { useKids } from "@hooks/context/KidsContext.tsx";
 import { ToggleMyKids } from "@app/ToggleMyKids.tsx";
-import { AvatarStack } from "@features/myKids/avatarStack/AvatarStack.tsx";
 import { MyKids } from "@features/myKids/MyKids.tsx";
 import { TOGGLE_MY_KIDS, OPEN_ADD_FORM, type Action } from "@app/app.action.ts";
 import type { AppState } from "@app/app.reducer.ts";
@@ -42,12 +41,6 @@ export function MyKidsCard({ state, dispatch, initialAdding, onCancelFirstAdd }:
                 <div className={styles.upper}>
                     <ToggleMyKids state={state} dispatch={dispatch} />
                 </div>
-                <hr className={styles.divider} />
-                {!state.showMyKids && (
-                    <div className={styles.lower}>
-                        <AvatarStack kids={kids} />
-                    </div>
-                )}
             </div>
             {state.showMyKids && (
                 <div className={styles.expanded}>

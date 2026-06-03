@@ -30,7 +30,8 @@ export function KidListItem({ kid, isEditing, onSave, onEdit, onCancelEdit, onRe
         return () => observer.disconnect();
     }, [isEditing]);
 
-    const swipe = useSwipeActions<HTMLLIElement>({ actionsWidth, disabled: isEditing || actionsWidth === 0 });
+    const { trackRef, translateX, isOpen, isDragging, close, onPointerDown } =
+        useSwipeActions<HTMLLIElement>({ actionsWidth, disabled: isEditing || actionsWidth === 0 });
 
     if (isEditing) {
         return (
@@ -47,27 +48,27 @@ export function KidListItem({ kid, isEditing, onSave, onEdit, onCancelEdit, onRe
     }
 
     const contentStyle: CSSProperties = { '--actions-width': `${actionsWidth}px` } as CSSProperties;
-    const atRest = !swipe.isDragging && !swipe.isOpen;
+    const atRest = !isDragging && !isOpen;
     if (!atRest) {
-        (contentStyle as Record<string, string>)['--swipe-x'] = `${swipe.translateX}px`;
+        (contentStyle as Record<string, string>)['--swipe-x'] = `${translateX}px`;
     }
 
     const handleEdit = () => {
-        swipe.close();
+        close();
         onEdit();
     };
 
     const handleRemove = () => {
-        swipe.close();
+        close();
         onRemove();
     };
 
     return (
-        <li className={styles.item} ref={swipe.trackRef}>
+        <li className={styles.item} ref={trackRef}>
             <div
-                className={`${styles.content}${swipe.isDragging ? '' : ' ' + styles.animating}`}
+                className={`${styles.content}${isDragging ? '' : ' ' + styles.animating}`}
                 style={contentStyle}
-                onPointerDown={swipe.onPointerDown}
+                onPointerDown={onPointerDown}
             >
                 <KidDetail kid={kid} />
             </div>

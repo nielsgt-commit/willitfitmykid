@@ -59,6 +59,11 @@ html, body, #root {
   height: 100%;
 }
 
+html, body {
+  /* Stop the size-wheel drag (and other gestures) from rubber-banding the page. */
+  overscroll-behavior: none;
+}
+
 body {
   background-color: var(--color-surface-base);
   color: var(--color-text-main);

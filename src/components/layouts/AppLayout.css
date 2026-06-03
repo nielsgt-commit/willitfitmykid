@@ -13,6 +13,12 @@
     padding-top: max(var(--space-sm), env(safe-area-inset-top));
 }
 
+.app-layout__kids {
+    flex: 0 0 auto;
+    padding: 0 var(--space-sm);
+    min-width: 0;
+}
+
 /*
  * Full-bleed canvas: the result verdict is pinned to the top (always visible,
  * even when the filter sheet is expanded), and the size wheel is bottom-weighted

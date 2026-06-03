@@ -17,7 +17,7 @@ function reducer(state: State, action: Action): State {
     switch (action.type) {
         case 'TOGGLE': {
             const next = new Set(state.activeKidIds);
-            next.has(action.payload) ? next.delete(action.payload) : next.add(action.payload);
+            if (next.has(action.payload)) next.delete(action.payload); else next.add(action.payload);
             return { activeKidIds: next };
         }
         case 'SYNC': {
@@ -54,6 +54,7 @@ export function KidFilterProvider({ children }: { children: ReactNode }) {
     return <KidFilterContext.Provider value={value}>{children}</KidFilterContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- hook co-located with its provider
 export function useKidFilter(): KidFilterContextValue {
     const ctx = useContext(KidFilterContext);
     if (!ctx) throw new Error('useKidFilter must be used within KidFilterProvider');

@@ -42,7 +42,7 @@ export function SwipeArea({ inputRegion, regions, dispatch, onDragMove, onDragEn
     });
 
     return (
-        <div {...bind()}>
+        <div {...bind()} style={{ touchAction: 'none' }}>
             {children}
         </div>
     );

@@ -5,6 +5,7 @@ import { MyKidsCard } from "@features/myKids/myKidsCard/MyKidsCard.tsx";
 import { AppLayout } from "../components/layouts/AppLayout.tsx";
 import { Splash } from "./Splash.tsx";
 import { KidFilter } from "@features/calculator/result/kidFilter/KidFilter.tsx";
+import { KidCards } from "@features/myKids/kidCards/KidCards.tsx";
 import { SeasonFilter } from "@features/calculator/result/seasonFilter/SeasonFilter.tsx";
 import { useSeasonFilter } from "@features/calculator/result/useSeasonFilter.ts";
 import { useKids } from "@hooks/context/KidsContext.tsx";
@@ -65,6 +66,7 @@ export function AppContent() {
                     onCancelFirstAdd={() => appDispatch({ type: CLOSE_MY_KIDS })}
                 />
             }
+            kidCards={showCalculator ? <KidCards kids={kids} /> : undefined}
             size={showCalculator ? (
                 <Size
                     size={calcState.size}

@@ -19,8 +19,10 @@ export function KidsForm(props: KidsFormProps) {
 
     const percentileValues = PERCENTILES.map(p => Number(p.replace('P', '')));
 
+    const submitAction = () => props.onSubmit(buildUserRecord(form, derivedField));
+
     return (
-        <>
+        <form action={submitAction}>
             <div>
                 <label>
                     Navn:
@@ -57,12 +59,12 @@ export function KidsForm(props: KidsFormProps) {
                 </label>
             </div>
             <button
-                onClick={() => props.onSubmit(buildUserRecord(form, derivedField))}
+                type="submit"
                 disabled={props.mode === 'add' && (!form.name || !form.birthday)}
             >
                 {props.mode === 'add' ? 'Legg til' : 'Lagre'}
             </button>
-            <button onClick={props.onCancel}>Avbryt</button>
-        </>
+            <button type="button" onClick={props.onCancel}>Avbryt</button>
+        </form>
     );
 }

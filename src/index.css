@@ -57,10 +57,10 @@ input[type=number] {
 
 html, body, #root {
   height: 100%;
-}
-
-html, body {
-  /* Stop the size-wheel drag (and other gestures) from rubber-banding the page. */
+  /* Lock the page to the viewport so a gesture (e.g. the size wheel) can never
+     scroll or rubber-band the whole app. Scrollable regions scroll internally.
+     overflow:hidden + 100% height is the pre-overscroll-behavior fallback. */
+  overflow: hidden;
   overscroll-behavior: none;
 }
 

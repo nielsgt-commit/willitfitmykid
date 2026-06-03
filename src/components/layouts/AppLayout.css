@@ -1,14 +1,23 @@
 .app-layout {
     --peek-h: 8rem;
-    min-height: 100vh;
-    min-height: 100dvh;
+    height: 100%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     margin: 0;
 }
 
+/*
+ * Flexible/auto so it stays compact in calculator mode but, when it holds the
+ * (tall) Mine barn management view, shrinks to the shell and scrolls internally
+ * instead of growing the page.
+ */
 .app-layout__header {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     padding: var(--space-sm);
     padding-top: max(var(--space-sm), env(safe-area-inset-top));
 }
@@ -106,6 +115,8 @@
 .app-layout__sheet-body {
     flex: 1 1 auto;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     padding: 0 var(--space-md) var(--space-md);
     touch-action: pan-y;
 }

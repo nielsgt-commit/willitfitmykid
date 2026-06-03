@@ -5,10 +5,7 @@ import "./AppLayout.css";
 type AppLayoutProps = {
     header: ReactNode;
     toggle: ReactNode;
-    kidCards?: ReactNode;
-    result?: ReactNode;
-    conversions?: ReactNode;
-    size?: ReactNode;
+    main?: ReactNode;
     sheet?: ReactNode;
     overlay?: ReactNode;
 };
@@ -16,9 +13,7 @@ type AppLayoutProps = {
 // Peek height kept in sync with --peek-h in AppLayout.css (8rem ≈ 128px).
 const PEEK_PX = 128;
 
-export function AppLayout({ header, toggle, kidCards, result, conversions, size, sheet, overlay }: AppLayoutProps) {
-    const hasCanvas = size !== undefined;
-
+export function AppLayout({ header, toggle, main, sheet, overlay }: AppLayoutProps) {
     const sheetRef = useRef<HTMLElement>(null);
     const [open, setOpen] = useState(false);
     const [dragY, setDragY] = useState<number | null>(null);
@@ -64,21 +59,9 @@ export function AppLayout({ header, toggle, kidCards, result, conversions, size,
                 {toggle}
             </header>
 
-            {kidCards !== undefined && <div className="app-layout__kids">{kidCards}</div>}
+            {main !== undefined && <div className="app-layout__main">{main}</div>}
 
-            {hasCanvas && (
-                <main className="app-layout__canvas">
-                    {result !== undefined && <div className="app-layout__result">{result}</div>}
-                    <div className="app-layout__wheelgroup">
-                        {conversions !== undefined && (
-                            <div className="app-layout__conversions">{conversions}</div>
-                        )}
-                        <div className="app-layout__size">{size}</div>
-                    </div>
-                </main>
-            )}
-
-            {hasCanvas && sheet !== undefined && (
+            {sheet !== undefined && (
                 <aside
                     ref={sheetRef}
                     className="app-layout__sheet"

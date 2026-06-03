@@ -10,8 +10,60 @@
 
 .head {
     display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-sm);
+}
+
+.headText {
+    display: flex;
     flex-direction: column;
     gap: var(--space-xs);
+    min-width: 0;
+}
+
+.fsToggle {
+    flex: 0 0 auto;
+    padding: var(--space-xs) var(--space-sm);
+    border: var(--border-width) solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 120ms ease;
+}
+
+.fsToggle:hover {
+    background: color-mix(in srgb, var(--color-text-main) 6%, transparent);
+}
+
+.fsToggle:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Full-viewport view for an uncluttered screenshot. */
+.fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    background: var(--color-surface-raised);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.fullscreen .card {
+    min-height: 100%;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 0;
 }
 
 .title {

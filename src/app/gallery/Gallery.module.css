@@ -1,0 +1,69 @@
+.gallery {
+    position: relative;
+    flex: 1 1 auto;
+    /* Must be able to shrink to the parent width; without min-width:0 the flex
+       item grows to its content (2 × 100% slides) and shoves everything right. */
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+}
+
+.track {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+    display: none;
+}
+
+.slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Page dots, parked just above the peeking filter sheet. */
+.dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--peek-h) + env(safe-area-inset-bottom) + var(--space-sm));
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    pointer-events: none;
+}
+
+.dot,
+.dotActive {
+    pointer-events: auto;
+    width: 0.5rem;
+    height: 0.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-text-muted) 40%, transparent);
+    cursor: pointer;
+    transition: background-color 150ms ease;
+}
+
+.dotActive {
+    background: var(--color-primary);
+}
+
+.dot:focus-visible,
+.dotActive:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}

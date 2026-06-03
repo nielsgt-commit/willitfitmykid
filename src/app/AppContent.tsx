@@ -7,6 +7,9 @@ import { AppLayout } from "../components/layouts/AppLayout.tsx";
 import { Switch } from "../components/core/Switch.tsx";
 import { Splash } from "./Splash.tsx";
 import { Tabs, type Tab } from "./Tabs.tsx";
+import { Gallery } from "./gallery/Gallery.tsx";
+import { CalculatorView } from "./gallery/CalculatorView.tsx";
+import { SharePage } from "./gallery/SharePage.tsx";
 import { KidFilter } from "@features/calculator/result/kidFilter/KidFilter.tsx";
 import { KidCards } from "@features/myKids/kidCards/KidCards.tsx";
 import { SeasonFilter } from "@features/calculator/result/seasonFilter/SeasonFilter.tsx";
@@ -57,6 +60,22 @@ export function AppContent() {
 
     const showResults = tab === "results";
 
+    const calculator = (
+        <CalculatorView
+            kidCards={<KidCards kids={kids} />}
+            result={<ResultPanel size={calcState.size} activeSeasons={activeSeasons} />}
+            conversions={showConversions ? <SizeConversions conversions={calcState.conversions} /> : undefined}
+            size={
+                <Size
+                    size={calcState.size}
+                    inputRegion={calcState.inputRegion}
+                    conversions={calcState.conversions}
+                    dispatch={calcDispatch}
+                />
+            }
+        />
+    );
+
     return (
         <AppLayout
             header={
@@ -66,19 +85,13 @@ export function AppContent() {
                 </>
             }
             toggle={null}
-            kidCards={showResults ? <KidCards kids={kids} /> : undefined}
-            conversions={showResults && showConversions ? (
-                <SizeConversions conversions={calcState.conversions} />
-            ) : undefined}
-            size={showResults ? (
-                <Size
-                    size={calcState.size}
-                    inputRegion={calcState.inputRegion}
-                    conversions={calcState.conversions}
-                    dispatch={calcDispatch}
-                />
-            ) : undefined}
-            result={showResults ? <ResultPanel size={calcState.size} activeSeasons={activeSeasons} /> : undefined}
+            main={
+                showResults
+                    ? kids.length > 0
+                        ? <Gallery labels={["Kalkulator", "Størrelser"]} pages={[calculator, <SharePage key="share" kids={kids} />]} />
+                        : calculator
+                    : undefined
+            }
             sheet={showResults ? (
                 <>
                     <p>Viser resultater som passer i sesong</p>

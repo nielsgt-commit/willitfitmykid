@@ -25,50 +25,11 @@
     padding-top: max(var(--space-sm), env(safe-area-inset-top));
 }
 
-.app-layout__kids {
-    flex: 0 0 auto;
-    padding: 0 var(--space-sm);
-    min-width: 0;
-}
-
-/*
- * Full-bleed canvas: the result verdict is pinned to the top (always visible,
- * even when the filter sheet is expanded), and the size wheel is bottom-weighted
- * into the thumb arc.
- */
-.app-layout__canvas {
+/* Fills the space between header and the (fixed) sheet; holds the gallery. */
+.app-layout__main {
     flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: var(--space-sm);
-    padding: var(--space-sm);
-    padding-bottom: calc(var(--peek-h) + var(--space-md) + env(safe-area-inset-bottom));
     min-height: 0;
-}
-
-/*
- * Allowed to shrink and scroll internally so a long result list (many kids /
- * expanded rows) never pushes the size wheel down on small screens.
- */
-.app-layout__result {
-    flex: 0 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-}
-
-.app-layout__wheelgroup {
-    flex: 0 0 auto;
     display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-}
-
-.app-layout__conversions,
-.app-layout__size {
-    flex: 0 0 auto;
 }
 
 /* Draggable bottom sheet — two detents (peek / open). Grabber-only drag. */

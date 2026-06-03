@@ -1,0 +1,50 @@
+.calc {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.kids {
+    flex: 0 0 auto;
+    padding: 0 var(--space-sm);
+    min-width: 0;
+}
+
+/*
+ * Full-bleed canvas: the result is pinned to the top (always visible, even when
+ * the filter sheet is expanded), and the size wheel is bottom-weighted into the
+ * thumb arc.
+ */
+.canvas {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+    /* Extra bottom room leaves a gap above the gallery dots that sit here. */
+    padding-bottom: calc(var(--peek-h) + var(--space-xl) + env(safe-area-inset-bottom));
+    min-height: 0;
+}
+
+/* Shrinks + scrolls internally so a long result list never pushes the wheel down. */
+.result {
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.wheelgroup {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.conversions,
+.size {
+    flex: 0 0 auto;
+}

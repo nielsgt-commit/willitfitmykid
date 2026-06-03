@@ -1,0 +1,10 @@
+.page {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--space-sm);
+    /* Clear the peeking filter sheet and leave a gap above the gallery dots. */
+    padding-bottom: calc(var(--peek-h) + var(--space-xl) + env(safe-area-inset-bottom));
+}

@@ -29,13 +29,12 @@ export function useSwipeActions<T extends HTMLElement = HTMLDivElement>({
     const baseOffset = useRef(0);
     const intentLocked = useRef<'horizontal' | 'vertical' | null>(null);
     const activePointerId = useRef<number | null>(null);
-    const dragOffsetRef = useRef(0);
 
     const [isOpen, setIsOpen] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState(0);
-
-    dragOffsetRef.current = dragOffset;
+    // Mirrors intentLocked === 'horizontal' so render never reads a ref.
+    const [horizontalDrag, setHorizontalDrag] = useState(false);
 
     const close = useCallback(() => {
         setIsOpen(false);
@@ -51,6 +50,7 @@ export function useSwipeActions<T extends HTMLElement = HTMLDivElement>({
             startY.current = event.clientY;
             baseOffset.current = isOpen ? -actionsWidth : 0;
             intentLocked.current = null;
+            setHorizontalDrag(false);
             setIsDragging(true);
         },
         [actionsWidth, disabled, isOpen]
@@ -73,6 +73,7 @@ export function useSwipeActions<T extends HTMLElement = HTMLDivElement>({
                 }
                 if (Math.abs(dx) > HORIZONTAL_INTENT_PX) {
                     intentLocked.current = 'horizontal';
+                    setHorizontalDrag(true);
                 }
             }
 
@@ -89,10 +90,12 @@ export function useSwipeActions<T extends HTMLElement = HTMLDivElement>({
             activePointerId.current = null;
 
             if (intentLocked.current === 'horizontal') {
-                const opened = -dragOffsetRef.current >= actionsWidth * openThresholdRatio;
-                setIsOpen(opened);
+                const dx = event.clientX - startX.current;
+                const finalOffset = Math.min(0, Math.max(-actionsWidth, baseOffset.current + dx));
+                setIsOpen(-finalOffset >= actionsWidth * openThresholdRatio);
                 setDragOffset(0);
             }
+            setHorizontalDrag(false);
             setIsDragging(false);
         };
 
@@ -117,7 +120,7 @@ export function useSwipeActions<T extends HTMLElement = HTMLDivElement>({
         return () => window.removeEventListener('pointerdown', onDocPointerDown);
     }, [close, isOpen]);
 
-    const translateX = isDragging && intentLocked.current === 'horizontal'
+    const translateX = isDragging && horizontalDrag
         ? dragOffset
         : isOpen
             ? -actionsWidth

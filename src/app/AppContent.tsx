@@ -1,11 +1,12 @@
 import { useEffect, useReducer, useState } from "react";
 import Size from "@features/calculator/size/Size.tsx";
-import { SizeConversions } from "@features/calculator/size/SizeConversions.tsx";
 import { Result } from "@features/calculator/result/Result.tsx";
 import { MyKidsCard } from "@features/myKids/myKidsCard/MyKidsCard.tsx";
 import { AppLayout } from "../components/layouts/AppLayout.tsx";
 import { Splash } from "./Splash.tsx";
 import { KidFilter } from "@features/calculator/result/kidFilter/KidFilter.tsx";
+import { SeasonFilter } from "@features/calculator/result/seasonFilter/SeasonFilter.tsx";
+import { useSeasonFilter } from "@features/calculator/result/useSeasonFilter.ts";
 import { useKids } from "@hooks/context/KidsContext.tsx";
 import { useKidFilter } from "@hooks/context/KidFilterContext.tsx";
 import appReducer from "./app.reducer.ts";
@@ -33,6 +34,7 @@ export function AppContent() {
     const [showSplash, setShowSplash] = useState(true);
     const { kids } = useKids();
     const { activeKidIds, toggleKid } = useKidFilter();
+    const { activeSeasons, toggleSeason } = useSeasonFilter();
     const [calcState, calcDispatch] = useReducer(calculatorReducer, kids, getInitialCalcState);
 
     useEffect(() => {
@@ -45,6 +47,7 @@ export function AppContent() {
         const youngest = kids.reduce((a, b) => a.birthday.toString() > b.birthday.toString() ? a : b);
         const row = findSizeForHeight(kidsClothingTable, getEffectiveHeight(youngest));
         calcDispatch({ type: SET_SIZE_FOR_HEIGHT, payload: row.key });
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally re-run only when a kid is added/removed, not on every edit
     }, [kids.length]);
 
     if (showSplash) return <Splash />;
@@ -53,7 +56,7 @@ export function AppContent() {
 
     return (
         <AppLayout
-            header={<h6></h6>}
+            header={null}
             toggle={
                 <MyKidsCard
                     state={appState}
@@ -62,8 +65,6 @@ export function AppContent() {
                     onCancelFirstAdd={() => appDispatch({ type: CLOSE_MY_KIDS })}
                 />
             }
-            chips={showCalculator ? <KidFilter kids={kids} activeKidIds={activeKidIds} onToggle={toggleKid} /> : undefined}
-            conversions={showCalculator ? <SizeConversions conversions={calcState.conversions} /> : undefined}
             size={showCalculator ? (
                 <Size
                     size={calcState.size}
@@ -72,7 +73,14 @@ export function AppContent() {
                     dispatch={calcDispatch}
                 />
             ) : undefined}
-            result={showCalculator ? <Result size={calcState.size} /> : undefined}
+            result={showCalculator ? <Result size={calcState.size} activeSeasons={activeSeasons} /> : undefined}
+            sheet={showCalculator ? (
+                <>
+                    <p>Viser resultater som passer i sesong</p>
+                    <SeasonFilter activeSeasons={activeSeasons} onToggle={toggleSeason} />
+                    <KidFilter kids={kids} activeKidIds={activeKidIds} onToggle={toggleKid} />
+                </>
+            ) : undefined}
         />
     );
 }

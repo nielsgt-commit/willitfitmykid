@@ -1,0 +1,35 @@
+.settings {
+    margin-top: var(--space-md);
+    border-top: var(--border-width) solid var(--color-border-subtle);
+    padding-top: var(--space-sm);
+}
+
+.settings > summary {
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    list-style: none;
+}
+
+.settings > summary::-webkit-details-marker {
+    display: none;
+}
+
+.settings > summary::before {
+    content: "\2699\00a0";
+}
+
+.settingsBody {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    padding-top: var(--space-sm);
+}
+
+.note {
+    flex-basis: 100%;
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}

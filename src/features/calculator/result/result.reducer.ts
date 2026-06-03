@@ -10,12 +10,12 @@ export default function resultReducer(state: FilterState, action: Action): Filte
     switch (action.type) {
         case TOGGLE_SEASON: {
             const next = new Set(state.activeSeasons);
-            next.has(action.payload) ? next.delete(action.payload) : next.add(action.payload);
+            if (next.has(action.payload)) next.delete(action.payload); else next.add(action.payload);
             return {...state, activeSeasons: next};
         }
         case TOGGLE_KID: {
             const next = new Set(state.activeKidIds);
-            next.has(action.payload) ? next.delete(action.payload) : next.add(action.payload);
+            if (next.has(action.payload)) next.delete(action.payload); else next.add(action.payload);
             return {...state, activeKidIds: next};
         }
         case SYNC_KIDS: {

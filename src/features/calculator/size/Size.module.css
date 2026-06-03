@@ -23,7 +23,7 @@
 
 .regionStripWindow {
     overflow: hidden;
-    padding: 2rem   ;
+    padding: var(--space-sm);
     width: 100%;
     mask-image: linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
@@ -49,7 +49,7 @@
     background: transparent;
     color: #aaa;
     font: inherit;
-    font-size: 4rem;
+    font-size: 1.5rem;
     line-height: 1;
     cursor: pointer;
     white-space: nowrap;
@@ -104,17 +104,17 @@
 
 
 .sizeWindow {
-    --slot-h: 6rem;
+    --slot-h: 3.5rem;
     overflow: hidden;
     width: 100%;
     height: calc(var(--slot-h) * 2);
-    font-size: 4rem;
+    font-size: 2.25rem;
     mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
 }
 
 .sizeItem {
-    height: 6rem;
+    height: var(--slot-h);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -145,4 +145,11 @@
     line-height: 1;
     font-weight: 600;
     white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sizeWindow *,
+    .regionStripWindow * {
+        transition: none !important;
+    }
 }

@@ -7,7 +7,7 @@ type Action = { type: 'TOGGLE'; payload: Season };
 
 function reducer(state: State, action: Action): State {
     const next = new Set(state.activeSeasons);
-    next.has(action.payload) ? next.delete(action.payload) : next.add(action.payload);
+    if (next.has(action.payload)) next.delete(action.payload); else next.add(action.payload);
     return { activeSeasons: next };
 }
 

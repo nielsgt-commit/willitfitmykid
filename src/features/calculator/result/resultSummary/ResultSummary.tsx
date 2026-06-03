@@ -31,7 +31,7 @@ export function ResultSummary({results, filterSeasons}: ResultSummaryProps) {
     return (
         <details>
             <summary>
-                Passer {names}, fra {earliest.season} {earliest.year} til {latest.season} {latest.year}
+                {names}: {earliest.season} {earliest.year} – {latest.season} {latest.year}
             </summary>
             <ResultList results={results} filterSeasons={filterSeasons}/>
         </details>

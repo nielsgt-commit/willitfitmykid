@@ -1,5 +1,5 @@
 import type { UserRecord } from '@myTypes/types.ts';
-import { ADD_KID, UPDATE_KID, REMOVE_KID, type Action } from './kids.action.ts';
+import { ADD_KID, UPDATE_KID, REMOVE_KID, REPLACE_KIDS, type Action } from './kids.action.ts';
 
 export type KidsState = { kids: UserRecord[]; nextId: number };
 
@@ -18,6 +18,9 @@ export default function kidsReducer(state: KidsState, action: Action): KidsState
         }
         case REMOVE_KID:
             return { ...state, kids: state.kids.filter(k => k.id !== action.payload) };
+
+        case REPLACE_KIDS:
+            return { kids: action.payload.kids, nextId: action.payload.nextId };
 
         default:
             return state;

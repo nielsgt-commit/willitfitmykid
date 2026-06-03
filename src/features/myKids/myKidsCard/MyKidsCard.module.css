@@ -1,6 +1,10 @@
 .card {
     padding: 1rem;
     box-sizing: border-box;
+    background-color: var(--color-surface-raised);
+    border: var(--border-width) solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
 }
 
 .header {

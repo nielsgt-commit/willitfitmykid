@@ -1,5 +1,6 @@
 
-import type {KidsClothingSizeKey, KidsClothingSizeRow, KidsClothingTable, Region} from "@myTypes/types.ts";
+import type {KidsClothingSizeKey, KidsClothingSizeRow, KidsClothingTable, Region, UserRecord} from "@myTypes/types.ts";
+import {getEffectiveHeight} from "@utils/growth.utils.ts";
 
 const getRows = (table: KidsClothingTable): KidsClothingSizeRow[] =>
   Object.values(table);
@@ -38,4 +39,18 @@ export const findSizeForHeight = (
     const bestMid = (best.heightCm.min + best.heightCm.max) / 2;
     return Math.abs(heightCm - mid) < Math.abs(heightCm - bestMid) ? row : best;
   });
+};
+
+/**
+ * The size row that fits the youngest kid (the one most likely to need the
+ * smallest size), used to initialise the calculator. Returns undefined when
+ * there are no kids so callers can fall back to a default.
+ */
+export const selectSizeForYoungest = (
+  table: KidsClothingTable,
+  kids: UserRecord[],
+): KidsClothingSizeRow | undefined => {
+  if (kids.length === 0) return undefined;
+  const youngest = kids.reduce((a, b) => (a.birthday.toString() > b.birthday.toString() ? a : b));
+  return findSizeForHeight(table, getEffectiveHeight(youngest));
 };

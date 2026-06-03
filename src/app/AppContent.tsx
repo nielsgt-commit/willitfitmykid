@@ -19,48 +19,33 @@ import { useKidFilter } from "@hooks/context/KidFilterContext.tsx";
 import calculatorReducer from "@features/calculator/calculator.reducer.ts";
 import { initialState } from "@features/calculator/initialState.tsx";
 import { kidsClothingTable } from "@data/sizeCharts/kids_clothing_sizes.ts";
-import { findSizeForHeight } from "@utils/size.utils.ts";
-import { getEffectiveHeight } from "@utils/growth.utils.ts";
-import { SET_SIZE_FOR_HEIGHT } from "@features/calculator/size/size.action.ts";
-import type { State } from "@/types/types.ts";
+import { selectSizeForYoungest } from "@utils/size.utils.ts";
+import type { Season, State } from "@/types/types.ts";
 import type { UserRecord } from "@myTypes/types.ts";
 
 function getInitialCalcState(kids: UserRecord[]): State {
-    if (kids.length === 0) {
+    const row = selectSizeForYoungest(kidsClothingTable, kids);
+    if (!row) {
         return { ...initialState, size: '56', conversions: kidsClothingTable['56']?.conversions ?? initialState.conversions };
     }
-    const youngest = kids.reduce((a, b) => a.birthday.toString() > b.birthday.toString() ? a : b);
-    const row = findSizeForHeight(kidsClothingTable, getEffectiveHeight(youngest));
     return { ...initialState, size: row.key, conversions: row.conversions };
 }
 
-export function AppContent() {
-    const [tab, setTab] = useState<Tab>("results");
-    const [showSplash, setShowSplash] = useState(true);
-    const [showConversions, setShowConversions] = useState(false);
-    const { kids } = useKids();
-    const { activeKidIds, toggleKid } = useKidFilter();
-    const { activeSeasons, toggleSeason } = useSeasonFilter();
+type CalculatorProps = {
+    kids: UserRecord[];
+    activeSeasons: Set<Season>;
+    showConversions: boolean;
+};
+
+/**
+ * Owns the calculator's size state. Mounted with a `key` derived from the kid
+ * ids (see AppContent), so adding or removing a kid re-initialises the size to
+ * fit the youngest — while editing an existing kid keeps the manual selection.
+ */
+function Calculator({ kids, activeSeasons, showConversions }: CalculatorProps) {
     const [calcState, calcDispatch] = useReducer(calculatorReducer, kids, getInitialCalcState);
 
-    useEffect(() => {
-        const id = setTimeout(() => setShowSplash(false), 1000);
-        return () => clearTimeout(id);
-    }, []);
-
-    useEffect(() => {
-        if (kids.length === 0) return;
-        const youngest = kids.reduce((a, b) => a.birthday.toString() > b.birthday.toString() ? a : b);
-        const row = findSizeForHeight(kidsClothingTable, getEffectiveHeight(youngest));
-        calcDispatch({ type: SET_SIZE_FOR_HEIGHT, payload: row.key });
-        // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally re-run only when a kid is added/removed, not on every edit
-    }, [kids.length]);
-
-    if (showSplash) return <Splash />;
-
-    const showResults = tab === "results";
-
-    const calculator = (
+    return (
         <CalculatorView
             kidCards={<KidCards kids={kids} />}
             result={<ResultPanel size={calcState.size} activeSeasons={activeSeasons} />}
@@ -74,6 +59,29 @@ export function AppContent() {
                 />
             }
         />
+    );
+}
+
+export function AppContent() {
+    const [tab, setTab] = useState<Tab>("results");
+    const [showSplash, setShowSplash] = useState(true);
+    const [showConversions, setShowConversions] = useState(false);
+    const { kids } = useKids();
+    const { activeKidIds, toggleKid } = useKidFilter();
+    const { activeSeasons, toggleSeason } = useSeasonFilter();
+
+    useEffect(() => {
+        const id = setTimeout(() => setShowSplash(false), 1000);
+        return () => clearTimeout(id);
+    }, []);
+
+    if (showSplash) return <Splash />;
+
+    const showResults = tab === "results";
+    const kidsKey = kids.map(k => k.id).join(',');
+
+    const calculator = (
+        <Calculator key={kidsKey} kids={kids} activeSeasons={activeSeasons} showConversions={showConversions} />
     );
 
     return (

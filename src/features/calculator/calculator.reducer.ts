@@ -3,7 +3,7 @@ import {
     DECREMENT_SIZE,
     INCREMENT_SIZE,
     SET_REGION,
-    SET_SIZE, SET_SIZE_FOR_HEIGHT
+    SET_SIZE
 } from "@features/calculator/size/size.action.ts";
 import type {State} from "@/types/types.ts";
 import {findCanonicalSize, getSizeRow} from "@utils/size.utils.ts";
@@ -50,12 +50,6 @@ export default function calculatorReducer(state:State, action: Action): State {
                 size: sizeStepDown,
                 conversions: getSizeRow(kidsClothingTable, sizeStepDown)?.conversions ?? {},
             }}
-
-        case SET_SIZE_FOR_HEIGHT: {
-            const row = getSizeRow(kidsClothingTable, action.payload);
-            if (!row) return state;
-            return { ...state, size: row.key, conversions: row.conversions };
-        }
 
         default:
                 return state;

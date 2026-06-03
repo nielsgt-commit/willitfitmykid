@@ -8,7 +8,7 @@ type TabsProps = {
 };
 
 const TABS: { id: Tab; label: string }[] = [
-    { id: "results", label: "Resultater" },
+    { id: "results", label: "Når passer størrelsen" },
     { id: "mykids", label: "Mine barn" },
 ];
 

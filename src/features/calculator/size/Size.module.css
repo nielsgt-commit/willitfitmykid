@@ -115,10 +115,10 @@
     --slot-h: 3.5rem;
     overflow: hidden;
     width: 100%;
-    height: calc(var(--slot-h) * 2);
+    height: calc(var(--slot-h) * 3);
     font-size: 2.25rem;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 33.33%, black 66.66%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 33.33%, black 66.66%, transparent 100%);
 }
 
 .sizeItem {

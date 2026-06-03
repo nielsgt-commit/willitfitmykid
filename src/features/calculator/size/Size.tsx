@@ -71,10 +71,11 @@ export default function Size({ size, inputRegion, conversions, dispatch }: SizeP
     const regionTranslate = `calc(${(1 - regionIndex) * regionItemPercent}% + ${dragX}px)`;
 
     // Size strip: vertical, fixed slot height in rem so window can show multiple slots.
-    // Current slot is centered in a 2-slot-tall window: offset by half a slot.
-    // A MAX sentinel is prepended and a MIN sentinel appended, so DOM positions are shifted by 1.
+    // Current slot is centered in a 3-slot-tall window. The prepended MAX sentinel
+    // fills the top slot at rest, so the first real size already lands in the centre
+    // slot; selecting size N just shifts the strip up by N slots.
     const SLOT_REM = 3.5;
-    const sizeTranslate = `calc(${(-0.5 - sizeIndex) * SLOT_REM}rem + ${dragY}px)`;
+    const sizeTranslate = `calc(${-sizeIndex * SLOT_REM}rem + ${dragY}px)`;
 
     const prevRegionIndex = (regionIndex - 1 + regions.length) % regions.length;
     const nextRegionIndex = (regionIndex + 1) % regions.length;

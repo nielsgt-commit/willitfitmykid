@@ -86,11 +86,20 @@
 
 .app-layout__sheet-body {
     flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0 var(--space-md) var(--space-md);
     touch-action: pan-y;
+}
+
+/* Spacing between sheet sections is owned by the flex gap above, so drop the
+ * browser's default paragraph margins that would otherwise double it up. */
+.app-layout__sheet-body > p {
+    margin: 0;
 }
 
 /* Clamp a long verdict line to one row while peeking. */

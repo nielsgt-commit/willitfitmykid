@@ -96,10 +96,10 @@ export function AppContent() {
             }
             sheet={showResults ? (
                 <>
-                    <KidCards kids={kids} />
                     <p>Viser resultater som passer i sesong</p>
                     <SeasonFilter activeSeasons={activeSeasons} onToggle={toggleSeason} />
                     <KidFilter kids={kids} activeKidIds={activeKidIds} onToggle={toggleKid} />
+                    <KidCards kids={kids} />
                 </>
             ) : undefined}
         />

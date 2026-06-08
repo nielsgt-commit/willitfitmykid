@@ -13,13 +13,10 @@ export function KidDetail({ kid }: KidDetailProps) {
     const years = yearsSinceBirth(kid.birthday);
     return (
         <div className={styles.kidDetail}>
-            <div className={styles.name}>
-                {kid.name}
+            <div className={styles.headline}>
+                <span className={styles.name}>{kid.name}</span>
+                <span className={styles.age}>{years} år</span>
             </div>
-            <div className={styles.age}>{years} år</div>
-            <div className={styles.percentile}>P{kid.calculatedPercentile}</div>
-            <hr className={styles.divider} />
-            <div className={styles.sex}>{kid.sex === 'F' ? 'Jente' : 'Gutt'}</div>
             <div className={styles.height}>
                 {height ? `${height} cm` : ''}
             </div>

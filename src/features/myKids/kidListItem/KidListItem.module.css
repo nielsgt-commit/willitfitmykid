@@ -5,8 +5,9 @@
     gap: var(--space-sm);
 }
 
-/* The avatar lives in its own card in front of the detail card. */
-.avatarCard {
+/* The avatar (before) and the percentile (after) each live in their own card. */
+.avatarCard,
+.percentileCard {
     box-sizing: border-box;
     flex: 0 0 auto;
     display: flex;
@@ -18,9 +19,10 @@
     border-radius: var(--radius-md);
 }
 
-.avatar {
-    width: 2.25rem;
-    height: 2.25rem;
+.avatar,
+.percentile {
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
@@ -31,6 +33,10 @@
     font-weight: 600;
     letter-spacing: 0.02em;
     flex-shrink: 0;
+}
+
+.percentile {
+    font-size: 0.75rem;
 }
 
 .item {
@@ -89,6 +95,10 @@
     background: var(--list-item-bg, var(--color-surface-raised));
     transform: translate3d(var(--swipe-x, 0px), 0, 0);
     will-change: transform;
+    /* Editable on double-click — don't select the text on the second tap. */
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .content.animating {

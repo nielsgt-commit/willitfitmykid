@@ -1,49 +1,35 @@
 .kidDetail {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas:
-    "name     age       percentile"
-    "divider  divider   divider"
-    "sex      .         height";
-  gap: 0.35rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  height: 100%;
   padding: var(--space-md);
   background: var(--color-surface-raised);
   box-sizing: border-box;
 }
 
-.name {
-  grid-area: name;
+.headline {
   display: flex;
-  align-items: center;
-  gap: 0.4rem;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.name {
   font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .age {
-  grid-area: age;
-  text-align: center;
-}
-
-.percentile {
-  grid-area: percentile;
-  text-align: right;
-}
-
-.divider {
-  grid-area: divider;
-  border: 0;
-  border-top: 1px solid currentColor;
-  opacity: 0.15;
-  margin: 0.25rem 0;
-  width: 100%;
-}
-
-.sex {
-  grid-area: sex;
+  flex: 0 0 auto;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
 }
 
 .height {
-  grid-area: height;
-  text-align: right;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
 }
-

@@ -28,6 +28,18 @@ function AvatarCard({ kid }: { kid: UserRecord }) {
     );
 }
 
+/** The growth percentile in its own card, circled, after the detail card. */
+function PercentileCard({ kid }: { kid: UserRecord }) {
+    const color = getKidColor(kid.id);
+    return (
+        <span className={styles.percentileCard}>
+            <span className={styles.percentile} style={{ borderColor: color, color }}>
+                P{kid.calculatedPercentile}
+            </span>
+        </span>
+    );
+}
+
 type KidListItemProps = {
     kid: UserRecord;
     isEditing: boolean;
@@ -92,6 +104,7 @@ export function KidListItem({ kid, isEditing, onSave, onEdit, onCancelEdit, onRe
                     className={`${styles.content}${isDragging ? '' : ' ' + styles.animating}`}
                     style={contentStyle}
                     onPointerDown={onPointerDown}
+                    onDoubleClick={handleEdit}
                 >
                     <KidDetail kid={kid} />
                 </div>
@@ -99,6 +112,7 @@ export function KidListItem({ kid, isEditing, onSave, onEdit, onCancelEdit, onRe
                     <KidActions onEdit={handleEdit} onRemove={handleRemove} />
                 </div>
             </div>
+            <PercentileCard kid={kid} />
         </li>
     );
 }

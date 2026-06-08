@@ -5,6 +5,42 @@
     gap: var(--space-sm);
 }
 
+/* While editing, the form expands inline next to the avatar; keep the avatar
+   pinned to the top rather than stretching to the full form height. */
+.editingRow {
+    align-items: flex-start;
+}
+
+.editPanel {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: grid;
+    grid-template-rows: 1fr;
+    animation: editExpand 200ms ease-out;
+}
+
+.editPanelInner {
+    min-height: 0;
+    overflow: hidden;
+}
+
+@keyframes editExpand {
+    from {
+        grid-template-rows: 0fr;
+        opacity: 0;
+    }
+    to {
+        grid-template-rows: 1fr;
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .editPanel {
+        animation: none;
+    }
+}
+
 /* The avatar (before) and the percentile (after) each live in their own card. */
 .avatarCard,
 .percentileCard {

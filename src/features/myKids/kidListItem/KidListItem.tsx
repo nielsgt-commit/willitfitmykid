@@ -68,14 +68,19 @@ export function KidListItem({ kid, isEditing, onSave, onEdit, onCancelEdit, onRe
 
     if (isEditing) {
         return (
-            <li>
-                <KidsForm
-                    key={kid.id}
-                    mode="edit"
-                    kid={kid}
-                    onSubmit={onSave}
-                    onCancel={onCancelEdit}
-                />
+            <li className={`${styles.row} ${styles.editingRow}`}>
+                <AvatarCard kid={kid} />
+                <div className={styles.editPanel}>
+                    <div className={styles.editPanelInner}>
+                        <KidsForm
+                            key={kid.id}
+                            mode="edit"
+                            kid={kid}
+                            onSubmit={onSave}
+                            onCancel={onCancelEdit}
+                        />
+                    </div>
+                </div>
             </li>
         );
     }

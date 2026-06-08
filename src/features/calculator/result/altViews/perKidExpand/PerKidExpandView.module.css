@@ -7,10 +7,33 @@
     list-style: none;
 }
 
+/* A row: the separate avatar card + the content card, side by side. */
+.item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+}
+
+/* The avatar lives in its own card at the start of every row. */
+.avatarCard {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    height: 3.5rem;
+    width: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-surface-raised);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+}
+
 /* Card chrome shared by the expandable (details) and static (no-fit) rows. */
 .details,
 .row {
     box-sizing: border-box;
+    flex: 1 1 auto;
+    min-width: 0;
     background-color: var(--color-surface-raised);
     border: var(--border-width) solid var(--color-border-subtle);
     border-radius: var(--radius-md);

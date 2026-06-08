@@ -102,11 +102,14 @@ function FitLine({ result, activeSeasons }: { result: WillFitWhenResult; activeS
     );
 }
 
-function Avatar({ kid }: { kid: UserRecord }) {
+/** The coloured-initial avatar, in its own separate card at the start of a row. */
+function AvatarCard({ kid }: { kid: UserRecord }) {
     const color = getKidColor(kid.id);
     return (
-        <span className={styles.avatar} style={{ borderColor: color, color }} aria-hidden="true">
-            {getInitials(kid.name)}
+        <span className={styles.avatarCard}>
+            <span className={styles.avatar} style={{ borderColor: color, color }} aria-hidden="true">
+                {getInitials(kid.name)}
+            </span>
         </span>
     );
 }
@@ -119,10 +122,10 @@ function FitRow({ kid, result, activeSeasons }: { kid: UserRecord; result: WillF
     );
 
     return (
-        <li>
+        <li className={styles.item}>
+            <AvatarCard kid={kid} />
             <details className={styles.details}>
                 <summary className={styles.summary}>
-                    <Avatar kid={kid} />
                     <span className={styles.body}>
                         <span className={styles.name}>{kid.name}</span>
                         <span className={styles.verdict}>
@@ -151,15 +154,17 @@ function FitRow({ kid, result, activeSeasons }: { kid: UserRecord; result: WillF
 /** A kid whose window doesn't intersect the chosen seasons: static, no reveal. */
 function NoFitRow({ kid }: { kid: UserRecord }) {
     return (
-        <li className={styles.row}>
-            <Avatar kid={kid} />
-            <span className={styles.body}>
-                <span className={styles.name}>{kid.name}</span>
-                <span className={styles.verdict}>
-                    <span className={styles.noFitText}>Passer ikke i valgte sesonger</span>
+        <li className={styles.item}>
+            <AvatarCard kid={kid} />
+            <div className={styles.row}>
+                <span className={styles.body}>
+                    <span className={styles.name}>{kid.name}</span>
+                    <span className={styles.verdict}>
+                        <span className={styles.noFitText}>Passer ikke i valgte sesonger</span>
+                    </span>
                 </span>
-            </span>
-            <span className={styles.pillNoFit} aria-label="Passer ikke">✗ Passer ikke</span>
+                <span className={styles.pillNoFit} aria-label="Passer ikke">✗ Passer ikke</span>
+            </div>
         </li>
     );
 }

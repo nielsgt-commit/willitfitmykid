@@ -44,7 +44,6 @@ function Calculator({ kids, activeSeasons }: CalculatorProps) {
 
     return (
         <CalculatorView
-            kidCards={<KidCards kids={kids} />}
             result={<ResultPanel size={calcState.size} activeSeasons={activeSeasons} />}
             size={
                 <Size
@@ -97,6 +96,7 @@ export function AppContent() {
             }
             sheet={showResults ? (
                 <>
+                    <KidCards kids={kids} />
                     <p>Viser resultater som passer i sesong</p>
                     <SeasonFilter activeSeasons={activeSeasons} onToggle={toggleSeason} />
                     <KidFilter kids={kids} activeKidIds={activeKidIds} onToggle={toggleKid} />

@@ -2,9 +2,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas:
-    "name     name      percentile"
+    "name     age       percentile"
     "divider  divider   divider"
-    "sex      birthday  height";
+    "sex      .         height";
   gap: 0.35rem 0.75rem;
   padding: var(--space-md);
   background: var(--color-surface-raised);
@@ -17,6 +17,11 @@
   align-items: center;
   gap: 0.4rem;
   font-weight: 600;
+}
+
+.age {
+  grid-area: age;
+  text-align: center;
 }
 
 .percentile {
@@ -35,11 +40,6 @@
 
 .sex {
   grid-area: sex;
-}
-
-.birthday {
-  grid-area: birthday;
-  text-align: center;
 }
 
 .height {

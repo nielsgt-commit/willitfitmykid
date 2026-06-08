@@ -88,7 +88,7 @@ export function AddKidFlow({ onSubmit, onCancel }: AddKidFlowProps) {
 
             {step === 'birthday' && (
                 <label className={styles.field}>
-                    <span className={styles.question}>Når har barnet bursdag?</span>
+                    <span className={styles.question}>Når er barnet født?</span>
                     <input
                         className={styles.input}
                         type="date"

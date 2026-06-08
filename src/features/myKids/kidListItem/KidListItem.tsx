@@ -4,8 +4,29 @@ import type {UserRecord} from "@/types/types.ts";
 import {KidDetail} from "@features/myKids/kidDetail/KidDetail.tsx";
 import {KidActions} from "@features/myKids/kidActions/KidActions.tsx";
 import {useSwipeActions} from "@hooks/useSwipeActions.ts";
+import {getKidColor} from "@constants/constants.ts";
 import styles from "./KidListItem.module.css";
 
+/** First letter of the first two name parts, uppercased — mirrors the kid card. */
+function getInitials(name: string): string {
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return "";
+    const first = parts[0][0] ?? "";
+    const second = parts.length > 1 ? (parts[1][0] ?? "") : "";
+    return (first + second).toUpperCase();
+}
+
+/** The coloured-initial avatar in its own card, shown before the detail card. */
+function AvatarCard({ kid }: { kid: UserRecord }) {
+    const color = getKidColor(kid.id);
+    return (
+        <span className={styles.avatarCard}>
+            <span className={styles.avatar} style={{ borderColor: color, color }} aria-hidden="true">
+                {getInitials(kid.name)}
+            </span>
+        </span>
+    );
+}
 
 type KidListItemProps = {
     kid: UserRecord;
@@ -31,7 +52,7 @@ export function KidListItem({ kid, isEditing, onSave, onEdit, onCancelEdit, onRe
     }, [isEditing]);
 
     const { trackRef, translateX, isOpen, isDragging, close, onPointerDown } =
-        useSwipeActions<HTMLLIElement>({ actionsWidth, disabled: isEditing || actionsWidth === 0 });
+        useSwipeActions<HTMLDivElement>({ actionsWidth, disabled: isEditing || actionsWidth === 0 });
 
     if (isEditing) {
         return (
@@ -64,16 +85,19 @@ export function KidListItem({ kid, isEditing, onSave, onEdit, onCancelEdit, onRe
     };
 
     return (
-        <li className={styles.item} ref={trackRef}>
-            <div
-                className={`${styles.content}${isDragging ? '' : ' ' + styles.animating}`}
-                style={contentStyle}
-                onPointerDown={onPointerDown}
-            >
-                <KidDetail kid={kid} />
-            </div>
-            <div className={styles.actions} ref={actionsRef}>
-                <KidActions onEdit={handleEdit} onRemove={handleRemove} />
+        <li className={styles.row}>
+            <AvatarCard kid={kid} />
+            <div className={styles.item} ref={trackRef}>
+                <div
+                    className={`${styles.content}${isDragging ? '' : ' ' + styles.animating}`}
+                    style={contentStyle}
+                    onPointerDown={onPointerDown}
+                >
+                    <KidDetail kid={kid} />
+                </div>
+                <div className={styles.actions} ref={actionsRef}>
+                    <KidActions onEdit={handleEdit} onRemove={handleRemove} />
+                </div>
             </div>
         </li>
     );

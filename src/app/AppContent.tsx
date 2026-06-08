@@ -1,10 +1,8 @@
 import { useEffect, useReducer, useState } from "react";
 import Size from "@features/calculator/size/Size.tsx";
-import { SizeConversions } from "@features/calculator/size/SizeConversions.tsx";
 import { ResultPanel } from "@features/calculator/result/resultViews/ResultPanel.tsx";
 import { MyKids } from "@features/myKids/MyKids.tsx";
 import { AppLayout } from "../components/layouts/AppLayout.tsx";
-import { Switch } from "../components/core/Switch.tsx";
 import { Splash } from "./Splash.tsx";
 import { Tabs, type Tab } from "./Tabs.tsx";
 import { Gallery } from "./gallery/Gallery.tsx";
@@ -34,7 +32,6 @@ function getInitialCalcState(kids: UserRecord[]): State {
 type CalculatorProps = {
     kids: UserRecord[];
     activeSeasons: Set<Season>;
-    showConversions: boolean;
 };
 
 /**
@@ -42,14 +39,13 @@ type CalculatorProps = {
  * ids (see AppContent), so adding or removing a kid re-initialises the size to
  * fit the youngest — while editing an existing kid keeps the manual selection.
  */
-function Calculator({ kids, activeSeasons, showConversions }: CalculatorProps) {
+function Calculator({ kids, activeSeasons }: CalculatorProps) {
     const [calcState, calcDispatch] = useReducer(calculatorReducer, kids, getInitialCalcState);
 
     return (
         <CalculatorView
             kidCards={<KidCards kids={kids} />}
             result={<ResultPanel size={calcState.size} activeSeasons={activeSeasons} />}
-            conversions={showConversions ? <SizeConversions conversions={calcState.conversions} /> : undefined}
             size={
                 <Size
                     size={calcState.size}
@@ -65,7 +61,6 @@ function Calculator({ kids, activeSeasons, showConversions }: CalculatorProps) {
 export function AppContent() {
     const [tab, setTab] = useState<Tab>("results");
     const [showSplash, setShowSplash] = useState(true);
-    const [showConversions, setShowConversions] = useState(false);
     const { kids } = useKids();
     const { activeKidIds, toggleKid } = useKidFilter();
     const { activeSeasons, toggleSeason } = useSeasonFilter();
@@ -81,7 +76,7 @@ export function AppContent() {
     const kidsKey = kids.map(k => k.id).join(',');
 
     const calculator = (
-        <Calculator key={kidsKey} kids={kids} activeSeasons={activeSeasons} showConversions={showConversions} />
+        <Calculator key={kidsKey} kids={kids} activeSeasons={activeSeasons} />
     );
 
     return (
@@ -105,14 +100,6 @@ export function AppContent() {
                     <p>Viser resultater som passer i sesong</p>
                     <SeasonFilter activeSeasons={activeSeasons} onToggle={toggleSeason} />
                     <KidFilter kids={kids} activeKidIds={activeKidIds} onToggle={toggleKid} />
-                    <div className="app-sheet__row">
-                        <p>Viser konverteringer</p>
-                        <Switch
-                            checked={showConversions}
-                            onChange={setShowConversions}
-                            label="Viser konverteringer"
-                        />
-                    </div>
                 </>
             ) : undefined}
         />

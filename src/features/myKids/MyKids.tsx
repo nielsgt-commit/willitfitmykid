@@ -2,7 +2,6 @@ import { useRef, useState, type ChangeEvent } from 'react';
 import { useKids, useKidsActions } from '@hooks/context/KidsContext.tsx';
 import { AddKidFlow } from './kidsForm/AddKidFlow.tsx';
 import { KidList } from '@features/myKids/kidList/KidList.tsx';
-import { ShareSizes } from '@features/myKids/shareSizes/ShareSizes.tsx';
 import { serializeKids, parseKidsBackup } from '@services/storage/kidsStorage.ts';
 import type { UserRecord } from '@myTypes/types.ts';
 import styles from './MyKids.module.css';
@@ -17,7 +16,6 @@ export function MyKids({ initialAdding = false, onCancelFirstAdd }: MyKidsProps)
     const { addKid, updateKid, removeKid, replaceKids } = useKidsActions();
     const [editingId, setEditingId] = useState<number | null>(null);
     const [adding, setAdding] = useState(initialAdding);
-    const [showSizes, setShowSizes] = useState(false);
     const fileRef = useRef<HTMLInputElement>(null);
 
     const handleAdd = (data: Omit<UserRecord, 'id'>) => {
@@ -150,16 +148,6 @@ export function MyKids({ initialAdding = false, onCancelFirstAdd }: MyKidsProps)
                         «Del sikkerhetskopi» åpner delingsmenyen, så du kan sende filen på e-post eller melding.
                         Mottakeren åpner appen og bruker «Gjenopprett» for å hente inn barna.
                     </p>
-
-                    <button
-                        type="button"
-                        className={styles.settingsAction}
-                        onClick={() => setShowSizes(v => !v)}
-                        disabled={kids.length === 0}
-                    >
-                        {showSizes ? 'Skjul størrelser' : 'Vis størrelser for deling'}
-                    </button>
-                    {showSizes && <ShareSizes kids={kids} />}
 
                     <input
                         ref={fileRef}
